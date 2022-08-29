@@ -1,40 +1,54 @@
 import React from 'react'
-import { useState, } from 'react'
+import { useState } from 'react';
 import { Bar } from 'react-chartjs-2'
 // eslint-disable-next-line no-unused-vars
 import { Chart as ChartJS } from 'chart.js/auto'
+import { Chart } from 'chart.js';
+// import 'chartjs-adapter-luxon';
+import ChartStreaming from 'chartjs-plugin-streaming';
 
+Chart.register(ChartStreaming);
 
 
 function BarChart2() {
+
     //Nomination Call:
     //Only storing two peices of data for simple testing
-    const [returnedNomData, setReturnedNomData] = useState({ VOLUMEIN: "200", VOLUMEOUT: `50` });
-
+    let [returnedNomData, setReturnedNomData] = useState([])
+    // const [returnedNomData, setReturnedNomData] = useState([]);
     const getNoms = async (url) => {
-        const newNomData = await fetch(url, {
+        let newNomData = await fetch(url, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
                 'Accept': 'application/json',
             },
 
-        })
-            .then(res => res.json());
-        console.log(newNomData);
-        // console.log(returnedNomData); console log for testing
-        //setReturnedNomData(newNomData.recordset) - this method works
-        setReturnedNomData(newNomData.recordset[1])
+        }).then(function (response) {
+            // console.log(response);
+            return response.json();
 
-    }
+        }).then(function (data) {
+            console.log(data.recordset[0]['VOLUMEOUT'])
+            return data.recordset[0]['VOLUMEOUT']
+        });
 
+        // console.log(newNomData.recordsets[0][1]['PT_NUM'])
+        setReturnedNomData(newNomData)
 
+        // const setReturnedNomData = (newNomData.recordset)
+        console.log(returnedNomData);
+        //     // setReturnedNomData(newNomData.recordset) - this method works
+        // return setReturnedNomData(newNomData.data.recordset[0]);
+        return returnedNomData;
+    };
 
-    const [fetchedNoms, setNomData] = useState({
-        labels: returnedNomData.recordset,
+    // const [fetchedNoms] = useState({
+    const myChart = ({
+        labels: ['Mon', 'Tue', 'Wed'],
         datasets: [{
-            label: "Noms Chart",
-            data: returnedNomData.recordset,
+            labels: ["GAS"],
+            data: [returnedNomData],
             backgroundColor: [
                 "rgba(75,192,192,1)",
                 "#ecf0f1",
@@ -46,15 +60,20 @@ function BarChart2() {
             borderWidth: 2,
 
         }]
-    });
+
+    })
+    // console.log(fetchedNoms)
+    console.log(myChart);
 
     return (
         <div>
-
             <h4>Nominations Chart</h4>
 
             <button className='btn btn-primary mb-2' onClick={() => getNoms('./noms')}>Click me to get Nominations</button>
-            <Bar data={fetchedNoms} />
+            {/* <Bar data={fetchedNoms} /> */}
+            {/* <Bar data={fetchedNoms} /> */}
+            <Bar data={myChart} />
+
         </div>
 
 

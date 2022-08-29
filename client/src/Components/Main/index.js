@@ -7,7 +7,7 @@ import { useState } from 'react'
 //New right click menu:
 import EventMap from '../EventMap'
 
-// import Data1 from '../Data1'
+//Chart Imports:
 import BarChart from '../BarChart'
 import LineChart from '../LineChart'
 import PieChart from '../PieChart'

@@ -36,15 +36,43 @@ console.log(getData);
 const getNoms = async () => {
     try {
         let getNoms = await sql.connect(config);
-        let noms = getNoms.request().query("SELECT * from ENT_PT_BALANCE")
+        let noms = await getNoms.request().query("SELECT * from ENT_PT_BALANCE")
         console.log(noms);
         return noms;
     }
-    catch (err) {
-        console.log(err);
+    catch (error) {
+        console.log(error);
     }
 }
-console.log(getNoms);
+
+
+//ENT_PACKAGE call:
+const getEntPkg = async () => {
+    try {
+        let getEntPkg = await sql.connect(config);
+        let data = getEntPkg.request().query("SELECT * from ENT_PACKAGE")
+        console.log(data);
+        return data;
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+console.log(getEntPkg);
+
+//ENT_BID_PACKAGE api call:
+const getBidPkg = async () => {
+    try {
+        let getBidPkg = await sql.connect(config);
+        let data = getBidPkg.request().query("SELECT * from ENT_BID_PKG")
+        console.log(data);
+        return data;
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+console.log(getBidPkg);
 
 //Built in React Fetch system using the SAME nom call above but simplified:
 // const getNoms = () => {
@@ -73,5 +101,7 @@ console.log(getNoms);
 
 module.exports = {
     getData,
-    getNoms
+    getNoms,
+    getEntPkg,
+    getBidPkg
 }

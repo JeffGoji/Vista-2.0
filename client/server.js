@@ -12,6 +12,14 @@ dbOperation.getNoms().then(res => {
     return res;
 })
 
+dbOperation.getEntPkg().then(res => {
+    return res;
+})
+
+dbOperation.getBidPkg().then(res => {
+    return res;
+})
+
 //Set API port and Express server:
 const API_PORT = process.env.PORT || 5000;
 const app = express();
@@ -21,7 +29,7 @@ app.use(express.urlencoded());
 app.use(cors());
 
 //send data to the front end:
-app.get('/api2', async (req, res) => {
+app.get('/cityApi', async (req, res) => {
     console.log(response);
     const result = await dbOperation.getData(req.body)
     res.send(result)
@@ -33,10 +41,23 @@ app.get('/noms', async (req, res) => {
     res.send(result)
 })
 
-app.get('/quit', function (req, res) {
-    console.log('called it quits');
-    res.send({ result: 'Goodbye!' })
+app.get('/entPkg', async (req, res) => {
+    console.log(response);
+    const result = await dbOperation.getEntPkg(req.body)
+    res.send(result)
 })
+
+app.get('/bidPkg', async (req, res) => {
+    console.log(response);
+    const result = await dbOperation.getEntPkg(req.body)
+    res.send(result)
+})
+
+//Kept for reference's sake:
+// app.get('/quit', function (req, res) {
+//     console.log('called it quits');
+//     res.send({ result: 'Goodbye!' })
+// })
 
 
 app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`));
