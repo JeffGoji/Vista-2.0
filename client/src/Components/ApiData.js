@@ -8,7 +8,7 @@ import { Chart as ChartJS } from 'chart.js/auto'
 function ApiData() {
 
     //City API call:
-    const [returnedData, setReturnedData] = useState({ CITY_ID: '', CITY_NAME: '' });
+    const [returnedData, setReturnedData] = useState({ FACILITY_ID: '', FACILITY_NAME: '' });
 
     const getData = async (url) => {
         const newData = await fetch(url, {
@@ -19,7 +19,7 @@ function ApiData() {
             },
         })
             .then(res => res.json());
-        // console.log(newData);
+        //console.log(newData);
         setReturnedData(newData.recordset[1])
     }
 
@@ -39,7 +39,7 @@ function ApiData() {
             },
         })
             .then(res => res.json());
-        console.log(newNomData);
+        //console.log(newNomData);
         // console.log(returnedNomData); console log for testing
         //setReturnedNomData(newNomData.recordset) - this method works
         setReturnedNomData(newNomData.recordset[1])
@@ -55,13 +55,13 @@ function ApiData() {
             {/* <p>City: {returnedData.CITY_NAME}</p> -- This one works! */}
             <p>Date:
                 <br />
-                {returnedData.DATESTAMP}</p>
+                {returnedData.LONGITUDE}</p>
             <p>City:
                 <br />
-                {returnedData.CITY_NAME}</p>
+                {returnedData.FAC_NAME}</p>
             <p>State ID:
                 <br />
-                {returnedData.STATE} </p>
+                {returnedData.FAC_ID} </p>
 
             <h4>Nominations</h4>
 

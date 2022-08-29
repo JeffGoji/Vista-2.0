@@ -23,7 +23,7 @@ app.use(cors());
 //send data to the front end:
 app.get('/api2', async (req, res) => {
     console.log(response);
-    const result = await dbOperation.getData(req.body)
+    const result = await dbOperation.getData(req)
     res.send(result)
 })
 

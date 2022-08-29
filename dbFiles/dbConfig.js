@@ -2,7 +2,7 @@ const config = {
     user: 'sa',
     password: 'MANAGER',
     server: '10.239.100.228',
-    database: 'PNG042022PAD19',
+    database: 'PNG061722PAD19',
     options: {
         trustServerCertificate: true,
         trustConnection: true,
