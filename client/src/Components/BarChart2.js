@@ -14,7 +14,7 @@ function BarChart2() {
 
     //Nomination Call:
     //Only storing two peices of data for simple testing
-    let [returnedNomData, setReturnedNomData] = useState([])
+    let [returnedNomData, setReturnedNomData] = useState({ VOLUMEOUT: '' })
     // const [returnedNomData, setReturnedNomData] = useState([]);
     const getNoms = async (url) => {
         let newNomData = await fetch(url, {
@@ -29,8 +29,10 @@ function BarChart2() {
             return response.json();
 
         }).then(function (data) {
-            console.log(data.recordset[0]['VOLUMEOUT'])
-            return data.recordset[0]['VOLUMEOUT']
+            console.log(data.recordset)
+            return data.recordset
+            // console.log(data.recordset[0]['VOLUMEOUT'])
+            // return data.recordset[0]['VOLUMEOUT']
         });
 
         // console.log(newNomData.recordsets[0][1]['PT_NUM'])
@@ -43,12 +45,16 @@ function BarChart2() {
         return returnedNomData;
     };
 
+    const map1 = returnedNomData.map(x => x);
+
+    console.log(map1);
+
     // const [fetchedNoms] = useState({
     const myChart = ({
         labels: ['Mon', 'Tue', 'Wed'],
         datasets: [{
-            labels: ["GAS"],
-            data: [returnedNomData],
+            label: ["GAS"],
+            data: [returnedNomData, returnedNomData, returnedNomData],
             backgroundColor: [
                 "rgba(75,192,192,1)",
                 "#ecf0f1",
