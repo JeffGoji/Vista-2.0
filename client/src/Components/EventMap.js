@@ -70,6 +70,18 @@ function EventMap() {
     setFacilities(newData.recordset)
   }
 
+  // finds the edges of the selected facilities so that when the user selects a new decision unit key
+  // the map will automatically center on those facilities
+  const findEdges = () => {
+    // get list of latitudes and longitudes
+    const latitudes = facilities.map(facility => facility.LATITUDE)
+    const longitudes = facilities.map(facility => facility.LONGITUDE)
+
+    // find lowest and highest latitude and longitude values
+    let largestLat, largestLng = 181;
+    let smallestLat, smallestLng = -181;
+  }
+
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: "AIzaSyBg7_yys3sc_lunTZ_5pPaAl5dAk48PHMY",
@@ -141,7 +153,6 @@ function EventMap() {
       onRightClick={handleRightClick}
       onClick={toggleInfoBox}
       onDrag={toggleInfoBox}
-      clickableIcons={false}
     >
       <InfoBox
       onLoad = {infoBoxLoad}
