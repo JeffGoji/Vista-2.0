@@ -35,6 +35,12 @@ app.get('/cityApi', async (req, res) => {
     res.send(result)
 })
 
+app.get('/api2', async (req, res) => {
+    console.log(response);
+    const result = await dbOperation.getEntPkg(req.body)
+    res.send(result)
+})
+
 app.get('/noms', async (req, res) => {
     console.log(response);
     const result = await dbOperation.getNoms(req.body)
@@ -52,12 +58,6 @@ app.get('/bidPkg', async (req, res) => {
     const result = await dbOperation.getEntPkg(req.body)
     res.send(result)
 })
-
-//Kept for reference's sake:
-// app.get('/quit', function (req, res) {
-//     console.log('called it quits');
-//     res.send({ result: 'Goodbye!' })
-// })
 
 
 app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`));

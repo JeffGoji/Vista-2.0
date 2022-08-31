@@ -4,44 +4,44 @@ import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS } from 'chart.js/auto'
 import { Chart } from 'chart.js';
 
-import { Noms } from './Noms'
+function PieChart() {
 
-function PieChart({ Noms }) {
+    let [returnedNomData, setReturnedNomData,] = useState({ VOLUMEIN: '', END_IMBAL: '', NET_END_IMBAL: '' })
+    const getNoms = async (url) => {
+        let volInData = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'Accept': 'application/json',
+            },
 
-    // let [returnedNomData, setReturnedNomData,] = useState({ VOLUMEIN: '', VOLUMEOUT: '', END_IMBAL: '', NET_END_IMBAL: '' })
-    // const getNoms = async (url) => {
-    //     let volInData = await fetch(url, {
-    //         method: 'GET',
-    //         headers: {
-    //             'content-type': 'application/json',
-    //             'Accept': 'application/json',
-    //         },
+        }).then(function (response) {
+            // console.log(response);
+            return response.json();
 
-    //     }).then(function (response) {
-    //         // console.log(response);
-    //         return response.json();
+        }).then(function (data) {
+            // console.log(data.recordset)
+            // return data.recordset
+            console.log(data.recordset)
+            return data.recordset
 
-    //     }).then(function (data) {
-    //         // console.log(data.recordset)
-    //         // return data.recordset
-    //         console.log(data.recordset[1])
-    //         return data.recordset[1]
+        });
 
-    //     });
+        setReturnedNomData(volInData.recordset)
+        console.log(returnedNomData);
+        //     // setReturnedNomData(volInData.recordset) - this method works
+        return getNoms;
 
-    //     setReturnedNomData(volInData)
+    };
 
-    //     console.log(returnedNomData);
-    //     //     // setReturnedNomData(volInData.recordset) - this method works
-    //     return getNoms;
+    getNoms();
 
 
-    // };
     const pieChart1 = ({
         labels: ['Volume In', 'End Imbalance', 'Net End Imbalance'],
         datasets: [{
             label: ['Nominations'],
-            data: [{ Noms }.VOLUMEIN, { Noms }.END_IMBAL, { Noms }.NET_END_IMBAL],
+            data: [returnedNomData.VOLUMEIN, returnedNomData.END_IMBAL, returnedNomData.NET_END_IMBAL],
             //data: [returnedNomData, returnedNomData, returnedNomData],
             backgroundColor: [
                 "rgba(75,192,192,1)",
@@ -55,13 +55,14 @@ function PieChart({ Noms }) {
 
         }]
     })
-
-
     console.log(pieChart1);
+
+
 
     return (
         <div>
             < Pie data={pieChart1} />
+            <button></button>
         </div>
     )
 }
