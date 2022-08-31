@@ -7,7 +7,7 @@ import { useState } from 'react'
 //New right click menu:
 import EventMap from '../EventMap'
 
-// import Data1 from '../Data1'
+//Chart Imports:
 import BarChart from '../BarChart'
 import LineChart from '../LineChart'
 import PieChart from '../PieChart'
@@ -17,7 +17,7 @@ import ApiData from '../ApiData'
 import { UserData } from '../Data'
 
 //Get Bar graph with built in API experiment:
-import BarChart2 from '../BarChart2'
+import BarChart2 from '../PieChart2'
 
 
 function Main() {
@@ -83,23 +83,23 @@ function Main() {
     return (
         <>
             <div className="row justify-content-center">
-                <div className="col-lg-3 col-md-3 col-sm-12 text-center">
+                <div className="col-lg-2 col-md-3 col-sm-12 text-center">
                     {/* <Data1 />
                     <br /> */}
                     <PieChart chartData={pieData} />
                     <br />
                     <ApiData />
                 </div>
-                <div className="col-lg-6 col-md-6 col-sm-12 text-center rounded p-2 window-border"> Middle Screen (Map)
+                <div className="col-lg-8 col-md-6 col-sm-12 text-center rounded p-2 window-border"> Middle Screen (Map)
 
                     {/* <Map /> */}
                     <EventMap />
 
                 </div>
-                <div className="col-lg-3 col-md-3 col-sm-12 text-center">
-                    <BarChart chartData={userData} />
-                    <LineChart chartData={oilData} />
-                    <BarChart2 />
+                <div className="col-lg-2 col-md-3 col-sm-12 text-center">
+                    {/* <BarChart chartData={userData} />
+                    <LineChart chartData={oilData} /> */}
+                    <BarChart2 style={{ maxHeight: "40px" }} />
                 </div>
                 {/* <div className="row justify-content-center">
                     <div className="col-lg-4 col-md-4 col-sm-12 text-center bg-warning">
