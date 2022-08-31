@@ -13,7 +13,6 @@ Chart.register(ChartStreaming);
 function BarChart2() {
 
     //Nomination Call:
-    //Only storing two peices of data for simple testing
     let [returnedNomData, setReturnedNomData,] = useState({ VOLUMEIN: '', VOLUMEOUT: '', END_IMBAL: '', NET_END_IMBAL: '' })
     const getNoms = async (url) => {
         let volInData = await fetch(url, {
