@@ -6,7 +6,6 @@ import { useJsApiLoader, InfoBox, GoogleMap, Circle, Rectangle } from "@react-go
 {/*function Menu() {
   const [menuProps, toggleMenu] = useMenuState();
   const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
-
   return (
     <div
       onContextMenu={(e) => {
@@ -15,10 +14,7 @@ import { useJsApiLoader, InfoBox, GoogleMap, Circle, Rectangle } from "@react-go
         toggleMenu(true);
       }}
       style={{ height: "600px" }} className="border rounded-2">
-
-
       Right click to open context menu
-
       <ControlledMenu
         {...menuProps}
         anchorPoint={anchorPoint}
@@ -32,7 +28,6 @@ import { useJsApiLoader, InfoBox, GoogleMap, Circle, Rectangle } from "@react-go
     </div>
   );
 }
-
 export default EventMap;*/}
 
 
@@ -133,80 +128,79 @@ function EventMap() {
       return filteredKeys.map(filteredKey => <option value={filteredKey}>{filteredKey}</option>)
     }
   }
-}
 
-const displayFacilities = () => {
-  if (facilities !== []) {
-    if (input !== '') {
-      const filteredFacilities = facilities.filter(facility => (facility.DEC_UNIT_KEY === parseInt(input)))
-      return filteredFacilities.map(facility => (
-        <InfoBox
-          options={infoBoxOptions}
-          position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}
-        >
-          <div style={{ backgroundColor: 'white', fontSize: "1.2rem" }}>Facility</div>
-        </InfoBox>))
-    }
-    return (<InfoBox
-      options={infoBoxOptions}
-      position={mapOptions.center}
-    >
-      <div></div>
-    </InfoBox>)
-  }
-}
-
-const handleSelectChange = (event) => {
-  setInput(event.target.value)
-  setBounds(findBounds())
-  map.fitBounds(bounds)
-  console.log(bounds)
-}
-
-React.useEffect(() => {
-  const getData = async (url) => {
-    const data = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        'Accept': 'application/json',
-      },
-    })
-      .then(res => res.json())
-      .then(res => setFacilities(res.recordset))
-  }
-  getData('./api2').catch(console.error)
-}, [])
-
-console.log("return")
-console.log(facilities)
-return isLoaded ? (
-  <div>
-    <label style={{ padding: '0px 10px' }}>Select a decision unit key:</label>
-    <select onChange={handleSelectChange}>
-      {fillValues()}
-    </select>
-    <GoogleMap
-      mapContainerStyle={mapOptions.size}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-      onRightClick={handleRightClick}
-      onClick={toggleInfoBox}
-      onDrag={toggleInfoBox}
-    >
-      <InfoBox
-        onLoad={infoBoxLoad}
+  const displayFacilities = () => {
+    if (facilities !== []) {
+      if (input !== '') {
+        const filteredFacilities = facilities.filter(facility => (facility.DEC_UNIT_KEY === parseInt(input)))
+        return filteredFacilities.map(facility => (
+          <InfoBox
+            options={infoBoxOptions}
+            position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}
+          >
+            <div style={{ backgroundColor: 'white', fontSize: "1.2rem" }}>Facility</div>
+          </InfoBox>))
+      }
+      return (<InfoBox
         options={infoBoxOptions}
-        position={infoBoxPosition}
-        visible={visibility}
+        position={mapOptions.center}
       >
-        <div>
-          <button type="button">Create Node</button>
-        </div>
-      </InfoBox>
-      {displayFacilities()}
-    </GoogleMap></div>
-) : <></>
+        <div></div>
+      </InfoBox>)
+    }
+  }
+
+  const handleSelectChange = (event) => {
+    setInput(event.target.value)
+    setBounds(findBounds())
+    map.fitBounds(bounds)
+    console.log(bounds)
+  }
+
+  React.useEffect(() => {
+    const getData = async (url) => {
+      const data = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          'Accept': 'application/json',
+        },
+      })
+        .then(res => res.json())
+        .then(res => setFacilities(res.recordset))
+    }
+    getData('./api2').catch(console.error)
+  }, [])
+
+  console.log("return")
+  console.log(facilities)
+  return isLoaded ? (
+    <div>
+      <label style={{ padding: '0px 10px' }}>Select a decision unit key:</label>
+      <select onChange={handleSelectChange}>
+        {fillValues()}
+      </select>
+      <GoogleMap
+        mapContainerStyle={mapOptions.size}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+        onRightClick={handleRightClick}
+        onClick={toggleInfoBox}
+        onDrag={toggleInfoBox}
+      >
+        <InfoBox
+          onLoad={infoBoxLoad}
+          options={infoBoxOptions}
+          position={infoBoxPosition}
+          visible={visibility}
+        >
+          <div>
+            <button type="button">Create Node</button>
+          </div>
+        </InfoBox>
+        {displayFacilities()}
+      </GoogleMap></div>
+  ) : <></>
 }
 
 export default EventMap
