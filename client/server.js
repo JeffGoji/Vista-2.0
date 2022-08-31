@@ -31,7 +31,7 @@ app.use(cors());
 //send data to the front end:
 app.get('/cityApi', async (req, res) => {
     console.log(response);
-    const result = await dbOperation.getData(req.body)
+    const result = await dbOperation.getData(req)
     res.send(result)
 })
 

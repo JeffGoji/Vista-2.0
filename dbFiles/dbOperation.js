@@ -19,12 +19,19 @@ sql = require('mssql')
 
 
 //First version to test, CITY API call:
-const getData = async () => {
+const getData = async (req) => {
     try {
         let getData = await sql.connect(config);
-        let cityData = getData.request().query("SELECT * from ENT_CITY")
-        console.log(cityData);
-        return cityData;
+        let facilityData;
+        let queriesExist = Object.keys(req.query).length !== 0 ? true : false;
+        if (queriesExist){
+            let dec_unit_key = req.query.dec_unit_key;
+            facilityData = getData.request().query("SELECT * from ENT_FACILITY WHERE DEC_UNIT_KEY = " + dec_unit_key + " AND LATITUDE != 0")
+        }
+        else
+            facilityData = getData.request().query("SELECT * from ENT_FACILITY WHERE LATITUDE != 0")
+        console.log(facilityData);
+        return facilityData;
     }
     catch (err) {
         console.log(err);
