@@ -39,20 +39,20 @@ function ApiData() {
             },
         })
             .then(res => res.json());
-        //console.log(newNomData);
+
+        return setReturnedNomData(newNomData.recordset[1])
         // console.log(returnedNomData); console log for testing
         //setReturnedNomData(newNomData.recordset) - this method works
-        setReturnedNomData(newNomData.recordset[1])
+
     }
 
 
     return (
         <div>
-            <button className='btn btn-primary mb-2' onClick={() => getData('./api2')}>Click me to get City Id and Name!</button>
+            <button className='btn btn-primary mb-2' onClick={() => getData('./cityApi')}>Click me to get City Id and Name!</button>
             <br />
             <button className='btn btn-primary mb-2' onClick={() => getNoms('./noms')}>Click me to get Nominations</button>
 
-            {/* <p>City: {returnedData.CITY_NAME}</p> -- This one works! */}
             <p>Date:
                 <br />
                 {returnedData.LONGITUDE}</p>

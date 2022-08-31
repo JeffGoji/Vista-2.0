@@ -1,0 +1,49 @@
+{
+  "recordsets": [
+    [
+      {
+        "BA_UNIT_ID": "00000001",
+        "PT_NUM": "00106885",
+        "CNTR_NUM": "00000000",
+        "GASFLOW_DATE": "2012-03-25T00:00:00.000Z",
+        "STATUS": "NM",
+        "VOLUMEIN": 420,
+        "VOLUMEOUT": 0,
+        "WACOG": 2,
+        "WASP": 0,
+        "DATESTAMP": "2012-05-16T11:53:50.840Z",
+        "USERSTAMP": "PNG\\lesli75",
+        "END_IMBAL": 420,
+        "NET_END_IMBAL": 420,
+        "GAS_SALES_OUT": 0,
+        "WACOG_OUT": null,
+        "MARGIN": -2,
+        "WACOG_VOLUMEIN": null,
+        "WACOG_VOLUMEOUT": null,
+        "GROSS_VOLUMEIN": null,
+        "GAS_PUR_IN": null,
+        "TOLERANCE": null,
+        "TOLERANCE_ADJ_IMBAL": null,
+        "BEG_IMBAL": null,
+        "MAX_INJ": null,
+        "MAX_WD": null,
+        "MSQ": null,
+        "M_D": "D",
+        "POINT_TYPE": null,
+        "POOL_TYPE": null,
+        "PACKAGE_IN_ID": null,
+        "PACKAGE_OUT_ID": null,
+        "VOLUMEIN_VALUE": null,
+        "VOLUMEOUT_VALUE": null,
+        "BEG_VALUE": null,
+        "END_WACOG": null,
+        "END_VALUE": null,
+        "ADJ_QTY": null,
+        "ADJ_VALUE": null,
+        "NET_END_VALUE": null,
+        "NET_END_WACOG": null,
+        "ACCT_PROCESS_FLAG": null
+      }
+    ]
+  ]
+}
