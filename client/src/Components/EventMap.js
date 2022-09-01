@@ -1,4 +1,4 @@
-import React,{ useState } from "react";
+import React,{ useState, useEffect, useRef } from "react";
 import { ControlledMenu, MenuItem, useMenuState } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 import { useJsApiLoader, InfoBox, GoogleMap, Circle, Rectangle } from "@react-google-maps/api";
@@ -38,6 +38,12 @@ export default EventMap;*/}
 
 
 function EventMap() {
+  const exampleBounds = {
+    north: 41.02207,
+    south: 40.301487,
+    east: -78.438065,
+    west: -79.54162
+  }
   const mapOptions = {
     center: {
       lat: 40.862540,
@@ -47,25 +53,25 @@ function EventMap() {
     size: {minWidth: '600px', height: '600px'}
   }
   const [facilities, setFacilities] = useState([])
+  const [displayFacilities, setDisplayFacilities] = useState([])
   const [infoBoxPosition, setInfoBoxPosition] = useState(mapOptions.center)
   const [visibility, setVisibility] = useState(false)
   const [map, setMap] = React.useState(null)
   const [infoBox, setInfoBox] = React.useState(null)
   const [input, setInput] = React.useState('1707')
-  const [bounds, setBounds] = React.useState({north:0,south:0,east:0,west:0})
   const infoBoxOptions = { 
     closeBoxURL: '', 
     enableEventPropagation: true 
   };
-  const [selectedFacilities, setSelectedFacilities] = useState([])
+  const renders = useRef(0)
   
 
   // finds the bounds of the selected facilities so that when the user selects a new decision unit key
   // the map will automatically center on those facilities
-  const findBounds = () => {
+  const findBounds = (selectedFacilities) => {
     // get list of latitudes and longitudes
-    const latitudes = facilities.map(facility => facility.LATITUDE)
-    const longitudes = facilities.map(facility => facility.LONGITUDE)
+    const latitudes = selectedFacilities.map(facility => facility.LATITUDE)
+    const longitudes = selectedFacilities.map(facility => facility.LONGITUDE)
 
     // find lowest and highest latitude and longitude values
     let largestLat = -181;
@@ -86,13 +92,17 @@ function EventMap() {
     })
 
     // create a bounds based off of the highest and lowest values
-    const bounds = {
-      north: largestLat,
-      south: smallestLat,
+    let bounds = {
+      north: smallestLat,
+      south: largestLat,
       east: largestLng,
       west: smallestLng
     }
-    return bounds;
+    const averageLatitude = (largestLat + smallestLat) / 2
+    const averageLongtitude = (largestLng + smallestLng) / 2
+
+    let center = {lat:averageLatitude, lng:averageLongtitude}
+    return bounds
   }
 
   const { isLoaded } = useJsApiLoader({
@@ -101,8 +111,7 @@ function EventMap() {
   })
 
   const onLoad = React.useCallback(function callback(map) {
-    console.log("map is loading")
-    map.fitBounds(findBounds())
+    map.fitBounds(exampleBounds)
     setMap(map)
   }, [])
 
@@ -134,11 +143,15 @@ function EventMap() {
     }
   }
 
-  const displayFacilities = () => {
-    if (facilities !== []) {
+  const filterFacilities = () =>{
+    const filteredFacilities = facilities.filter(facility => (facility.DEC_UNIT_KEY === parseInt(input)))
+    return filteredFacilities
+  }
+
+  const showFacilities = () => {
+    if (displayFacilities !== []) {
       if (input !== ''){
-        const filteredFacilities = facilities.filter(facility => (facility.DEC_UNIT_KEY === parseInt(input)))
-        return filteredFacilities.map(facility => (
+        return displayFacilities.map(facility => (
           <InfoBox
             options={infoBoxOptions} 
             position={{lat: facility.LATITUDE, lng: facility.LONGITUDE}}
@@ -157,32 +170,40 @@ function EventMap() {
 
   const handleSelectChange = (event) => {
     setInput(event.target.value)
-    setBounds(findBounds())
-    map.fitBounds(bounds)
-    console.log(bounds)
   }
 
-  React.useEffect(() => {
-    const getData = async (url) => {
-      const data = await fetch(url, {
-          method: 'GET',
-          headers: {
-              'content-type': 'application/json',
-              'Accept': 'application/json',
-          },
-      })
-          .then(res => res.json())
-          .then(res => setFacilities(res.recordset))
+  useEffect(() => {
+    // the program renders twice at the start, i only want to get the data on the first render
+    if (renders.current < 2) {
+      const getData = async (url) => {
+        const data = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'Accept': 'application/json',
+            },
+        })
+            .then(res => res.json())
+            .then(res => setFacilities(res.recordset))
+      }
+      getData('./facilities').catch(console.error)
+      renders.current += 1
+      return;
     }
-    getData('./api2').catch(console.error)
-  }, [])
+
+    // this block of code will execute when input is changed, filter the new facilities,
+    // find the new bounds, and then update the map
+    let selectedFacilities = filterFacilities()
+    let bounds = findBounds(selectedFacilities)
+    if (map != null)
+      map.fitBounds(bounds)
+    setDisplayFacilities(selectedFacilities)
+  }, [input, facilities])
   
-  console.log("return")
-  console.log(facilities)
   return isLoaded ? (
     <div>
       <label style={{padding:'0px 10px'}}>Select a decision unit key:</label>
-      <select onChange={handleSelectChange}>
+      <select id="chooseDecisionUnit" onChange={handleSelectChange}>
         {fillValues()}
       </select>
     <GoogleMap
@@ -203,7 +224,7 @@ function EventMap() {
         <button type="button">Create Node</button>
       </div>
     </InfoBox>
-    {displayFacilities()}
+    {showFacilities()}
     </GoogleMap></div>
   ) : <></>
 }

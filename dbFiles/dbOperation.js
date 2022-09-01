@@ -26,10 +26,10 @@ const getData = async (req) => {
         let queriesExist = Object.keys(req.query).length !== 0 ? true : false;
         if (queriesExist){
             let dec_unit_key = req.query.dec_unit_key;
-            facilityData = getData.request().query("SELECT * from ENT_FACILITY WHERE DEC_UNIT_KEY = " + dec_unit_key + " AND LATITUDE != 0")
+            facilityData = getData.request().query("SELECT * from ENT_FACILITY WHERE DEC_UNIT_KEY = " + dec_unit_key + " AND LATITUDE != 0 AND LONGITUDE < 0 AND LATITUDE < 42")
         }
         else
-            facilityData = getData.request().query("SELECT * from ENT_FACILITY WHERE LATITUDE != 0")
+            facilityData = getData.request().query("SELECT * from ENT_FACILITY WHERE LATITUDE != 0 AND LONGITUDE < 0 AND LATITUDE < 42")
         console.log(facilityData);
         return facilityData;
     }

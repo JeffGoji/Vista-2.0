@@ -57,7 +57,6 @@ function PieChart({ Noms }) {
     })
 
 
-    console.log(pieChart1);
 
     return (
         <div>
