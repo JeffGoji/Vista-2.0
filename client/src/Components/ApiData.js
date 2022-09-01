@@ -47,7 +47,7 @@ function ApiData() {
 
     return (
         <div>
-            <button className='btn btn-primary mb-2' onClick={() => getData('./cityApi')}>Click me to get City Id and Name!</button>
+            {/* <button className='btn btn-primary mb-2' onClick={() => getData('./cityApi')}>Click me to get City Id and Name!</button>
             <br />
             <button className='btn btn-primary mb-2' onClick={() => getNoms('./noms')}>Click me to get Nominations</button>
 
@@ -69,7 +69,7 @@ function ApiData() {
 
             <p>Volume Out:
                 <br />
-                {returnedNomData.VOLUMEOUT}</p>
+                {returnedNomData.VOLUMEOUT}</p> */}
 
         </div>
 
