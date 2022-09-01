@@ -53,8 +53,8 @@ function PieChart() {
 
     return (
         <div>
+            <h4>Nominations Chart</h4>
             <Pie data={pieChart1} />
-
         </div>
     )
 }
