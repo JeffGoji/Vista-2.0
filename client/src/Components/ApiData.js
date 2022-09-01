@@ -41,8 +41,6 @@ function ApiData() {
             .then(res => res.json());
 
         return setReturnedNomData(newNomData.recordset[1])
-        // console.log(returnedNomData); console log for testing
-        //setReturnedNomData(newNomData.recordset) - this method works
 
     }
 

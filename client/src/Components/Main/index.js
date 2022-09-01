@@ -8,8 +8,8 @@ import { useState } from 'react'
 import EventMap from '../EventMap'
 
 //Chart Imports:
-import BarChart from '../BarChart'
-import LineChart from '../LineChart'
+// import BarChart from '../BarChart'
+// import LineChart from '../LineChart'
 import PieChart from '../PieChart'
 import ApiData from '../ApiData'
 

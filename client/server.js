@@ -35,6 +35,12 @@ app.get('/cityApi', async (req, res) => {
     res.send(result)
 })
 
+app.get('/api2', async (req, res) => {
+    console.log(response);
+    const result = await dbOperation.getEntPkg(req.body)
+    res.send(result)
+})
+
 app.get('/noms', async (req, res) => {
     console.log(response);
     const result = await dbOperation.getNoms(req.body)
@@ -52,6 +58,7 @@ app.get('/bidPkg', async (req, res) => {
     const result = await dbOperation.getEntPkg(req.body)
     res.send(result)
 })
+
 
 app.get('/facilities', async (req, res) => {
     const result = await dbOperation.getData(req)

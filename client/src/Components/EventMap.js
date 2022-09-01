@@ -6,7 +6,6 @@ import { useJsApiLoader, InfoBox, GoogleMap, Circle, Rectangle } from "@react-go
 {/*function Menu() {
   const [menuProps, toggleMenu] = useMenuState();
   const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
-
   return (
     <div
       onContextMenu={(e) => {
@@ -15,10 +14,7 @@ import { useJsApiLoader, InfoBox, GoogleMap, Circle, Rectangle } from "@react-go
         toggleMenu(true);
       }}
       style={{ height: "600px" }} className="border rounded-2">
-
-
       Right click to open context menu
-
       <ControlledMenu
         {...menuProps}
         anchorPoint={anchorPoint}
@@ -32,7 +28,6 @@ import { useJsApiLoader, InfoBox, GoogleMap, Circle, Rectangle } from "@react-go
     </div>
   );
 }
-
 export default EventMap;*/}
 
 
@@ -50,7 +45,7 @@ function EventMap() {
       lng: -79.894790
     },
     zoom: 8,
-    size: {minWidth: '600px', height: '600px'}
+    size: { minWidth: '600px', height: '600px' }
   }
   const [facilities, setFacilities] = useState([])
   const [displayFacilities, setDisplayFacilities] = useState([])
@@ -59,12 +54,12 @@ function EventMap() {
   const [map, setMap] = React.useState(null)
   const [infoBox, setInfoBox] = React.useState(null)
   const [input, setInput] = React.useState('1707')
+
   const infoBoxOptions = { 
     closeBoxURL: '', 
     enableEventPropagation: true 
   };
   const renders = useRef(0)
-  
 
   // finds the bounds of the selected facilities so that when the user selects a new decision unit key
   // the map will automatically center on those facilities
@@ -128,7 +123,7 @@ function EventMap() {
     setInfoBoxPosition(event.latLng);
   }
 
-  const infoBoxLoad = React.useCallback(function callback(infoBox){
+  const infoBoxLoad = React.useCallback(function callback(infoBox) {
     setInfoBox(infoBox);
   }, [])
 
@@ -143,6 +138,7 @@ function EventMap() {
     }
   }
 
+
   const filterFacilities = () =>{
     const filteredFacilities = facilities.filter(facility => (facility.DEC_UNIT_KEY === parseInt(input)))
     return filteredFacilities
@@ -152,15 +148,16 @@ function EventMap() {
     if (displayFacilities !== []) {
       if (input !== ''){
         return displayFacilities.map(facility => (
+
           <InfoBox
-            options={infoBoxOptions} 
-            position={{lat: facility.LATITUDE, lng: facility.LONGITUDE}}
+            options={infoBoxOptions}
+            position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}
           >
-            <div style={{backgroundColor:'white', fontSize: "1.2rem"}}>Facility</div>
+            <div style={{ backgroundColor: 'white', fontSize: "1.2rem" }}>Facility</div>
           </InfoBox>))
       }
-      return (<InfoBox 
-        options={infoBoxOptions} 
+      return (<InfoBox
+        options={infoBoxOptions}
         position={mapOptions.center}
       >
         <div></div>
@@ -171,6 +168,7 @@ function EventMap() {
   const handleSelectChange = (event) => {
     setInput(event.target.value)
   }
+
 
   useEffect(() => {
     // the program renders twice at the start, i only want to get the data on the first render
@@ -226,7 +224,8 @@ function EventMap() {
     </InfoBox>
     {showFacilities()}
     </GoogleMap></div>
+
   ) : <></>
 }
 
- export default EventMap
+export default EventMap
