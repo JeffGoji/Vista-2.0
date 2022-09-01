@@ -20,7 +20,6 @@ function PieChart() {
             .then(data => {
                 setIsLoading(false)
                 setNomData(data.recordsets[0])
-                console.log(data);
             });
     }, [])
 
@@ -47,7 +46,6 @@ function PieChart() {
 
         }]
     });
-    console.log(pieChart1);
 
 
 

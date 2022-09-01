@@ -64,7 +64,7 @@ function EventMap() {
   // this function is called when the map loads
   const onLoad = React.useCallback(function callback(map) {
     map.setCenter({lat: 38.34, lng: -98.20})
-    map.setZoom(30)
+    map.setZoom(10)
     setMap(map)
   }, [])
 
@@ -72,10 +72,13 @@ function EventMap() {
     setMap(null)
   }, [])
 
+  // this function toggles the visibility of the menu that pops up when
+  // the user right clicks
   const toggleInfoBox = (event) => {
     setVisibility(false);
   }
 
+  // when the user right clicks, the menu becomes visible
   const handleRightClick = (event) => {
     setVisibility(true);
     setInfoBoxPosition(event.latLng);
@@ -85,6 +88,7 @@ function EventMap() {
     setInfoBox(infoBox);
   }, [])
 
+  // this function fills the options of the select tag with decision unit keys
   const fillValues = (input) => {
     if (facilities !== []) {
       //create an array of the decision unit keys
@@ -92,22 +96,25 @@ function EventMap() {
       // filter out the unique values and sort them
       const filteredKeys = dec_unit_keys.filter((dec_unit_key, index) => (dec_unit_keys.indexOf(dec_unit_key) === index)).sort()
       // map each value to an option
-      return filteredKeys.map(filteredKey => <option value={filteredKey}>{filteredKey}</option>)
+      return filteredKeys.map(filteredKey => <option key={filteredKey} value={filteredKey}>{filteredKey}</option>)
     }
   }
 
-
+  // this function filters the facilities based on the decision unit provided
   const filterFacilities = () =>{
     const filteredFacilities = facilities.filter(facility => (facility.DEC_UNIT_KEY === parseInt(input)))
     return filteredFacilities
   }
 
+  // this function is to be called in the return statement, it places
+  // the selected facilities on the map
   const showFacilities = () => {
     if (displayFacilities !== []) {
       if (input !== ''){
         return displayFacilities.map(facility => (
 
           <InfoBox
+            key = {facility.FAC_KEY}
             options={infoBoxOptions}
             position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}
           >
@@ -120,16 +127,20 @@ function EventMap() {
     }
   }
 
+  // when a user changes the decision unit in the select dropbox this
+  // function is called
   const handleSelectChange = (event) => {
     setInput(event.target.value)
   }
 
-
+  // this function is used to make the api call and to call certain functions once
+  // the variable states have updated
   useEffect(() => {
-    // the program renders twice at the start, i only want to get the data on the first render
+    // make the api call, i only want to get the data on the first render
     if (renders.current < 2) {
+      // api call
       const getData = async (url) => {
-        const data = await fetch(url, {
+        await fetch(url, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -140,12 +151,14 @@ function EventMap() {
             .then(res => setFacilities(res.recordset))
       }
       getData('./facilities').catch(console.error)
+      // increment renders to make sure the api call is only made on the first render
       renders.current += 1
       return;
     }
 
-    // this block of code will execute when input is changed, filter the new facilities,
-    // find the new bounds, and then update the map
+    // this block of code will execute when input state is updated. it filters the new
+    // facilities, finds the new bounds, updates the map, then sets the displayFacilities
+    // state variable
     let selectedFacilities = filterFacilities()
     let bounds = findBounds(selectedFacilities)
     if (map != null)
