@@ -1,55 +1,14 @@
 import React,{ useState, useEffect, useRef } from "react";
-import { ControlledMenu, MenuItem, useMenuState } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
-import { useJsApiLoader, InfoBox, GoogleMap, Circle, Rectangle } from "@react-google-maps/api";
+import { useJsApiLoader, InfoBox, GoogleMap } from "@react-google-maps/api";
+import facilityLogo from "../assets/img/gas-plant-icon.png"
 
-{/*function Menu() {
-  const [menuProps, toggleMenu] = useMenuState();
-  const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
-  return (
-    <div
-      onContextMenu={(e) => {
-        e.preventDefault();
-        setAnchorPoint({ x: e.clientX, y: e.clientY });
-        toggleMenu(true);
-      }}
-      style={{ height: "600px" }} className="border rounded-2">
-      Right click to open context menu
-      <ControlledMenu
-        {...menuProps}
-        anchorPoint={anchorPoint}
-        onClose={() => toggleMenu(false)}
-      >
-        <MenuItem>Create Node</MenuItem>
-        <MenuItem>Cut</MenuItem>
-        <MenuItem>Copy</MenuItem>
-        <MenuItem>Paste</MenuItem>
-      </ControlledMenu>
-    </div>
-  );
-}
-export default EventMap;*/}
-
-
-
+// displays the map
 function EventMap() {
-  const exampleBounds = {
-    north: 41.02207,
-    south: 40.301487,
-    east: -78.438065,
-    west: -79.54162
-  }
-  const mapOptions = {
-    center: {
-      lat: 40.862540,
-      lng: -79.894790
-    },
-    zoom: 8,
-    size: { minWidth: '600px', height: '600px' }
-  }
+  // declare some constants
   const [facilities, setFacilities] = useState([])
   const [displayFacilities, setDisplayFacilities] = useState([])
-  const [infoBoxPosition, setInfoBoxPosition] = useState(mapOptions.center)
+  const [infoBoxPosition, setInfoBoxPosition] = useState()
   const [visibility, setVisibility] = useState(false)
   const [map, setMap] = React.useState(null)
   const [infoBox, setInfoBox] = React.useState(null)
@@ -93,20 +52,19 @@ function EventMap() {
       east: largestLng,
       west: smallestLng
     }
-    const averageLatitude = (largestLat + smallestLat) / 2
-    const averageLongtitude = (largestLng + smallestLng) / 2
-
-    let center = {lat:averageLatitude, lng:averageLongtitude}
     return bounds
   }
 
+  // loads the google maps api
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: "AIzaSyBg7_yys3sc_lunTZ_5pPaAl5dAk48PHMY",
   })
 
+  // this function is called when the map loads
   const onLoad = React.useCallback(function callback(map) {
-    map.fitBounds(exampleBounds)
+    map.setCenter({lat: 38.34, lng: -98.20})
+    map.setZoom(30)
     setMap(map)
   }, [])
 
@@ -153,15 +111,12 @@ function EventMap() {
             options={infoBoxOptions}
             position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}
           >
-            <div style={{ backgroundColor: 'white', fontSize: "1.2rem" }}>Facility</div>
+            <div>
+              <img src={facilityLogo} alt="Facility" width="75" height="75"/>
+              <p>{facility.FAC_NAME}</p>
+            </div>
           </InfoBox>))
       }
-      return (<InfoBox
-        options={infoBoxOptions}
-        position={mapOptions.center}
-      >
-        <div></div>
-      </InfoBox>)
     }
   }
 
@@ -205,7 +160,7 @@ function EventMap() {
         {fillValues()}
       </select>
     <GoogleMap
-      mapContainerStyle={mapOptions.size}
+      mapContainerStyle={{height: "600px", width: "800px"}}
       onLoad={onLoad}
       onUnmount={onUnmount}
       onRightClick={handleRightClick}
