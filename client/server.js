@@ -60,4 +60,16 @@ app.get('/bidPkg', async (req, res) => {
 })
 
 
+app.get('/facilities', async (req, res) => {
+    const result = await dbOperation.getData(req)
+    res.send(result)
+})
+
+//Kept for reference's sake:
+// app.get('/quit', function (req, res) {
+//     console.log('called it quits');
+//     res.send({ result: 'Goodbye!' })
+// })
+
+
 app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`));

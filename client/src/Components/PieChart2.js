@@ -63,7 +63,6 @@ function BarChart2() {
 
     })
 
-    console.log(myChart);
 
 
     return (
