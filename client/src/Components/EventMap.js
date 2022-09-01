@@ -1,55 +1,14 @@
 import React,{ useState, useEffect, useRef } from "react";
-import { ControlledMenu, MenuItem, useMenuState } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
-import { useJsApiLoader, InfoBox, GoogleMap, Circle, Rectangle } from "@react-google-maps/api";
+import { useJsApiLoader, InfoBox, GoogleMap } from "@react-google-maps/api";
+import facilityLogo from "../assets/img/gas-plant-icon.png"
 
-{/*function Menu() {
-  const [menuProps, toggleMenu] = useMenuState();
-  const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
-  return (
-    <div
-      onContextMenu={(e) => {
-        e.preventDefault();
-        setAnchorPoint({ x: e.clientX, y: e.clientY });
-        toggleMenu(true);
-      }}
-      style={{ height: "600px" }} className="border rounded-2">
-      Right click to open context menu
-      <ControlledMenu
-        {...menuProps}
-        anchorPoint={anchorPoint}
-        onClose={() => toggleMenu(false)}
-      >
-        <MenuItem>Create Node</MenuItem>
-        <MenuItem>Cut</MenuItem>
-        <MenuItem>Copy</MenuItem>
-        <MenuItem>Paste</MenuItem>
-      </ControlledMenu>
-    </div>
-  );
-}
-export default EventMap;*/}
-
-
-
+// displays the map
 function EventMap() {
-  const exampleBounds = {
-    north: 41.02207,
-    south: 40.301487,
-    east: -78.438065,
-    west: -79.54162
-  }
-  const mapOptions = {
-    center: {
-      lat: 40.862540,
-      lng: -79.894790
-    },
-    zoom: 8,
-    size: { minWidth: '600px', height: '600px' }
-  }
+  // declare some constants
   const [facilities, setFacilities] = useState([])
   const [displayFacilities, setDisplayFacilities] = useState([])
-  const [infoBoxPosition, setInfoBoxPosition] = useState(mapOptions.center)
+  const [infoBoxPosition, setInfoBoxPosition] = useState()
   const [visibility, setVisibility] = useState(false)
   const [map, setMap] = React.useState(null)
   const [infoBox, setInfoBox] = React.useState(null)
@@ -93,20 +52,19 @@ function EventMap() {
       east: largestLng,
       west: smallestLng
     }
-    const averageLatitude = (largestLat + smallestLat) / 2
-    const averageLongtitude = (largestLng + smallestLng) / 2
-
-    let center = {lat:averageLatitude, lng:averageLongtitude}
     return bounds
   }
 
+  // loads the google maps api
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: "AIzaSyBg7_yys3sc_lunTZ_5pPaAl5dAk48PHMY",
   })
 
+  // this function is called when the map loads
   const onLoad = React.useCallback(function callback(map) {
-    map.fitBounds(exampleBounds)
+    map.setCenter({lat: 38.34, lng: -98.20})
+    map.setZoom(10)
     setMap(map)
   }, [])
 
@@ -114,10 +72,13 @@ function EventMap() {
     setMap(null)
   }, [])
 
+  // this function toggles the visibility of the menu that pops up when
+  // the user right clicks
   const toggleInfoBox = (event) => {
     setVisibility(false);
   }
 
+  // when the user right clicks, the menu becomes visible
   const handleRightClick = (event) => {
     setVisibility(true);
     setInfoBoxPosition(event.latLng);
@@ -127,6 +88,7 @@ function EventMap() {
     setInfoBox(infoBox);
   }, [])
 
+  // this function fills the options of the select tag with decision unit keys
   const fillValues = (input) => {
     if (facilities !== []) {
       //create an array of the decision unit keys
@@ -134,47 +96,51 @@ function EventMap() {
       // filter out the unique values and sort them
       const filteredKeys = dec_unit_keys.filter((dec_unit_key, index) => (dec_unit_keys.indexOf(dec_unit_key) === index)).sort()
       // map each value to an option
-      return filteredKeys.map(filteredKey => <option value={filteredKey}>{filteredKey}</option>)
+      return filteredKeys.map(filteredKey => <option key={filteredKey} value={filteredKey}>{filteredKey}</option>)
     }
   }
 
-
+  // this function filters the facilities based on the decision unit provided
   const filterFacilities = () =>{
     const filteredFacilities = facilities.filter(facility => (facility.DEC_UNIT_KEY === parseInt(input)))
     return filteredFacilities
   }
 
+  // this function is to be called in the return statement, it places
+  // the selected facilities on the map
   const showFacilities = () => {
     if (displayFacilities !== []) {
       if (input !== ''){
         return displayFacilities.map(facility => (
 
           <InfoBox
+            key = {facility.FAC_KEY}
             options={infoBoxOptions}
             position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}
           >
-            <div style={{ backgroundColor: 'white', fontSize: "1.2rem" }}>Facility</div>
+            <div>
+              <img src={facilityLogo} alt="Facility" width="75" height="75"/>
+              <p>{facility.FAC_NAME}</p>
+            </div>
           </InfoBox>))
       }
-      return (<InfoBox
-        options={infoBoxOptions}
-        position={mapOptions.center}
-      >
-        <div></div>
-      </InfoBox>)
     }
   }
 
+  // when a user changes the decision unit in the select dropbox this
+  // function is called
   const handleSelectChange = (event) => {
     setInput(event.target.value)
   }
 
-
+  // this function is used to make the api call and to call certain functions once
+  // the variable states have updated
   useEffect(() => {
-    // the program renders twice at the start, i only want to get the data on the first render
+    // make the api call, i only want to get the data on the first render
     if (renders.current < 2) {
+      // api call
       const getData = async (url) => {
-        const data = await fetch(url, {
+        await fetch(url, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -185,12 +151,14 @@ function EventMap() {
             .then(res => setFacilities(res.recordset))
       }
       getData('./facilities').catch(console.error)
+      // increment renders to make sure the api call is only made on the first render
       renders.current += 1
       return;
     }
 
-    // this block of code will execute when input is changed, filter the new facilities,
-    // find the new bounds, and then update the map
+    // this block of code will execute when input state is updated. it filters the new
+    // facilities, finds the new bounds, updates the map, then sets the displayFacilities
+    // state variable
     let selectedFacilities = filterFacilities()
     let bounds = findBounds(selectedFacilities)
     if (map != null)
@@ -205,7 +173,7 @@ function EventMap() {
         {fillValues()}
       </select>
     <GoogleMap
-      mapContainerStyle={mapOptions.size}
+      mapContainerStyle={{height: "600px", width: "800px"}}
       onLoad={onLoad}
       onUnmount={onUnmount}
       onRightClick={handleRightClick}
