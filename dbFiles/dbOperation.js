@@ -22,29 +22,19 @@ sql = require('mssql')
 const getData = async (req) => {
     try {
         let getData = await sql.connect(config);
-        let facilityData;
-        let queriesExist = Object.keys(req.query).length !== 0 ? true : false;
-        if (queriesExist){
-            let dec_unit_key = req.query.dec_unit_key;
-            facilityData = getData.request().query("SELECT * from ENT_FACILITY WHERE DEC_UNIT_KEY = " + dec_unit_key + " AND LATITUDE != 0 AND LONGITUDE < 0 AND LATITUDE < 42")
-        }
-        else
-            facilityData = getData.request().query("SELECT * from ENT_FACILITY WHERE LATITUDE != 0 AND LONGITUDE < 0 AND LATITUDE < 42")
-        console.log(facilityData);
+        let facilityData = getData.request().query("SELECT * from ENT_FACILITY WHERE LATITUDE != 0 AND LONGITUDE < 0 AND LATITUDE < 42")
         return facilityData;
     }
     catch (err) {
         console.log(err);
     }
 }
-console.log(getData);
 
 //Nomination Call (original):
 const getNoms = async () => {
     try {
         let getNoms = await sql.connect(config);
         let noms = await getNoms.request().query("SELECT * from ENT_PT_BALANCE")
-        console.log(noms);
         return noms;
     }
     catch (error) {
@@ -52,13 +42,11 @@ const getNoms = async () => {
     }
 }
 
-
 //ENT_PACKAGE call:
 const getEntPkg = async () => {
     try {
         let getEntPkg = await sql.connect(config);
         let data = getEntPkg.request().query("SELECT * from ENT_PACKAGE")
-        console.log(data);
         return data;
     }
     catch (err) {
@@ -72,7 +60,6 @@ const getBidPkg = async () => {
     try {
         let getBidPkg = await sql.connect(config);
         let data = getBidPkg.request().query("SELECT * from ENT_BID_PKG")
-        console.log(data);
         return data;
     }
     catch (err) {
@@ -80,6 +67,62 @@ const getBidPkg = async () => {
     }
 }
 console.log(getBidPkg);
+
+// api call to get measurment point data
+const getMeasPts = async () => {
+    try {
+        let sqlconnection = await sql.connect(config)
+        let data = sqlconnection.request().query("SELECT * FROM ENT_MEAS_PT WHERE STATION_FAC_KEY != 0 AND STATION_FAC_KEY IS NOT NULL AND LATITUDE > 0 AND LONGITUDE < 0")
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+// api call to get allocation processes
+const getAllocProcesses = async (req) => {
+    try {
+        let sqlconnection = await sql.connect(config)
+        let data = ""
+        let queriesExist = Object.keys(req.query).length !== 0 ? true : false
+        if (queriesExist) {
+            let facKey = req.query.facKey
+            data = sqlconnection.request().query("SELECT * FROM ENT_ALLOC_PROCESS WHERE FAC_KEY = " + facKey)
+        } else {
+            data = sqlconnection.request().query("SELECT * FROM ENT_ALLOC_PROCESS")
+        }
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+const getProcessProcess = async (req) => {
+    try {
+        let sqlconnection = await sql.connect(config)
+        let data = ""
+        let queriesExist = Object.keys(req.query).length !== 0 ? true : false
+        if (queriesExist) {
+            let allocNetworkKey = req.query.allocNetworkKey
+            data = sqlconnection.request().query("SELECT * FROM ENT_PROCESS_PROCESS WHERE FR_ALLOC_NETWORK_KEY = " + allocNetworkKey)
+        } else {
+            data = sqlconnection.request().query("SELECT * FROM ENT_PROCESS_PROCESS")
+        }
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+const getAllocNetwork = async (req) => {
+    try {
+        let sqlconnection = await sql.connect(config)
+        let data = sqlconnection.request().query("SELECT * FROM ENT_ALLOC_NETWORK")
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
 
 //Built in React Fetch system using the SAME nom call above but simplified:
 // const getNoms = () => {
@@ -110,5 +153,9 @@ module.exports = {
     getData,
     getNoms,
     getEntPkg,
-    getBidPkg
+    getBidPkg,
+    getMeasPts,
+    getAllocProcesses,
+    getProcessProcess,
+    getAllocNetwork
 }
