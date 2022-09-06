@@ -283,6 +283,7 @@ function EventMap() {
       setDisplayFacilities(selectedFacilities)
     }
 
+    // only run this code if the allocation network name has changed
     if (allocNetworkName !== prevAllocNetworkName) {
       let chosenAllocNetworkArray = allocNetwork.filter(allocNetwork => (allocNetwork.ALLOC_NETWORK_NAME === allocNetworkName))
       let chosenAllocNetwork = chosenAllocNetworkArray[0]

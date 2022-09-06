@@ -117,7 +117,7 @@ const getProcessProcess = async (req) => {
 const getAllocNetwork = async (req) => {
     try {
         let sqlconnection = await sql.connect(config)
-        let data = sqlconnection.request().query("SELECT * FROM ENT_ALLOC_NETWORK")
+        let data = sqlconnection.request().query("SELECT * FROM ENT_ALLOC_NETWORK WHERE EXISTS ( SELECT * FROM ENT_FACILITY WHERE ENT_ALLOC_NETWORK.DEC_UNIT_KEY = ENT_FACILITY.DEC_UNIT_KEY AND ENT_FACILITY.LATITUDE != 0 )")
         return data
     } catch (err) {
         console.log(err)
