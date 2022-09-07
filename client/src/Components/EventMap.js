@@ -1,4 +1,4 @@
-import React,{ useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "@szhsin/react-menu/dist/index.css";
 import { useJsApiLoader, InfoBox, GoogleMap } from "@react-google-maps/api";
 import facilityLogo from "../assets/img/gas-plant-icon.png"
@@ -14,9 +14,9 @@ function EventMap() {
   const [infoBox, setInfoBox] = React.useState(null)
   const [input, setInput] = React.useState('1707')
 
-  const infoBoxOptions = { 
-    closeBoxURL: '', 
-    enableEventPropagation: true 
+  const infoBoxOptions = {
+    closeBoxURL: '',
+    enableEventPropagation: true
   };
   const renders = useRef(0)
 
@@ -63,7 +63,7 @@ function EventMap() {
 
   // this function is called when the map loads
   const onLoad = React.useCallback(function callback(map) {
-    map.setCenter({lat: 38.34, lng: -98.20})
+    map.setCenter({ lat: 38.34, lng: -98.20 })
     map.setZoom(10)
     setMap(map)
   }, [])
@@ -101,7 +101,7 @@ function EventMap() {
   }
 
   // this function filters the facilities based on the decision unit provided
-  const filterFacilities = () =>{
+  const filterFacilities = () => {
     const filteredFacilities = facilities.filter(facility => (facility.DEC_UNIT_KEY === parseInt(input)))
     return filteredFacilities
   }
@@ -110,16 +110,16 @@ function EventMap() {
   // the selected facilities on the map
   const showFacilities = () => {
     if (displayFacilities !== []) {
-      if (input !== ''){
+      if (input !== '') {
         return displayFacilities.map(facility => (
 
           <InfoBox
-            key = {facility.FAC_KEY}
+            key={facility.FAC_KEY}
             options={infoBoxOptions}
             position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}
           >
             <div>
-              <img src={facilityLogo} alt="Facility" width="75" height="75"/>
+              <img src={facilityLogo} alt="Facility" width="75" height="75" />
               <p>{facility.FAC_NAME}</p>
             </div>
           </InfoBox>))
@@ -141,14 +141,14 @@ function EventMap() {
       // api call
       const getData = async (url) => {
         await fetch(url, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'Accept': 'application/json',
-            },
+          method: 'GET',
+          headers: {
+            'content-type': 'application/json',
+            'Accept': 'application/json',
+          },
         })
-            .then(res => res.json())
-            .then(res => setFacilities(res.recordset))
+          .then(res => res.json())
+          .then(res => setFacilities(res.recordset))
       }
       getData('./facilities').catch(console.error)
       // increment renders to make sure the api call is only made on the first render
@@ -165,33 +165,33 @@ function EventMap() {
       map.fitBounds(bounds)
     setDisplayFacilities(selectedFacilities)
   }, [input, facilities])
-  
+
   return isLoaded ? (
     <div>
-      <label style={{padding:'0px 10px'}}>Select a decision unit key:</label>
+      <label style={{ padding: '0px 10px' }}>Select a decision unit key:</label>
       <select id="chooseDecisionUnit" onChange={handleSelectChange}>
         {fillValues()}
       </select>
-    <GoogleMap
-      mapContainerStyle={{height: "600px", width: "800px"}}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-      onRightClick={handleRightClick}
-      onClick={toggleInfoBox}
-      onDrag={toggleInfoBox}
-    >
-      <InfoBox
-      onLoad = {infoBoxLoad}
-      options={infoBoxOptions}
-      position={infoBoxPosition}
-      visible={visibility}
-    >
-      <div>
-        <button type="button">Create Node</button>
-      </div>
-    </InfoBox>
-    {showFacilities()}
-    </GoogleMap></div>
+      <GoogleMap
+        mapContainerStyle={{ height: "600px", width: "800px" }}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+        onRightClick={handleRightClick}
+        onClick={toggleInfoBox}
+        onDrag={toggleInfoBox}
+      >
+        <InfoBox
+          onLoad={infoBoxLoad}
+          options={infoBoxOptions}
+          position={infoBoxPosition}
+          visible={visibility}
+        >
+          <div>
+            <button type="button">Create Node</button>
+          </div>
+        </InfoBox>
+        {showFacilities()}
+      </GoogleMap></div>
 
   ) : <></>
 }
