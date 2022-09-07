@@ -1,5 +1,6 @@
 import React, { memo, useState } from "react";
 import Graph from "react-graph-vis";
+import { v4 as uuidv4 } from 'uuid'
 
 const options = {
   layout: {
@@ -44,15 +45,16 @@ const NetworkGraph = () => {
       }
     });
   }
+  let [graphKey, setGraphKey] = useState(uuidv4)
   const [state, setState] = useState({
     counter: 5,
     graph: {
       nodes: [
-        { id: 1, label: "Node 1", color: "#e04141" },
-        { id: 2, label: "Node 2", color: "#e09c41" },
-        { id: 3, label: "Node 3", color: "#e0df41" },
-        { id: 4, label: "Node 4", color: "#7be041" },
-        { id: 5, label: "Node 5", color: "#41e0c9" }
+        { id: 1, label: "Node 1", color: "#e04141", graphKey },
+        { id: 2, label: "Node 2", color: "#e09c41", graphKey },
+        { id: 3, label: "Node 3", color: "#e0df41", graphKey },
+        { id: 4, label: "Node 4", color: "#7be041", graphKey },
+        { id: 5, label: "Node 5", color: "#41e0c9", graphKey }
       ],
       edges: [
         { from: 1, to: 2 },
@@ -61,6 +63,7 @@ const NetworkGraph = () => {
         { from: 2, to: 5 }
       ]
     },
+
     events: {
       select: ({ nodes, edges }) => {
         console.log("Selected nodes:");
@@ -76,11 +79,11 @@ const NetworkGraph = () => {
   })
   const { graph, events } = state;
   return (
-    <div style={{border: '1px solid black'}}>
-      <Graph graph={graph} options={options} events={events} style={{ height: "640px" }} />
+    <div style={{ border: '1px solid black' }}>
+      <Graph key={uuidv4()} graph={graph} options={options} events={events} style={{ height: "640px" }} />
     </div>
   );
 
 }
- 
+
 export default memo(NetworkGraph)
