@@ -70,12 +70,12 @@ app.get('/facilities', async (req, res) => {
     res.send(result)
 })
 
-app.get('/measPts', async (req,res) => {
+app.get('/measPts', async (req, res) => {
     const result = await dbOperation.getMeasPts(req)
     res.send(result)
 })
 
-app.get('/allocProcesses', async (req,res) => {
+app.get('/allocProcesses', async (req, res) => {
     const result = await dbOperation.getAllocProcesses(req)
     res.send(result)
 })

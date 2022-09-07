@@ -187,7 +187,7 @@ module.exports = {
     getMeasPts,
     getAllocProcesses,
     getProcessProcess,
-    getAllocNetwork
+    getAllocNetwork,
     getPipelines,
     getMeasurePoints
 }
