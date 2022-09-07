@@ -18,6 +18,7 @@ import { UserData } from '../Data'
 
 //Get Bar graph with built in API experiment:
 import BarChart2 from '../PieChart2'
+// import PieChart3 from '../PieChart3'
 
 import NetworkGraph from '../NetworkGraph'
 
@@ -76,12 +77,8 @@ function Main() {
             ],
             borderColor: "black",
             borderWidth: 2,
-
         }]
-
     })
-
-
     return (
         <>
             <div className="row justify-content-center">
@@ -92,7 +89,7 @@ function Main() {
                     <br />
                     <ApiData />
                 </div>
-                <div className="col-lg-8 col-md-6 col-sm-12 text-center rounded p-2 window-border"> Middle Screen (Map)
+                <div className="col-lg-5 col-md-6 col-sm-12 text-center rounded p-2 window-border"> Facility Map
 
                     <NetworkGraph />
 
@@ -101,6 +98,7 @@ function Main() {
                     {/* <BarChart chartData={userData} />
                     <LineChart chartData={oilData} /> */}
                     <BarChart2 style={{ maxHeight: "40px" }} />
+                    {/* <PieChart3 /> */}
                 </div>
                 {/* <div className="row justify-content-center">
                     <div className="col-lg-4 col-md-4 col-sm-12 text-center bg-warning">

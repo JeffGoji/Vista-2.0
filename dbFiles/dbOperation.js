@@ -124,6 +124,36 @@ const getAllocNetwork = async (req) => {
     }
 }
 
+//Pipelines API:
+const getPipelines = async () => {
+    try {
+        let getPipelines = await sql.connect(config);
+        let data = getPipelines.request().query("SELECT * from ENT_PIPELINES")
+        console.log(data);
+        return data;
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+console.log(getPipelines);
+
+
+//Get ENT_MEAS_PT:
+const getMeasurePoints = async () => {
+    try {
+        let getMeasurePoints = await sql.connect(config);
+        let data = getMeasurePoints.request().query("SELECT * from ENT_MEAS_PT")
+        console.log(data);
+        return data;
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+// "SELECT * from ENT_MEAS_PT WHERE METERNO = " + meter_key + ""
+console.log(getMeasurePoints);
+
 //Built in React Fetch system using the SAME nom call above but simplified:
 // const getNoms = () => {
 //     const [nomData, setData] = useState([]);
@@ -158,4 +188,6 @@ module.exports = {
     getAllocProcesses,
     getProcessProcess,
     getAllocNetwork
+    getPipelines,
+    getMeasurePoints
 }

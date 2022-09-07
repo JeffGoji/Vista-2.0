@@ -9,6 +9,21 @@ function PieChart() {
     const [isLoading, setIsLoading] = useState(true)
     //State for handling data:
     const [nomData, setNomData] = useState([])
+    //City State useState:
+    const [returnedCityData, setReturnedCityData] = useState([])
+    //useEffect to restrict code from going into an infinite loop
+    useEffect(() => {
+        fetch('./cityApi')
+            .then(response => {
+                return response.json();
+
+            })
+            .then(citydata => {
+                setReturnedCityData(citydata.recordsets[0])
+                console.log(citydata);
+            });
+    }, []);
+
     //useEffect to restrict code from going into an infinite loop
     useEffect(() => {
         setIsLoading(true)
@@ -21,11 +36,18 @@ function PieChart() {
                 setIsLoading(false)
                 setNomData(data.recordsets[0])
             });
-    }, [])
+    }, []);
 
     if (isLoading) {
         return <p>Loading....</p>
-    }
+    };
+
+
+    //State for handling data:
+    // const [returnedCityData, setReturnedCityData] = useState([])
+    //useEffect to restrict code from going into an infinite loop
+
+
 
 
     const pieChart1 = ({
@@ -51,7 +73,18 @@ function PieChart() {
 
     return (
         <div>
+            <h4>Volumes Chart</h4>
+            <p>Facility Name:
+                <br />
+                {returnedCityData[2].FAC_NAME}</p>
+            <p>State ID:
+                <br />
+                {returnedCityData[2].FAC_ID} </p>
             <Pie data={pieChart1} />
+
+            <p>Longitude:
+                <br />
+                {returnedCityData[2].LONGITUDE}</p>
 
         </div>
     )

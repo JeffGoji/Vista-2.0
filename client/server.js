@@ -20,6 +20,16 @@ dbOperation.getBidPkg().then(res => {
     return res;
 })
 
+//Pipelines:
+dbOperation.getPipelines().then(res => {
+    return res;
+})
+
+//Measure points:
+dbOperation.getMeasurePoints().then(res => {
+    return res;
+})
+
 //Set API port and Express server:
 const API_PORT = process.env.PORT || 5000;
 const app = express();
@@ -50,7 +60,8 @@ app.get('/entPkg', async (req, res) => {
 })
 
 app.get('/bidPkg', async (req, res) => {
-    const result = await dbOperation.getEntPkg(req.body)
+    console.log(response);
+    const result = await dbOperation.getBidPkg(req.body)
     res.send(result)
 })
 
@@ -76,6 +87,17 @@ app.get('/processProcess', async (req, res) => {
 
 app.get('/allocNetwork', async (req, res) => {
     const result = await dbOperation.getAllocNetwork(req)
+    res.send(result)
+})
+
+app.get('/pipelines', async (req, res) => {
+    const result = await dbOperation.getPipelines(req)
+    res.send(result)
+})
+
+//Get Measure Points
+app.get('/measure_points', async (req, res) => {
+    const result = await dbOperation.getMeasurePoints(req)
     res.send(result)
 })
 

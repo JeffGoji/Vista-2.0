@@ -1,4 +1,4 @@
-import React,{ useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "@szhsin/react-menu/dist/index.css";
 import { useJsApiLoader, InfoBox, GoogleMap } from "@react-google-maps/api";
 import facilityLogo from "../assets/img/gas-plant-icon.png"
@@ -41,7 +41,7 @@ function EventMap() {
   const [toggleMeters, setToggleMeters] = React.useState(false)
   const infoBoxOptions = { 
     closeBoxURL: '', 
-    enableEventPropagation: true 
+    enableEventPropagation: true
   };
   const renders = useRef(1) // end of variables
 
@@ -145,7 +145,7 @@ function EventMap() {
 
   // this function is called when the map loads
   const onLoad = React.useCallback(function callback(map) {
-    map.setCenter({lat: 38.34, lng: -98.20})
+    map.setCenter({ lat: 38.34, lng: -98.20 })
     map.setZoom(10)
     setMap(map)
   }, [])
