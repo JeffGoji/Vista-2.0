@@ -20,6 +20,8 @@ import { UserData } from '../Data'
 import BarChart2 from '../PieChart2'
 // import PieChart3 from '../PieChart3'
 
+import NetworkGraph from '../NetworkGraph'
+
 
 function Main() {
     // eslint-disable-next-line no-unused-vars
@@ -89,8 +91,7 @@ function Main() {
                 </div>
                 <div className="col-lg-5 col-md-6 col-sm-12 text-center rounded p-2 window-border"> Facility Map
 
-                    {/* <Map /> */}
-                    <EventMap />
+                    <NetworkGraph />
 
                 </div>
                 <div className="col-lg-2 col-md-3 col-sm-12 text-center">

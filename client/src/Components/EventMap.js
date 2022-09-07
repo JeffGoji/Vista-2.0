@@ -2,23 +2,105 @@ import React, { useState, useEffect, useRef } from "react";
 import "@szhsin/react-menu/dist/index.css";
 import { useJsApiLoader, InfoBox, GoogleMap } from "@react-google-maps/api";
 import facilityLogo from "../assets/img/gas-plant-icon.png"
+import meterLogo from "../assets/img/gas-meter.webp"
+
+// custom react Hook for storing previous values
+function usePrevious(value) {
+  // The ref object is a generic container whose current property is mutable ...
+  // ... and can hold any value, similar to an instance property on a class
+  const ref = useRef();
+  // Store current value in ref
+  useEffect(() => {
+    ref.current = value;
+  }, [value]); // Only re-run if value changes
+  // Return previous value (happens before update in useEffect above)
+  return ref.current;
+}
 
 // displays the map
 function EventMap() {
   // declare some constants
   const [facilities, setFacilities] = useState([])
+  const [processProcess, setProcessProcess] = useState([])
+  const [allocNetwork, setAllocNetwork] = useState([])
+  const [allocNetworkName, setAllocNetworkName] = useState()
+  const prevAllocNetworkName = usePrevious(allocNetworkName)
+  const prevFacilities = usePrevious(facilities)
+  const [allocProcesses, setAllocProcesses] = useState([])
+  const [facKey, setFacKey] = useState('')
+  const prevFacKey = usePrevious(facKey)
+  const [measPts, setMeasPnts] = useState([])
   const [displayFacilities, setDisplayFacilities] = useState([])
+  const [displayMeasPts, setDisplayMeasPts] = useState([])
   const [infoBoxPosition, setInfoBoxPosition] = useState()
   const [visibility, setVisibility] = useState(false)
   const [map, setMap] = React.useState(null)
   const [infoBox, setInfoBox] = React.useState(null)
-  const [input, setInput] = React.useState('1707')
-
-  const infoBoxOptions = {
-    closeBoxURL: '',
+  const [decisionUnit, setDecisionUnit] = React.useState('1707')
+  const prevDecisionUnit = usePrevious(decisionUnit)
+  const [toggleMeters, setToggleMeters] = React.useState(false)
+  const infoBoxOptions = { 
+    closeBoxURL: '', 
     enableEventPropagation: true
   };
-  const renders = useRef(0)
+  const renders = useRef(1) // end of variables
+
+  // define api calls
+  const getData = async (url) => {
+    await fetch(url, {
+        method: 'GET',
+        headers: {
+            'content-type': 'application/json',
+            'Accept': 'application/json',
+        },
+    })
+        .then(res => res.json())
+        .then(res => setFacilities(res.recordset))
+  }
+  const getMeasPts = async (url) => {
+    await fetch(url, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(res => setMeasPnts(res.recordset))
+  }
+  const getProcessProcess = async (url) => {
+    await fetch(url, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(res => setProcessProcess(res.recordset))
+  }
+  const getAllocNetwork = async(url) => {
+    await fetch(url, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(res => setAllocNetwork(res.recordset))
+  }
+  const getAllocProcess = async (url) => {
+    await fetch(url, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(res => setAllocProcesses(res.recordset))
+  } // end of api calls
 
   // finds the bounds of the selected facilities so that when the user selects a new decision unit key
   // the map will automatically center on those facilities
@@ -72,12 +154,6 @@ function EventMap() {
     setMap(null)
   }, [])
 
-  // this function toggles the visibility of the menu that pops up when
-  // the user right clicks
-  const toggleInfoBox = (event) => {
-    setVisibility(false);
-  }
-
   // when the user right clicks, the menu becomes visible
   const handleRightClick = (event) => {
     setVisibility(true);
@@ -89,109 +165,171 @@ function EventMap() {
   }, [])
 
   // this function fills the options of the select tag with decision unit keys
-  const fillValues = (input) => {
-    if (facilities !== []) {
-      //create an array of the decision unit keys
-      const dec_unit_keys = facilities.map(facility => facility.DEC_UNIT_KEY)
+  const fillValues = () => {
+    if (allocNetwork !== []) {
+      const allocNetworkNames = allocNetwork.map(allocNetwork => allocNetwork.ALLOC_NETWORK_NAME)
       // filter out the unique values and sort them
-      const filteredKeys = dec_unit_keys.filter((dec_unit_key, index) => (dec_unit_keys.indexOf(dec_unit_key) === index)).sort()
+      const filteredNames = allocNetworkNames.filter((allocNetwork, index) => (allocNetworkNames.indexOf(allocNetwork) === index)).sort()
       // map each value to an option
-      return filteredKeys.map(filteredKey => <option key={filteredKey} value={filteredKey}>{filteredKey}</option>)
+      return filteredNames.map(filteredName => <option key={filteredName} value={filteredName}>{filteredName}</option>)
+    }
+  }
+
+  const fillAllocProcessValues = () => {
+    if (allocProcesses !== []) {
+      return allocProcesses.map(allocProcess => <option key={allocProcess.ALLOC_PROC_KEY} value={allocProcess.ALLOC_PROC_KEY}>{allocProcess.ALLOC_PROC_KEY}</option>)
     }
   }
 
   // this function filters the facilities based on the decision unit provided
-  const filterFacilities = () => {
-    const filteredFacilities = facilities.filter(facility => (facility.DEC_UNIT_KEY === parseInt(input)))
+  const filterFacilities = () =>{
+    const filteredFacilities = facilities.filter(facility => (facility.DEC_UNIT_KEY === parseInt(decisionUnit)))
     return filteredFacilities
+  }
+
+  const filterMeasPts = (selectedFacilities) => {
+    // get the facility keys
+    const fac_keys = selectedFacilities.map(facility => facility.FAC_KEY)
+    // select the measurement points where the station fac key equals the facility key
+    let filteredMeasPts = []
+    fac_keys.forEach(fac_key => {
+      measPts.forEach(measPt => {
+        if (measPt.STATION_FAC_KEY === parseInt(fac_key))
+          filteredMeasPts.push(measPt)
+      })
+    })
+    return filteredMeasPts
   }
 
   // this function is to be called in the return statement, it places
   // the selected facilities on the map
   const showFacilities = () => {
     if (displayFacilities !== []) {
-      if (input !== '') {
-        return displayFacilities.map(facility => (
+      return displayFacilities.map(facility => (
+        <InfoBox
+          key = {facility.FAC_KEY}
+          options={infoBoxOptions}
+          position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}
+        >
+          <div onClick = {() => {setFacKey(facility.FAC_KEY)}}>
+            <img src={facilityLogo} alt="Facility" width="50" height="50"/>
+            <p>{facility.FAC_NAME}</p>
+          </div>
+        </InfoBox>
+      ))
+    }
+  }
 
-          <InfoBox
-            key={facility.FAC_KEY}
-            options={infoBoxOptions}
-            position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}
-          >
-            <div>
-              <img src={facilityLogo} alt="Facility" width="75" height="75" />
-              <p>{facility.FAC_NAME}</p>
-            </div>
-          </InfoBox>))
-      }
+  const showMeasPts = () => {
+    if (displayMeasPts !== []) {
+      console.log(displayMeasPts)
+      return displayMeasPts.map(measPt => (
+        <InfoBox
+          key = {measPt.METERNO}
+          options = {infoBoxOptions}
+          position = {{lat: measPt.LATITUDE, lng: measPt.LONGITUDE}}
+        >
+          <div>
+            <img src={meterLogo} alt="Meter" width="10" height="10"/>
+            {() => {
+              if (map.getZoom() < 10)
+                return <p style={{fontSize:"8px"}}>{measPt.METER_NAME}</p>
+            }}
+          </div>
+        </InfoBox>
+      ))
     }
   }
 
   // when a user changes the decision unit in the select dropbox this
   // function is called
   const handleSelectChange = (event) => {
-    setInput(event.target.value)
+    setAllocNetworkName(event.target.value)
   }
 
   // this function is used to make the api call and to call certain functions once
   // the variable states have updated
   useEffect(() => {
-    // make the api call, i only want to get the data on the first render
+
+    // code to run on first render
     if (renders.current < 2) {
-      // api call
-      const getData = async (url) => {
-        await fetch(url, {
-          method: 'GET',
-          headers: {
-            'content-type': 'application/json',
-            'Accept': 'application/json',
-          },
-        })
-          .then(res => res.json())
-          .then(res => setFacilities(res.recordset))
-      }
+      getAllocNetwork('./allocNetwork').catch(console.error)
       getData('./facilities').catch(console.error)
-      // increment renders to make sure the api call is only made on the first render
+      getMeasPts('./measPts').catch(console.error)
+      // this is to keep track of number of renders
       renders.current += 1
-      return;
     }
 
-    // this block of code will execute when input state is updated. it filters the new
-    // facilities, finds the new bounds, updates the map, then sets the displayFacilities
-    // state variable
-    let selectedFacilities = filterFacilities()
-    let bounds = findBounds(selectedFacilities)
-    if (map != null)
-      map.fitBounds(bounds)
-    setDisplayFacilities(selectedFacilities)
-  }, [input, facilities])
+    // only run this code if the facilities has changed
+    if (facilities !== prevFacilities) {
+      let selectedFacilities = filterFacilities()
+      let bounds = findBounds(selectedFacilities)
+      if (map != null)
+        map.fitBounds(bounds)
+      setDisplayFacilities(selectedFacilities)
+    }
 
+    // only run this code if fackey has changed
+    if (facKey !== prevFacKey && facKey !== "") {
+      getAllocProcess('./allocProcesses?facKey='+facKey).catch(console.error)
+    }
+
+    // only run this code if decision unit has changed
+    if (decisionUnit !== prevDecisionUnit) {
+      let selectedFacilities = filterFacilities()
+      let bounds = findBounds(selectedFacilities)
+      if (map != null)
+        map.fitBounds(bounds)
+      setDisplayFacilities(selectedFacilities)
+    }
+
+    // only run this code if the allocation network name has changed
+    if (allocNetworkName !== prevAllocNetworkName) {
+      let chosenAllocNetworkArray = allocNetwork.filter(allocNetwork => (allocNetwork.ALLOC_NETWORK_NAME === allocNetworkName))
+      let chosenAllocNetwork = chosenAllocNetworkArray[0]
+      setDecisionUnit(chosenAllocNetwork.DEC_UNIT_KEY)
+    }
+    
+    /*let selectedMeasPts = filterMeasPts(selectedFacilities)
+    if (facKey != ''){
+      let selectedMeasPts = filterMeasPts()
+      setDisplayMeasPts(selectedMeasPts)
+    }
+    setDisplayMeasPts(selectedMeasPts)*/
+
+  }, [allocNetworkName, facilities, facKey, decisionUnit])
+  
   return isLoaded ? (
     <div>
-      <label style={{ padding: '0px 10px' }}>Select a decision unit key:</label>
+      <label style={{padding:'0px 10px'}}>Select an allocation network:</label>
       <select id="chooseDecisionUnit" onChange={handleSelectChange}>
         {fillValues()}
       </select>
-      <GoogleMap
-        mapContainerStyle={{ height: "600px", width: "800px" }}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-        onRightClick={handleRightClick}
-        onClick={toggleInfoBox}
-        onDrag={toggleInfoBox}
-      >
-        <InfoBox
-          onLoad={infoBoxLoad}
-          options={infoBoxOptions}
-          position={infoBoxPosition}
-          visible={visibility}
-        >
-          <div>
-            <button type="button">Create Node</button>
-          </div>
-        </InfoBox>
-        {showFacilities()}
-      </GoogleMap></div>
+      {/*<label style={{padding:'0px 10px'}}>Select an allocation process:</label>
+      <select>
+        {fillAllocProcessValues()}
+      </select>*/}
+    <GoogleMap
+      mapContainerStyle={{height: "600px", width: "800px"}}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
+      onRightClick={handleRightClick}
+      onClick={() => setVisibility(false)}
+      onDrag={() => setVisibility(false)}
+    >
+      <InfoBox
+      onLoad = {infoBoxLoad}
+      options={infoBoxOptions}
+      position={infoBoxPosition}
+      visible={visibility}
+    >
+      <div>
+        <button type="button">Create Node</button>
+      </div>
+    </InfoBox>
+    {showFacilities()}
+    {/*showMeasPts()*/}
+    </GoogleMap></div>
 
   ) : <></>
 }
