@@ -19,6 +19,8 @@ import { UserData } from '../Data'
 //Get Bar graph with built in API experiment:
 import BarChart2 from '../PieChart2'
 
+import NetworkGraph from '../NetworkGraph'
+
 
 function Main() {
     // eslint-disable-next-line no-unused-vars
@@ -92,8 +94,7 @@ function Main() {
                 </div>
                 <div className="col-lg-8 col-md-6 col-sm-12 text-center rounded p-2 window-border"> Middle Screen (Map)
 
-                    {/* <Map /> */}
-                    <EventMap />
+                    <NetworkGraph />
 
                 </div>
                 <div className="col-lg-2 col-md-3 col-sm-12 text-center">
