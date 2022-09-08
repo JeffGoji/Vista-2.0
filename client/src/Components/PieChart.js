@@ -20,7 +20,7 @@ function PieChart() {
             })
             .then(citydata => {
                 setReturnedCityData(citydata.recordsets[0])
-                console.log(citydata);
+                // console.log(citydata);
             });
     }, []);
 

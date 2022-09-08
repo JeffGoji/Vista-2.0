@@ -89,7 +89,7 @@ function Main() {
                     <br />
                     <ApiData />
                 </div>
-                <div className="col-lg-5 col-md-6 col-sm-12 text-center rounded p-2 window-border"> Facility Map
+                <div className="col-lg-8 col-md-6 col-sm-12 text-center rounded p-2 window-border"> Facility Map
 
                     <NetworkGraph />
 

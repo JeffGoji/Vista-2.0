@@ -60,7 +60,7 @@ function BarChart2() {
             .then(data => {
                 setIsLoading(false)
                 setReturnedNomData(data.recordsets[0])
-                console.log(data);
+                // console.log(data);
             });
     }, [])
 
