@@ -1,8 +1,11 @@
-import React, { memo, useState } from "react";
+import React, { memo, useState, useEffect } from "react";
 import Graph from "react-graph-vis";
 import { v4 as uuidv4 } from 'uuid'
 
 const options = {
+  manipulation: {
+    addNode: true
+  },
   layout: {
     hierarchical: false
   },
@@ -21,13 +24,16 @@ function randomColor() {
   return `#${red}${green}${blue}`;
 }
 
+
+
 const NetworkGraph = () => {
+
   const createNode = (x, y) => {
     graph.nodes.forEach(node => console.log(node.id))
     const color = randomColor();
     setState(({ graph: { nodes, edges }, counter, ...rest }) => {
       const id = counter + 1;
-      console.log(id)
+      // console.log(id)
       const from = Math.floor(Math.random() * (counter - 1)) + 1;
       return {
         graph: {
@@ -45,17 +51,46 @@ const NetworkGraph = () => {
       }
     });
   }
-  let [graphKey, setGraphKey] = useState(uuidv4)
+
+  // const [graphKey, setGraphKey] = useState([]);
+  const [meterNo, setMeterNo] = useState([]);
+  useEffect(() => {
+    fetch('./measPts')
+      .then(response => {
+        return response.json();
+
+      })
+      .then(measuredPtsData => {
+
+        setMeterNo(measuredPtsData.recordsets[0][1].METERNO);
+        // setGraphKey(measuredPtsData.recordsets[0][0]);
+        console.log(meterNo);
+        // console.log(measuredPtsData.recordsets[0][1].EFFDATE);
+        console.log(measuredPtsData.recordsets[0][0]);
+      })
+  }, []);
+
+
+
   const [state, setState] = useState({
     counter: 5,
     graph: {
       nodes: [
-        { id: 1, label: "Node 1", color: "#e04141", graphKey },
-        { id: 2, label: "Node 2", color: "#e09c41", graphKey },
-        { id: 3, label: "Node 3", color: "#e0df41", graphKey },
-        { id: 4, label: "Node 4", color: "#7be041", graphKey },
-        { id: 5, label: "Node 5", color: "#41e0c9", graphKey }
+        {
+          id: 1, label: meterNo, color: '#ff0000',
+        },
+        { id: 2, label: "Node 2", color: "#e09c41" },
+        { id: 3, label: "Node 3", color: "#e0df41" },
+        { id: 4, label: "Node 4", color: "#7be041" },
+        { id: 5, label: "Node 5", color: "#41e0c9" }
       ],
+      // nodes: [
+      //   { id: 1, label: "Node 1", color: "#e04141", graphKey },
+      //   { id: 2, label: "Node 2", color: "#e09c41", graphKey },
+      //   { id: 3, label: "Node 3", color: "#e0df41", graphKey },
+      //   { id: 4, label: "Node 4", color: "#7be041", graphKey },
+      //   { id: 5, label: "Node 5", color: "#41e0c9", graphKey }
+      // ],
       edges: [
         { from: 1, to: 2 },
         { from: 1, to: 3 },
@@ -70,17 +105,19 @@ const NetworkGraph = () => {
         console.log(nodes);
         console.log("Selected edges:");
         console.log(edges);
-        alert("Selected node: " + nodes);
+        // alert("Selected node: " + nodes);
       },
-      doubleClick: ({ pointer: { canvas } }) => {
-        createNode(canvas.x, canvas.y);
-      }
+      // doubleClick: ({ pointer: { canvas } }) => {
+      //   createNode(canvas.x, canvas.y,);
+      // }
     }
   })
+
   const { graph, events } = state;
   return (
+
     <div style={{ border: '1px solid black' }}>
-      <Graph key={uuidv4()} graph={graph} options={options} events={events} style={{ height: "640px" }} />
+      <Graph key={uuidv4()} graph={graph} options={options} events={events} />
     </div>
   );
 
