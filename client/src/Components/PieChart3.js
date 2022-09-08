@@ -18,18 +18,11 @@ function PieChart3() {
     //State for handling nomData:
     const [returnedNomData, setReturnedNomData] = useState([])
 
+    //State for handling Meter Data:
+    const [returnedMeter, setMeterData] = useState([])
+
     //Customer pulldown menu:
     const [selected, setSelected] = useState("Select Customer");
-
-    const handleChange = event => {
-        console.log(event.target.value);
-        setSelected(event.target.value)
-    }
-    const options = [
-        { value: '', text: 'Choose a Meter' },
-        {
-            value: '', text: 'Dynamic energy'
-        }];
 
     //useEffect to restrict code from going into an infinite loop
     useEffect(() => {
@@ -39,20 +32,42 @@ function PieChart3() {
                 return response.json();
 
             })
-            .then(nomData => {
+            .then(data => {
                 setIsLoading(false)
-                setReturnedNomData(nomData.recordsets[0])
+                setReturnedNomData(data.recordsets[0])
             });
+        fetch('./measure_points')
+            .then(response => {
+                return response.json();
+            })
+            .then(measurePoints => {
+                setIsLoading(false)
+                setMeterData(measurePoints.recordsets[0][1])
+            })
     }, []);
     if (isLoading) {
         return <p>Loading....</p>
     }
 
+    //Pulldown menu with measure point API call:
+    const handleChange = event => {
+        console.log(event.target.value);
+        setSelected(event.target.value)
+    }
+    const options = [
+        { value: 'Select Customer', text: 'Select Customer' },
+        {
+            value: [returnedMeter], text: "KRIEBEL MINERALS INC"
+        },
+
+    ];
+
+    //Chart:
     const myChart3 = ({
-        labels: ['Volumes'],
+        labels: ['Volume In', 'End Imbalance', 'Net End Imbalance'],
         datasets: [{
-            label: ['Volumes DTL'],
-            nomData: [returnedNomData[2]],
+            label: ['Nominations'],
+            data: [returnedNomData[2].VOLUMEIN, returnedNomData[2].VOLUMEOUT, returnedNomData[2].END_IMBAL],
             //nomData: [returnedVolData, returnedVolData, returnedVolData],
             backgroundColor: [
                 "rgba(75,192,192,1)",
@@ -71,16 +86,16 @@ function PieChart3() {
 
 
     return (
-        <div>
-            <select value={selected} onChange={handleChange}>
+        <div className='mt-2 p-2'>
+            <select className='m-3' value={selected} onChange={handleChange}>
                 {options.map(option => (
-                    <option key={option.value} value={option.value}>
+                    <option key={option.text} value={option.value}>
                         {option.text}
                     </option>
                 ))}
             </select>
-            <p>{returnedNomData}</p>
-            <Pie nomData={myChart3} />
+            {/* <p>{returnedNomData}</p> */}
+            <Pie data={myChart3} />
             {/* <button className='btn btn-primary mt-2' onClick={() => getNoms('./noms')}>Click me to get Nominations</button> */}
 
         </div>

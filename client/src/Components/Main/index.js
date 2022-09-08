@@ -5,12 +5,12 @@ import { useState } from 'react'
 // import Map from '../Map'
 
 //New right click menu:
-import EventMap from '../EventMap'
+
 
 //Chart Imports:
 // import BarChart from '../BarChart'
 // import LineChart from '../LineChart'
-import PieChart from '../PieChart'
+// import PieChart from '../PieChart'
 import ApiData from '../ApiData'
 
 //GET API experiment:
@@ -18,7 +18,7 @@ import { UserData } from '../Data'
 
 //Get Bar graph with built in API experiment:
 import BarChart2 from '../PieChart2'
-// import PieChart3 from '../PieChart3'
+import PieChart3 from '../PieChart3'
 
 import NetworkGraph from '../NetworkGraph'
 
@@ -43,49 +43,16 @@ function Main() {
         }]
     });
 
-    // eslint-disable-next-line no-unused-vars
-    const [oilData, setOilData] = useState({
-        labels: UserData.map((data) => data.year),
-        datasets: [{
-            labels: "Users Lost",
-            data: UserData.map((data) => data.userLost),
-            backgroundColor: [
-                "rgba(75,192,192,1)",
-                "#ecf0f1",
-                "#50AF95",
-                "#f3ba2f",
-                "#2a71d0",
-            ],
-            borderColor: "black",
-            borderWidth: 2,
-        }]
 
-    })
 
-    // eslint-disable-next-line no-unused-vars
-    const [pieData, setPieData] = useState({
-        labels: UserData.map((data) => data.year),
-        datasets: [{
-            label: "Pie's eaten",
-            data: UserData.map((data) => data.userLost),
-            backgroundColor: [
-                "rgba(75,192,192,1)",
-                "#ecf0f1",
-                "#50AF95",
-                "#f3ba2f",
-                "#2a71d0",
-            ],
-            borderColor: "black",
-            borderWidth: 2,
-        }]
-    })
     return (
         <>
             <div className="row justify-content-center">
                 <div className="col-lg-2 col-md-3 col-sm-12 text-center text-white">
                     {/* <Data1 />
                     <br /> */}
-                    <PieChart chartData={pieData} />
+                    {/* <PieChart chartData={pieData} /> */}
+                    <PieChart3 />
                     <br />
                     <ApiData />
                 </div>
