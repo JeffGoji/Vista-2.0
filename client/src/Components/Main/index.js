@@ -82,19 +82,19 @@ function Main() {
     return (
         <>
             <div className="row justify-content-center">
-                <div className="col-lg-2 col-md-3 col-sm-12 text-center">
+                <div className="col-lg-2 col-md-3 col-sm-12 text-center text-white">
                     {/* <Data1 />
                     <br /> */}
                     <PieChart chartData={pieData} />
                     <br />
                     <ApiData />
                 </div>
-                <div className="col-lg-8 col-md-6 col-sm-12 text-center rounded p-2 window-border"> Facility Map
+                <div className="col-lg-6 col-md-6 col-sm-12 text-center rounded p-2 window-border text-white"> Facility Map
 
                     <NetworkGraph />
 
                 </div>
-                <div className="col-lg-2 col-md-3 col-sm-12 text-center">
+                <div className="col-lg-2 col-md-3 col-sm-12 text-center text-white">
                     {/* <BarChart chartData={userData} />
                     <LineChart chartData={oilData} /> */}
                     <BarChart2 style={{ maxHeight: "40px" }} />

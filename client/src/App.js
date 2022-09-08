@@ -13,7 +13,7 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className="main-bg">
       <Nav />
       <Routes>
         <Route path='/' element={<Main />} />

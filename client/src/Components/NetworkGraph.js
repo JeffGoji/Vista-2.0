@@ -24,8 +24,6 @@ function randomColor() {
   return `#${red}${green}${blue}`;
 }
 
-
-
 const NetworkGraph = () => {
 
   const createNode = (x, y) => {
@@ -71,7 +69,6 @@ const NetworkGraph = () => {
   }, []);
 
 
-
   const [state, setState] = useState({
     counter: 5,
     graph: {
@@ -115,8 +112,8 @@ const NetworkGraph = () => {
 
   const { graph, events } = state;
   return (
-
-    <div style={{ border: '1px solid black' }}>
+    <div>
+      {/* // <div style={{ border: '1px solid black' }}> */}
       <Graph key={uuidv4()} graph={graph} options={options} events={events} />
     </div>
   );
