@@ -4,8 +4,8 @@ import './App.css';
 
 import Nav from './Components/Nav';
 import Main from './Components/Main';
-import Ebb1 from './Components/Ebb1';
-import Ebb2 from './Components/Ebb2';
+import Nominations from './Components/Nominations';
+import MeterBurnList from './Components/MeterBurnList';
 
 
 function App() {
@@ -19,8 +19,8 @@ function App() {
       <Nav />
       <Routes>
         <Route path='/' element={<Main />} />
-        <Route path='/ebb1' element={<Ebb1 />} />
-        <Route path='/ebb2' element={<Ebb2 />} />
+        <Route path='/nominations' element={<Nominations />} />
+        <Route path='/meter-burn-list' element={<MeterBurnList />} />
       </Routes>
     </div>
   );
