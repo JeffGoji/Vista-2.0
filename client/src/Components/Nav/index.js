@@ -34,7 +34,7 @@ export const Nav = () => {
                     <div className="collapse navbar-collapse" id="navbarNavDropdown">
                         <div className="navbar-nav">
                             <li className="nav-item ms-lg-3">
-                                <NavLink className={"nav-link active"} aria-current="page" to="/">Link 1</NavLink>
+                                <NavLink className={"nav-link active"} aria-current="page" to="/">Dashboard</NavLink>
                             </li>
 
                             {/* <li className="nav-item dropdown ms-lg-3">
@@ -61,31 +61,31 @@ export const Nav = () => {
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                 >
-                                    Drop Down commands
+                                    Pages
                                 </div>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" href="#">
                                     {/* <li><h4 className={"dropdown-header"}>GASTAR Features</h4></li> */}
 
-                                    <li><NavLink className="dropdown-item" to="ebb1">EBB Sheet 1</NavLink></li>
+                                    <li><NavLink className="dropdown-item" to="nominations">Nominations</NavLink></li>
 
-                                    <li><NavLink className="dropdown-item" to="ebb2">EBB Sheet 2</NavLink></li>
+                                    <li><NavLink className="dropdown-item" to="meter-burn-list">Meter Burn List</NavLink></li>
                                     <li>
-                                        <NavLink className="dropdown-item" to="gastar-risk">Command 3</NavLink>
+                                        <NavLink className="dropdown-item" to="gastar-risk">Gastar Risk</NavLink>
                                     </li>
                                 </ul>
                             </li>
 
                             <li className={"ms-lg-3"}>
-                                <NavLink to="/about"><button className='btn btn-md btn-primary'>New</button></NavLink>
+                                <NavLink to="/about"><button className='btn btn-md btn-primary'>New Network</button></NavLink>
                             </li>
                             <li className={"ms-lg-3"}>
-                                <NavLink to="newsstand"><button className='btn btn-md btn-success'>Save</button></NavLink>
+                                <NavLink to="newsstand"><button className='btn btn-md btn-success'>Save Network</button></NavLink>
                             </li>
                             <li className={"ms-lg-3"}>
-                                <NavLink to='contact'><button className='btn btn-md btn-warning'>Edit</button></NavLink>
+                                <NavLink to='contact'><button className='btn btn-md btn-warning'>Edit Network</button></NavLink>
                             </li>
                             <li className={"ms-lg-3"}>
-                                <NavLink to='contact'><button className='btn btn-md btn-danger'>Delete</button></NavLink>
+                                <NavLink to='contact'><button className='btn btn-md btn-danger'>Delete Network</button></NavLink>
                             </li>
                         </div>
                     </div>

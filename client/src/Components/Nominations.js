@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class Ebb1 extends React.Component {
+export default class Nominations extends React.Component {
     render() {
         return (
             <div>

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class Ebb2 extends React.Component {
+export default class MeterBurnList extends React.Component {
     render() {
         return (
             <div>
