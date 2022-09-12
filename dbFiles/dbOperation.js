@@ -79,6 +79,18 @@ const getMeasPts = async () => {
     }
 }
 
+//api call for gasMeter data:
+const getGasMeter = async () => {
+    try {
+        let sqlconnection = await sql.connect(config)
+        let data = sqlconnection.request().query("SELECT METERNO, METERDATE, DAILY_VOL, ENERGY FROM ENT_GASMETER")
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
 // api call to get allocation processes
 const getAllocProcesses = async (req) => {
     try {
@@ -189,5 +201,6 @@ module.exports = {
     getProcessProcess,
     getAllocNetwork,
     getPipelines,
-    getMeasurePoints
+    getMeasurePoints,
+    getGasMeter
 }

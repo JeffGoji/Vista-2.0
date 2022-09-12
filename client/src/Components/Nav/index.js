@@ -66,9 +66,9 @@ export const Nav = () => {
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" href="#">
                                     {/* <li><h4 className={"dropdown-header"}>GASTAR Features</h4></li> */}
 
-                                    <li><NavLink className="dropdown-item" to="gastar-overview">Command</NavLink></li>
+                                    <li><NavLink className="dropdown-item" to="ebb1">EBB Sheet 1</NavLink></li>
 
-                                    <li><NavLink className="dropdown-item" to="gastar-value">Command Two</NavLink></li>
+                                    <li><NavLink className="dropdown-item" to="ebb2">EBB Sheet 2</NavLink></li>
                                     <li>
                                         <NavLink className="dropdown-item" to="gastar-risk">Command 3</NavLink>
                                     </li>

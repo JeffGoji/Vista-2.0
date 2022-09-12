@@ -18,8 +18,11 @@ function PieChart3() {
     //State for handling nomData:
     const [returnedNomData, setReturnedNomData] = useState([])
 
-    //State for handling Meter Data:
-    const [returnedMeter, setMeterData] = useState([])
+    //State for handling Meter Number data:
+    const [returnedMeter, setMeterData] = useState('')
+
+    //State for returning DAILY_VOL from the Meter data:
+    const [returnedFuel, setFuelData] = useState('')
 
     //Customer pulldown menu:
     const [selected, setSelected] = useState("Select Customer");
@@ -36,15 +39,34 @@ function PieChart3() {
                 setIsLoading(false)
                 setReturnedNomData(data.recordsets[0])
             });
-        fetch('./measure_points')
+        fetch('./gas_meters')
             .then(response => {
                 return response.json();
             })
-            .then(measurePoints => {
+            .then(gasMeters => {
                 setIsLoading(false)
-                setMeterData(measurePoints.recordsets[0][1])
-            })
+                // for (let index = 0; index < gasMeters.recordsets.length; index++) {
+                //     const meterNo = gasMeters.recordsets[index][2]['METERNO'];
+                //     setMeterData(meterNo)
+                // };
+                for (const forEachMeter of gasMeters.recordsets[0]) {
+                    // console.log(forEachMeter)
+                    setMeterData(forEachMeter)
+                }
+                for (const forEachFuel of gasMeters.recordsets[0]) {
+                    // console.log(forEachMeter)
+                    setFuelData(forEachFuel)
+                }
+                // setMeterData(gasMeters.recordsets[0])
+                //This version displays one meter number:
+                // for (let index = 0; index < gasMeters.recordsets.length; index++) {
+                //     const meterNo = gasMeters.recordsets[index][2]['METERNO'];
+                //     setMeterData(meterNo)
+                // }
+            });
+
     }, []);
+    console.log(returnedMeter)
     if (isLoading) {
         return <p>Loading....</p>
     }
@@ -57,17 +79,16 @@ function PieChart3() {
     const options = [
         { value: 'Select Customer', text: 'Select Customer' },
         {
-            value: [returnedMeter], text: "KRIEBEL MINERALS INC"
+            value: [returnedMeter.METERNO], text: [returnedMeter.METERNO]
         },
-
     ];
 
     //Chart:
     const myChart3 = ({
-        labels: ['Volume In', 'End Imbalance', 'Net End Imbalance'],
+        labels: ['Volume In', 'End Imbalance', 'DAILY_VOL'],
         datasets: [{
             label: ['Nominations'],
-            data: [returnedNomData[2].VOLUMEIN, returnedNomData[2].VOLUMEOUT, returnedNomData[2].END_IMBAL],
+            data: [returnedNomData[2].VOLUMEIN, returnedNomData[2].VOLUMEOUT, options.text],
             //nomData: [returnedVolData, returnedVolData, returnedVolData],
             backgroundColor: [
                 "rgba(75,192,192,1)",
@@ -82,8 +103,7 @@ function PieChart3() {
         }]
 
     })
-    console.log(myChart3)
-
+    // console.log(myChart3)
 
     return (
         <div className='mt-2 p-2'>
@@ -94,8 +114,8 @@ function PieChart3() {
                     </option>
                 ))}
             </select>
-            {/* <p>{returnedNomData}</p> */}
             <Pie data={myChart3} />
+
             {/* <button className='btn btn-primary mt-2' onClick={() => getNoms('./noms')}>Click me to get Nominations</button> */}
 
         </div>

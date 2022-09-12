@@ -30,6 +30,11 @@ dbOperation.getMeasurePoints().then(res => {
     return res;
 })
 
+//GasMeter data:
+dbOperation.getGasMeter().then(res => {
+    return res;
+})
+
 //Set API port and Express server:
 const API_PORT = process.env.PORT || 5000;
 const app = express();
@@ -98,6 +103,12 @@ app.get('/pipelines', async (req, res) => {
 //Get Measure Points
 app.get('/measure_points', async (req, res) => {
     const result = await dbOperation.getMeasurePoints(req)
+    res.send(result)
+})
+
+//Get Meter Data:
+app.get('/gas_meters', async (req, res) => {
+    const result = await dbOperation.getGasMeter(req)
     res.send(result)
 })
 
