@@ -116,10 +116,11 @@ const Nominations = () => {
                 </div>
             </div>
             {/* Table below: */}
+            
             <div className="row text-center mt-3 p-2" >
                 <h4 className="text-start text-white">Nominations:</h4>
                 <div className="col-sm-12 col-md-12 col-lg-12">
-                    <table className="bg-white table table-striped table-striped-columns table-bordered border-primary rounded">
+                    <table className="bg-white table table-sm table-hover table-striped-columns table-bordered border-primary rounded">
                         <thead>
                             <tr>
                                 <th style={{ minWidth: "8rem" }}>View</th>
@@ -275,8 +276,9 @@ const Nominations = () => {
                     </table>
                 </div>
             </div >
+            </div>
 
-        </div >
+        
 
     )
 }

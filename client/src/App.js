@@ -12,6 +12,7 @@ function App() {
 
   // state variables
   const [BU, setBU] = useState({buName: '', pipelineID: ''}) // business unit state
+  const [BA, setBA] = useState('')
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -19,7 +20,7 @@ function App() {
 
   return (
     <div className="main-bg">
-      <Nav BU={BU} setBU={setBU} /> {/* pass the business unit state to other components */}
+      <Nav BU={BU} setBU={setBU} BA={BA} setBA={setBA} /> {/* pass the business unit state to other components */}
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/nominations' element={<Nominations />} />

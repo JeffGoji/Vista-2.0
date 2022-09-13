@@ -176,6 +176,17 @@ const getContracts = async() => {
     }
 }
 
+// get business associates
+const getBAs = async() => {
+    try {
+        let sqlconnection = await sql.connect(config)
+        let data = sqlconnection.request().query("SELECT * FROM ENT_BUSINESS_ASSOC")
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 
 //Built in React Fetch system using the SAME nom call above but simplified:
 // const getNoms = () => {
@@ -215,4 +226,5 @@ module.exports = {
     getMeasurePoints,
     getGasMeter,
     getContracts,
+    getBAs,
 }

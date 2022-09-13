@@ -8,8 +8,10 @@ import { NavLink } from 'react-router-dom'
 // import Auth from '../../utils/auth';
 import '../../index.css'
 
-
 export const Nav = (props) => {
+
+    // state variables
+    const [BAs, setBAs] = useState([])
 
     // Business Units
     const BUs = [
@@ -36,11 +38,35 @@ export const Nav = (props) => {
     ]
 
     // references
-    const selectBU = useRef() // select dropdown reference
+    const selectBU = useRef() // select business unit dropdown reference
+    const selectBA = useRef() // select BA dropdown reference
+    const renders = useRef(0) // for counting number of renders
+
+    // api call functions
+    const getBAs = async (url) => {
+        await fetch(url, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'Accept': 'application/json',
+            },
+        })
+        .then(res => res.json())
+        .then(res => setBAs(res.recordset.sort()))
+    }
 
     useEffect(() => {
+        if (renders.current < 1) { // only run this code on first render
+
+            // api calls
+            getBAs('./bas').catch(console.error)
+
+            renders.current = renders.current + 1 // increment renders
+        }
+
         props.setBU(BUs[selectBU.current.selectedIndex]) // set the business unit on load
-        console.log(props.BU)
+        props.setBA(selectBA.current.value)
+        console.log(BAs)
     }, [])
 
     return (
@@ -122,10 +148,22 @@ export const Nav = (props) => {
 
                             <div className="nav-item m-2">
                                 <label className='pe-2'>Business Unit:</label>
-                                <select ref={selectBU} onChange={(event) => {props.setBU(BUs[event.target.selectedIndex])}}>
+                                <select className='form-select' ref={selectBU} onChange={(event) => {props.setBU(BUs[event.target.selectedIndex])}}>
                                     {
                                         BUs.map(({buName}) => {
                                             return <option key={buName}>{buName}</option>
+                                        })
+                                    }
+                                </select>
+                            </div>
+                            <div className='nav-item m-2'>
+                                <label className='pe-2'>Business Associate:</label>
+                                <select className='form-select' ref={selectBA} onChange={(event) => {props.setBA(event.target.value)}}>
+                                    {
+                                        BAs.map(({BA_ID, NAME, BUSINESS_UNIT}) => {
+                                            if (BUSINESS_UNIT === props.BU.pipelineID) {
+                                                return <option key={BA_ID}>{NAME}</option>
+                                            }
                                         })
                                     }
                                 </select>
