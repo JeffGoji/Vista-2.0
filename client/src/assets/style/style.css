@@ -86,3 +86,7 @@ canvas {
 /* .vis-connect {
   padding-top: 5px;
 } */
+
+.border-radius-1 {
+  border-radius: 10px;
+}
