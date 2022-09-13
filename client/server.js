@@ -112,6 +112,12 @@ app.get('/gas_meters', async (req, res) => {
     res.send(result)
 })
 
+// get contract data
+app.get('/contracts', async (req, res) => {
+    const result = await dbOperation.getContracts(req)
+    res.send(result)
+})
+
 //Kept for reference's sake:
 // app.get('/quit', function (req, res) {
 //     console.log('called it quits');

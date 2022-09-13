@@ -164,7 +164,18 @@ const getMeasurePoints = async () => {
     }
 }
 // "SELECT * from ENT_MEAS_PT WHERE METERNO = " + meter_key + ""
-console.log(getMeasurePoints);
+
+// get contract data
+const getContracts = async() => {
+    try {
+        let sqlconnection = await sql.connect(config)
+        let data = sqlconnection.request().query("SELECT * FROM ENT_CONTRACTS")
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 
 //Built in React Fetch system using the SAME nom call above but simplified:
 // const getNoms = () => {
@@ -202,5 +213,6 @@ module.exports = {
     getAllocNetwork,
     getPipelines,
     getMeasurePoints,
-    getGasMeter
+    getGasMeter,
+    getContracts,
 }
