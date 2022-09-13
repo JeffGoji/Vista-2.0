@@ -1,3 +1,4 @@
+import React, {useEffect, useState, useRef} from 'react'
 
 import logo1 from '../../assets/img/logo.png'
 // you will need link and withRouter from react router dom
@@ -8,13 +9,44 @@ import { NavLink } from 'react-router-dom'
 import '../../index.css'
 
 
-export const Nav = () => {
+export const Nav = (props) => {
+
+    // Business Units
+    const BUs = [
+        {
+            buName: 'Peoples Natural Gas Company LLC',
+            pipelineID: '00000001'
+        },
+        {
+            buName: 'Peoples Gas Company (PTWP)',
+            pipelineID: '00004136'
+        },
+        {
+            buName: 'Peoples Gas Company West Virginia',
+            pipelineID: '00004287'
+        },
+        {
+            buName: 'Delgasco, LLC',
+            pipelineID: '00009177'
+        },
+        {
+            buName: 'Enpro, LLC',
+            pipelineID: '00009454'
+        }
+    ]
+
+    // references
+    const selectBU = useRef() // select dropdown reference
+
+    useEffect(() => {
+        props.setBU(BUs[selectBU.current.selectedIndex]) // set the business unit on load
+        console.log(props.BU)
+    }, [])
 
     return (
         <>
-            <div className="navbar navbar-expand-lg navbar-light bg-light text-white">
+            <div className="navbar navbar-expand-lg navbar-light bg-light text-dark">
                 <div className="container-fluid">
-
                     <NavLink className="navbar-brand" to="/">
                         <img src={logo1}
                             alt="Company Logo"
@@ -75,7 +107,7 @@ export const Nav = () => {
                                 </ul>
                             </li>
 
-                            <li className={"ms-lg-3"}>
+                            {/*<li className={"ms-lg-3"}>
                                 <NavLink to="/about"><button className='btn btn-md btn-primary'>New Network</button></NavLink>
                             </li>
                             <li className={"ms-lg-3"}>
@@ -86,13 +118,25 @@ export const Nav = () => {
                             </li>
                             <li className={"ms-lg-3"}>
                                 <NavLink to='contact'><button className='btn btn-md btn-danger'>Delete Network</button></NavLink>
-                            </li>
+                            </li>*/}
+
+                            <div className="nav-item m-2">
+                                <label className='pe-2'>Business Unit:</label>
+                                <select ref={selectBU} onChange={(event) => {props.setBU(BUs[event.target.selectedIndex])}}>
+                                    {
+                                        BUs.map(({buName}) => {
+                                            return <option key={buName}>{buName}</option>
+                                        })
+                                    }
+                                </select>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div >
-            {/* // modal for Request Demo: */}
 
+            {/* modal for Request Demo: */}
             <div className="modal fade" id="modal169" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-xl">
                     <div className="modal-content">
@@ -109,11 +153,7 @@ export const Nav = () => {
                     </div>
                 </div>
             </div>
-
         </>
-
-
-
     )
 }
 
