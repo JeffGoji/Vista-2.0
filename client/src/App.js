@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom'
 import './App.css';
 
@@ -10,17 +10,20 @@ import MeterBurnList from './Components/MeterBurnList';
 
 function App() {
 
+  // state variables
+  const [BU, setBU] = useState({buName: '', pipelineID: ''}) // business unit state
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
     <div className="main-bg">
-      <Nav />
+      <Nav BU={BU} setBU={setBU} /> {/* pass the business unit state to other components */}
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/nominations' element={<Nominations />} />
-        <Route path='/meter-burn-list' element={<MeterBurnList />} />
+        <Route path='/meter-burn-list' element={<MeterBurnList BU={BU} />} />
       </Routes>
     </div>
   );
