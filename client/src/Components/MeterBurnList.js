@@ -46,7 +46,7 @@ const MeterBurnList = (props) => {
                                 <label>Gas Flow Month:</label>
                             </div>
                             <div className="col">
-                                <input type="text"/>
+                                <input type="month" value={`${new Date().getFullYear()}-${(new Date().getMonth() > 8 ? "" : "0")+ (new Date().getMonth()+1)}`} onChange={() => {}}/>
                             </div>
                         </div>
                     </div>
@@ -94,164 +94,91 @@ const MeterBurnList = (props) => {
             </div>
             {/* DATA LIST */}
             <div className="row">
-                <div className="row text-center">
-                    <h4>Meter Burn List</h4>
-                </div>
-                <div className="row">
-                    <div className="table-responsive">
-                        <table className="bg-white table table-sm table-hover table-striped-columns table-bordered border-primary rounded">
-                            <thead>
-                                <tr>
-                                    <th scope="col" style={{ minWidth: "8rem" }}>View</th>
-                                    <th scope="col">Details</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Cycle</th>
-                                    <th scope="col">Up Transporter</th>
-                                    <th scope="col">Up Shipper</th>
-                                    <th scope="col">Up Contract #</th>
-                                    <th scope="col">Start Date</th>
-                                    <th scope="col">End Date</th>
-                                    <th scope="col">Rec Pt</th>
-                                    <th scope="col">Rank</th>
-                                    <th scope="col">Nom Qty</th>
-                                    <th scope="col">Del Pt</th>
-                                    <th scope="col">Trans Type</th>
-                                    <th scope="col">Contract #</th>
-                                    <th scope="col">Activity</th>
-                                    <th scope="col">Pkg #</th>
-                                    <th scope="col">Updated By</th>
-                                    <th scope="col">Updated On</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
-                                    <td><button className="btn btn-sm btn-primary">Details</button></td>
-                                    <td>NM</td>
-                                    <td>TIM</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>8/1/2022</td>
-                                    <td>8/31/2022</td>
-                                    <td>924-LGA-Direct Energy</td>
-                                    <td>68</td>
-                                    <td>647-P1-POR-Agway</td>
-                                    <td>68</td>
-                                    <td>PP</td>
-                                    <td>Direct Energy Bs Mkt</td>
-                                    <td>PNG 924 LGA to 647 Agway P1</td>
-                                    <td>00031677</td>
-                                    <td>elavskyr</td>
-                                    <td>9/13/2022</td>
-                                </tr>
-                                <tr>
-                                    <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
-                                    <td><button className="btn btn-sm btn-primary">Details</button></td>
-                                    <td>NM</td>
-                                    <td>TIM</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>8/1/2022</td>
-                                    <td>8/31/2022</td>
-                                    <td>924-LGA-Direct Energy</td>
-                                    <td>68</td>
-                                    <td>647-P1-POR-Agway</td>
-                                    <td>68</td>
-                                    <td>PP</td>
-                                    <td>Direct Energy Bs Mkt</td>
-                                    <td>PNG 924 LGA to 647 Agway P1</td>
-                                    <td>00031677</td>
-                                    <td>elavskyr</td>
-                                    <td>9/13/2022</td>
-                                </tr>
-                                <tr>
-                                    <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
-                                    <td><button className="btn btn-sm btn-primary">Details</button></td>
-                                    <td>NM</td>
-                                    <td>TIM</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>8/1/2022</td>
-                                    <td>8/31/2022</td>
-                                    <td>924-LGA-Direct Energy</td>
-                                    <td>68</td>
-                                    <td>647-P1-POR-Agway</td>
-                                    <td>68</td>
-                                    <td>PP</td>
-                                    <td>Direct Energy Bs Mkt</td>
-                                    <td>PNG 924 LGA to 647 Agway P1</td>
-                                    <td>00031677</td>
-                                    <td>elavskyr</td>
-                                    <td>9/13/2022</td>
-                                </tr>
-                                <tr>
-                                    <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
-                                    <td><button className="btn btn-sm btn-primary">Details</button></td>
-                                    <td>NM</td>
-                                    <td>TIM</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>8/1/2022</td>
-                                    <td>8/31/2022</td>
-                                    <td>924-LGA-Direct Energy</td>
-                                    <td>68</td>
-                                    <td>647-P1-POR-Agway</td>
-                                    <td>68</td>
-                                    <td>PP</td>
-                                    <td>Direct Energy Bs Mkt</td>
-                                    <td>PNG 924 LGA to 647 Agway P1</td>
-                                    <td>00031677</td>
-                                    <td>elavskyr</td>
-                                    <td>9/13/2022</td>
-                                </tr>
-                                <tr>
-                                    <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
-                                    <td><button className="btn btn-sm btn-primary">Details</button></td>
-                                    <td>NM</td>
-                                    <td>TIM</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>8/1/2022</td>
-                                    <td>8/31/2022</td>
-                                    <td>924-LGA-Direct Energy</td>
-                                    <td>68</td>
-                                    <td>647-P1-POR-Agway</td>
-                                    <td>68</td>
-                                    <td>PP</td>
-                                    <td>Direct Energy Bs Mkt</td>
-                                    <td>PNG 924 LGA to 647 Agway P1</td>
-                                    <td>00031677</td>
-                                    <td>elavskyr</td>
-                                    <td>9/13/2022</td>
-                                </tr>
-                                <tr>
-                                    <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
-                                    <td><button className="btn btn-sm btn-primary">Details</button></td>
-                                    <td>NM</td>
-                                    <td>TIM</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>8/1/2022</td>
-                                    <td>8/31/2022</td>
-                                    <td>924-LGA-Direct Energy</td>
-                                    <td>68</td>
-                                    <td>647-P1-POR-Agway</td>
-                                    <td>68</td>
-                                    <td>PP</td>
-                                    <td>Direct Energy Bs Mkt</td>
-                                    <td>PNG 924 LGA to 647 Agway P1</td>
-                                    <td>00031677</td>
-                                    <td>elavskyr</td>
-                                    <td>9/13/2022</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div className="col">
+                    <div className="row text-center">
+                        <h4>Meter Burn List</h4>
+                    </div>
+                    <div className="row">
+                        <div className="col justify-content-center">
+                            <div className="table-responsive">
+                                <table className="table table-light table-sm table-hover table-striped-columns table-bordered border-primary rounded">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Details</th>
+                                            <th scope="col">Pool Id</th>
+                                            <th scope="col">Service Location</th>
+                                            <th scope="col">Point Name</th>
+                                            <th scope="col">Up Shipper</th>
+                                            <th scope="col">MCF</th>
+                                            <th scope="col">BTU Factor</th>
+                                            <th scope="col">Energy</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="table-group-divider" style={{borderTopColor:'#0D6EFD'}}>
+                                        <tr>
+                                            <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
+                                            <td><button className="btn btn-sm btn-primary">Details</button></td>
+                                            <td>NM</td>
+                                            <td>TIM</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>8/1/2022</td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
+                                            <td><button className="btn btn-sm btn-primary">Details</button></td>
+                                            <td>NM</td>
+                                            <td>TIM</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>8/1/2022</td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
+                                            <td><button className="btn btn-sm btn-primary">Details</button></td>
+                                            <td>NM</td>
+                                            <td>TIM</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>8/1/2022</td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
+                                            <td><button className="btn btn-sm btn-primary">Details</button></td>
+                                            <td>NM</td>
+                                            <td>TIM</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>8/1/2022</td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
+                                            <td><button className="btn btn-sm btn-primary">Details</button></td>
+                                            <td>NM</td>
+                                            <td>TIM</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>8/1/2022</td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
+                                            <td><button className="btn btn-sm btn-primary">Details</button></td>
+                                            <td>NM</td>
+                                            <td>TIM</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>8/1/2022</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -13,6 +13,8 @@ import { useState } from 'react'
 // import PieChart from '../PieChart'
 import ApiData from '../ApiData'
 
+import EventMap from '../EventMap'
+
 //GET API experiment:
 import { UserData } from '../Data'
 
@@ -58,7 +60,7 @@ function Main() {
                 </div>
                 <div className="col-lg-6 col-md-6 col-sm-12 text-center rounded p-2 window-border text-white"> Facility Map
 
-                    <NetworkGraph />
+                    <EventMap />
 
                 </div>
                 <div className="col-lg-2 col-md-3 col-sm-12 text-center text-white">

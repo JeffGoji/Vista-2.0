@@ -21,7 +21,7 @@
   border-radius: 3px;
 } */
 
-body .main-bg {
+/*body .main-bg {
   background-image: linear-gradient(
       to top,
       rgba(0, 0, 0, 0.7),
@@ -32,6 +32,24 @@ body .main-bg {
   background-repeat: no-repeat;
   background-attachment: local;
   background-position: center;
+}*/
+
+body {
+  background: none;
+}
+
+html {
+  background-image: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.7)
+    ),
+    url(../img/palm-trees2.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: local;
+  background-position: center;
+  min-height: 100%
 }
 
 /*{
@@ -90,4 +108,5 @@ canvas {
 .border-radius-1 {
   border-radius: 10px;
 }
+
 
