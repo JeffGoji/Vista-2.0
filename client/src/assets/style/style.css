@@ -87,30 +87,6 @@ canvas {
   padding-top: 5px;
 } */
 
-/* METER BURN PAGE */
-.control-label {
-  font-size: 18px;
-}
-
-.meter-burn-list {
-  background-image: linear-gradient(
-    to top,
-    rgba(255, 255, 255, 0.7),
-    rgba(255, 255, 255, 0.7)
-  );
-  border-radius: 10px;
-}
-
-.filters {
-  background-image: linear-gradient(
-    to top,
-    rgba(255, 255, 255, 0.7),
-    rgba(255, 255, 255, 0.7)
-  );
-  border-radius: 10px;
-}
-/* METER BURN PAGE END */
-
 .border-radius-1 {
   border-radius: 10px;
 }
