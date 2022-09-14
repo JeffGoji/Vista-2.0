@@ -35,65 +35,70 @@ const MeterBurnList = (props) => {
     }, [])
 
     return (
-        <div className="container-fluid p-2 fw-bold">
-            {/* BUTTONS */}
+        <div className="container-fluid text-white">
             <div className="row">
-                <div className="text-center">
-                    <button className="btn btn-primary m-1" type="button">
-                        <span>
-                            <img src={refreshPng} alt="refreshPng" />
-                        </span>
-                        Refresh
-                    </button>
-                    <button className="btn btn-primary m-1" type="button">
-                        <span>
-                            <img src={excelGif} alt="excelGif" />
-                        </span>
-                        Excel Report
-                    </button>
-                </div>
-            </div>
-            {/* FILTERS */}
-            <div className="row bg-light bg-opacity-75 m-2 rounded p-2">
-                <div className="container-fluid"> {/* container */}
-                    <div className="row"> {/* title */}
-                        <legend className="text-center">Filters:</legend>
+                {/* FILTERS */}
+                <div className="col">
+                    <h4 className="p-2">Display Filters:</h4>
+                    <div className="row p-2">
+                        <div className="row">
+                            <div className="col-auto">
+                                <label>Gas Flow Month:</label>
+                            </div>
+                            <div className="col">
+                                <input type="text"/>
+                            </div>
+                        </div>
                     </div>
-                    <div className="row"> {/* rows */}
-                        <div className="text-center col-lg-4 col-sm-4 col-md-4"> {/* gas flow month */}
-                            <label className="pe-2">Gas Flow Month:</label>
-                            <input type="text"/>
+                    <div className="row p-2">
+                        <div className="row">
+                            <div className="col-auto">
+                                <label className="form-label">Contracts:</label>
+                            </div>
+                            <div className="col">
+                                <select className="form-select form-select-sm" style={{width:'auto'}}>
+                                    {
+                                        contracts.sort((a, b) => (a.CNTR_TITLE > b.CNTR_TITLE) ? 1 : -1).map(({CNTR_NUM, CNTR_PARTY1, CNTR_TITLE}) => {
+                                            if (CNTR_PARTY1 === props.BA.BA_ID) {
+                                                return (
+                                                    <option key={CNTR_NUM}>{CNTR_TITLE}</option>
+                                                )
+                                            }
+                                        })
+                                    }
+                                </select>
+                            </div>
                         </div>
-                        <div className="text-center col-lg-4 col-sm-4 col-md-4"> {/* contracts */}
-                            <label className="pe-2">Contracts:</label>
-                            <select className="form-select">
-                                {
-                                    contracts.map(({CNTR_NUM, CNTR_PARTY2, CNTR_TITLE}) => {
-                                        if (CNTR_PARTY2 === props.BU.pipelineID) {
-                                            return (
-                                                <option key={CNTR_NUM}>{CNTR_TITLE}</option>
-                                            )
-                                        }
-                                    })
-                                }
-                            </select>
+                    </div>
+                    <div className="row p-2">
+                        <div className="row">
+                            <div className="col-auto">
+                                <label>Show Daily Burn For All Contracts:</label>
+                            </div>
+                            <div className="col">
+                                <input type="checkbox" />
+                            </div>
                         </div>
-                        <div className="col-sm-5 text-center col-lg-4 col-sm-4 col-md-4"> {/* show daily burn for all contracts */}
-                            <label className="pe-2">Show Daily Burn For All Contracts:</label>
-                            <input type="checkbox" />
+                    </div>
+                </div>
+                <div className="col"></div>
+                {/* BUTTONS */}
+                <div className="col">
+                    <div className="row h-100 align-items-center justify-content-center">
+                        <div className="col-sm-7 col-md-7 col-lg-7">
+                            <button className="btn btn-primary m-2" type="button"><img src={refreshPng} alt="Refresh" />Refresh</button>
+                            <button className="btn btn-primary" type="button"><img src={excelGif} alt="Excel" />Excel Report</button>
                         </div>
                     </div>
                 </div>
             </div>
             {/* DATA LIST */}
-            <div className="row bg-light bg-opacity-75 m-2 rounded p-2">
-                <div className="container-fluid">
-                    <div className="row">
-                        <legend className="text-center">Meter Burn List</legend>
-                    </div>
-                    <div className="row">
-                        <div className="col-sm-12 col-md-12 col-lg-12">
-                        <div className="table-responsive">
+            <div className="row">
+                <div className="row text-center">
+                    <h4>Meter Burn List</h4>
+                </div>
+                <div className="row">
+                    <div className="table-responsive">
                         <table className="bg-white table table-sm table-hover table-striped-columns table-bordered border-primary rounded">
                             <thead>
                                 <tr>
@@ -247,8 +252,6 @@ const MeterBurnList = (props) => {
                                 </tr>
                             </tbody>
                         </table>
-                        </div>
-                        </div>
                     </div>
                 </div>
             </div>

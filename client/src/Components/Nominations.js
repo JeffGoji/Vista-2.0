@@ -18,6 +18,7 @@ const Nominations = () => {
 
     return (
         <div className="container-fluid main-bg" >
+            {/* BUTTONS */}
             <div className="row">
                 <div className="col-sm-12 col-md-12 col-lg-12 p-2">
                     <button className="m-2 btn btn-primary"><img src={add} alt="Add" className="p-1" />Refresh</button>
@@ -28,6 +29,7 @@ const Nominations = () => {
                     <button className="m-2 btn btn-primary"><img src={ggpBtn} alt="GGP" className="p-1" />GGP</button>
                 </div>
             </div>
+            {/* FILTERS */}
             <div className="row mt-1 p-2">
                 <div className="col-sm-12 col-md-6 col-lg-4 text-white"><h4>Display Filters:</h4>
                     <div className="col-sm-12 col-md-12 col-lg-6">

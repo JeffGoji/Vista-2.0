@@ -8,34 +8,35 @@ import { NavLink } from 'react-router-dom'
 // import Auth from '../../utils/auth';
 import '../../index.css'
 
+// Business Units
+const BUs = [
+    {
+        buName: 'Peoples Natural Gas Company LLC',
+        pipelineID: '00000001'
+    },
+    {
+        buName: 'Peoples Gas Company (PTWP)',
+        pipelineID: '00004136'
+    },
+    {
+        buName: 'Peoples Gas Company West Virginia',
+        pipelineID: '00004287'
+    },
+    {
+        buName: 'Delgasco, LLC',
+        pipelineID: '00009177'
+    },
+    {
+        buName: 'Enpro, LLC',
+        pipelineID: '00009454'
+    }
+]
+
 export const Nav = (props) => {
 
     // state variables
     const [BAs, setBAs] = useState([])
-
-    // Business Units
-    const BUs = [
-        {
-            buName: 'Peoples Natural Gas Company LLC',
-            pipelineID: '00000001'
-        },
-        {
-            buName: 'Peoples Gas Company (PTWP)',
-            pipelineID: '00004136'
-        },
-        {
-            buName: 'Peoples Gas Company West Virginia',
-            pipelineID: '00004287'
-        },
-        {
-            buName: 'Delgasco, LLC',
-            pipelineID: '00009177'
-        },
-        {
-            buName: 'Enpro, LLC',
-            pipelineID: '00009454'
-        }
-    ]
+    const prevBAs = props.usePrevious(BAs)
 
     // references
     const selectBU = useRef() // select business unit dropdown reference
@@ -52,7 +53,7 @@ export const Nav = (props) => {
             },
         })
         .then(res => res.json())
-        .then(res => setBAs(res.recordset.sort()))
+        .then(res => setBAs(res.recordset))
     }
 
     useEffect(() => {
@@ -60,14 +61,15 @@ export const Nav = (props) => {
 
             // api calls
             getBAs('./bas').catch(console.error)
-
+            // end of api calls
+            
+            props.setBU(BUs[selectBU.current.selectedIndex]) // set the business unit on load
             renders.current = renders.current + 1 // increment renders
         }
-
-        props.setBU(BUs[selectBU.current.selectedIndex]) // set the business unit on load
-        props.setBA(selectBA.current.value)
-        console.log(BAs)
-    }, [])
+        if (BAs !== prevBAs && BAs.length !== 0) { // only run this code if BAs has changed and if its not empty
+            props.setBA(BAs.find(BA => BA.NAME === selectBA.current.value))
+        }
+    }, [BAs, selectBU])
 
     return (
         <>
@@ -148,7 +150,7 @@ export const Nav = (props) => {
 
                             <div className="nav-item m-2">
                                 <label className='pe-2'>Business Unit:</label>
-                                <select className='form-select' ref={selectBU} onChange={(event) => {props.setBU(BUs[event.target.selectedIndex])}}>
+                                <select className='form-select form-select-sm' ref={selectBU} onChange={(event) => {props.setBU(BUs[event.target.selectedIndex])}}>
                                     {
                                         BUs.map(({buName}) => {
                                             return <option key={buName}>{buName}</option>
@@ -158,9 +160,9 @@ export const Nav = (props) => {
                             </div>
                             <div className='nav-item m-2'>
                                 <label className='pe-2'>Business Associate:</label>
-                                <select className='form-select' ref={selectBA} onChange={(event) => {props.setBA(event.target.value)}}>
+                                <select className='form-select form-select-sm' ref={selectBA} onChange={(event) => {props.setBA(BAs.find(BA => BA.NAME === event.target.value))}}>
                                     {
-                                        BAs.map(({BA_ID, NAME, BUSINESS_UNIT}) => {
+                                        BAs.sort((a, b) => (a.NAME.toLowerCase() > b.NAME.toLowerCase()) ? 1 : -1).map(({BA_ID, NAME, BUSINESS_UNIT}) => {
                                             if (BUSINESS_UNIT === props.BU.pipelineID) {
                                                 return <option key={BA_ID}>{NAME}</option>
                                             }
