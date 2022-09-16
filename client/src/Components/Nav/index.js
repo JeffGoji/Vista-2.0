@@ -8,77 +8,36 @@ import { NavLink } from 'react-router-dom'
 // import Auth from '../../utils/auth';
 import '../../index.css'
 
-// Business Units
-const BUs = [
-    {
-        buName: 'Peoples Natural Gas Company LLC',
-        pipelineID: '00000001'
-    },
-    {
-        buName: 'Peoples Gas Company (PTWP)',
-        pipelineID: '00004136'
-    },
-    {
-        buName: 'Peoples Gas Company West Virginia',
-        pipelineID: '00004287'
-    },
-    {
-        buName: 'Delgasco, LLC',
-        pipelineID: '00009177'
-    },
-    {
-        buName: 'Enpro, LLC',
-        pipelineID: '00009454'
-    }
-]
-
-export const Nav = (props) => {
-
-    // state variables
-    const [BAs, setBAs] = useState([])
-    const prevBAs = props.usePrevious(BAs)
+export const Nav = ({ setBU, BUs, BAs, prevBAs, setBA, BU }) => {
 
     // references
     const selectBU = useRef() // select business unit dropdown reference
     const selectBA = useRef() // select BA dropdown reference
-    const renders = useRef(0) // for counting number of renders
-
-    // api call functions
-    const getBAs = async (url) => {
-        await fetch(url, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'Accept': 'application/json',
-            },
-        })
-        .then(res => res.json())
-        .then(res => setBAs(res.recordset))
-    }
+    const renders = useRef(0)
 
     useEffect(() => {
-        if (renders.current < 1) { // only run this code on first render
 
-            // api calls
-            getBAs('./bas').catch(console.error)
-            // end of api calls
-            
-            props.setBU(BUs[selectBU.current.selectedIndex]) // set the business unit on load
+        // only run this code on first render
+        if (renders.current < 1) {
+            setBU(BUs[selectBU.current.selectedIndex]) // set the business unit on load
             renders.current = renders.current + 1 // increment renders
         }
-        if (BAs !== prevBAs && BAs.length !== 0) { // only run this code if BAs has changed and if its not empty
-            props.setBA(BAs.find(BA => BA.NAME === selectBA.current.value))
-        }
-    }, [BAs, selectBU])
 
+        // only run this code if BAs has changed and if its not empty
+        if (BAs !== prevBAs && BAs.length !== 0) {
+            setBA(BAs.find(BA => BA.NAME === selectBA.current.value))
+        }
+
+    }, [BAs, selectBU, selectBA])
+    
     return (
         <>
-            <div className="navbar navbar-expand-lg navbar-light bg-light text-dark">
+            <div className="navbar navbar-expand-lg navbar-light bg-light text-dark" style={{borderBottom:'#065599 solid 5px'}}>
                 <div className="container-fluid">
                     <NavLink className="navbar-brand" to="/">
-                        <img src={logo1}
+                        <img className='shadow rounded' src={logo1}
                             alt="Company Logo"
-                            style={{ width: '40%' }}
+                            style={{ width: '40%', border:'#065599 solid 2px', padding:'5px' }}
                         /></NavLink>
                     <button
                         className="navbar-toggler"
@@ -112,6 +71,7 @@ export const Nav = (props) => {
                                     <li><NavLink className="dropdown-item" to="/executive-team">Our Team</NavLink></li>
                                 </ul>
                             </li> */}
+
                             <li className={"nav-item dropdown ms-lg-3"}>
                                 <div
                                     className="nav-link dropdown-toggle"
@@ -135,22 +95,9 @@ export const Nav = (props) => {
                                 </ul>
                             </li>
 
-                            {/*<li className={"ms-lg-3"}>
-                                <NavLink to="/about"><button className='btn btn-md btn-primary'>New Network</button></NavLink>
-                            </li>
-                            <li className={"ms-lg-3"}>
-                                <NavLink to="newsstand"><button className='btn btn-md btn-success'>Save Network</button></NavLink>
-                            </li>
-                            <li className={"ms-lg-3"}>
-                                <NavLink to='contact'><button className='btn btn-md btn-warning'>Edit Network</button></NavLink>
-                            </li>
-                            <li className={"ms-lg-3"}>
-                                <NavLink to='contact'><button className='btn btn-md btn-danger'>Delete Network</button></NavLink>
-                            </li>*/}
-
                             <div className="nav-item m-2">
                                 <label className='pe-2'>Business Unit:</label>
-                                <select className='form-select form-select-sm' ref={selectBU} onChange={(event) => {props.setBU(BUs[event.target.selectedIndex])}}>
+                                <select className='form-select form-select-sm' ref={selectBU} onChange={(event) => {setBU(BUs[event.target.selectedIndex])}}>
                                     {
                                         BUs.map(({buName}) => {
                                             return <option key={buName}>{buName}</option>
@@ -160,10 +107,10 @@ export const Nav = (props) => {
                             </div>
                             <div className='nav-item m-2'>
                                 <label className='pe-2'>Business Associate:</label>
-                                <select className='form-select form-select-sm' ref={selectBA} onChange={(event) => {props.setBA(BAs.find(BA => BA.NAME === event.target.value))}}>
+                                <select className='form-select form-select-sm' ref={selectBA} onChange={(event) => {setBA(BAs.find(BA => BA.NAME === event.target.value))}}>
                                     {
                                         BAs.sort((a, b) => (a.NAME.toLowerCase() > b.NAME.toLowerCase()) ? 1 : -1).map(({BA_ID, NAME, BUSINESS_UNIT}) => {
-                                            if (BUSINESS_UNIT === props.BU.pipelineID) {
+                                            if (BU !== undefined && BUSINESS_UNIT === BU.pipelineID) {
                                                 return <option key={BA_ID}>{NAME}</option>
                                             }
                                         })

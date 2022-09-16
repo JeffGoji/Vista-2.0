@@ -187,6 +187,28 @@ const getBAs = async() => {
     }
 }
 
+// get contract path rates
+const getCntrPathRates = async() => {
+    try {
+        let sqlconnection = await sql.connect(config)
+        let data = sqlconnection.request().query("SELECT * FROM ENT_CNTR_PATH_RATE")
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+// get points
+const getPoints = async() => {
+    try {
+        let sqlconnection = await sql.connect(config)
+        let data = sqlconnection.request().query("SELECT * FROM ENT_POINTS")
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 
 //Built in React Fetch system using the SAME nom call above but simplified:
 // const getNoms = () => {
@@ -227,4 +249,6 @@ module.exports = {
     getGasMeter,
     getContracts,
     getBAs,
+    getCntrPathRates,
+    getPoints,
 }

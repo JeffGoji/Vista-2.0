@@ -130,5 +130,16 @@ app.get('/bas', async (req, res) => {
 //     res.send({ result: 'Goodbye!' })
 // })
 
+// get contract path rates
+app.get('/cntrPathRates', async (req, res) => {
+    const result = await dbOperation.getCntrPathRates(req)
+    res.send(result)
+})
+
+// get points
+app.get('/points', async (req, res) => {
+    const result = await dbOperation.getPoints(req)
+    res.send(result)
+})
 
 app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`));
