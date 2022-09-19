@@ -105,11 +105,3 @@ canvas {
 .border-radius-1 {
   border-radius: 10px;
 }
-
-button {
-  border-radius: 5px;
-  background-color: #065599;
-  border:none;
-  color:white;
-  padding:5px;
-}

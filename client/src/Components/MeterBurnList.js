@@ -27,68 +27,72 @@ const MeterBurnList = ({contract, contracts, setContract, points, BA, cntrPathRa
     }, [points, contracts, contract, BA])
 
     return (
-        <div className="container-fluid text-white mt-5">
+        <div className="container-fluid text-white p-5">
             {/* FILTERS AND BUTTONS */}
             <div className="row justify-content-center">
-                <div className="col-auto bg-light text-dark bg-opacity-75 rounded">
-                    <div className="row">
-                        {/* FILTERS */}
+                {/* FILTERS */}
+                <div className="col-auto">
+                    <div className="row justify-content-end">
                         <div className="col-auto">
-                            <div className="row align-items-center justify-content-center">
-                                <div className="col-auto" >
-                                    <div className="row m-1">
-                                        <div className="col-auto">
-                                            <h4>Display Filters:</h4>
-                                        </div>
+                            <div className="row align-items-center justify-content-center pb-2">
+                                <div className="col-auto">
+                                    <h4>Display Filters:</h4>
+                                </div>
+                            </div>
+                            <div className="row align-items-center pb-2">
+                                <div className="col-5">
+                                    <div className="row justify-content-end">
+                                        <div className="col-auto"><label>Gas Flow Month:</label></div>
                                     </div>
-                                    <div className="row m-1">
-                                        <div className="col">
-                                            <label>Gas Flow Month:</label>
-                                        </div>
-                                        <div className="col">
-                                            <input type="month" value={`${new Date().getFullYear()}-${(new Date().getMonth() > 8 ? "" : "0")+ (new Date().getMonth()+1)}`} onChange={() => {}}/>
-                                        </div>
-                                    </div>
-                                    <div className="row m-1">
-                                        <div className="col-5">
-                                            <label className="form-label">Contracts:</label>
-                                        </div>
-                                        <div className="col-7">
-                                            <select ref={selectContract} onChange={(event) => {setContract(contracts.find(contract => contract.CNTR_TITLE === event.target.value))}}>
-                                                {
-                                                    contracts.sort((a, b) => (a.CNTR_TITLE > b.CNTR_TITLE) ? 1 : -1).map(({CNTR_NUM, CNTR_PARTY1, CNTR_TITLE}) => {
-                                                        if (CNTR_PARTY1 === BA.BA_ID) {
-                                                            return (
-                                                                <option key={CNTR_NUM}>{CNTR_TITLE}</option>
-                                                            )
-                                                        }
-                                                    })
+                                </div>
+                                <div className="col-7">
+                                    <select className="form-select form-select-sm" ref={selectContract} onChange={(event) => {setContract(contracts.find(contract => contract.CNTR_TITLE === event.target.value))}}>
+                                        {
+                                            contracts.sort((a, b) => (a.CNTR_TITLE > b.CNTR_TITLE) ? 1 : -1).map(({CNTR_NUM, CNTR_PARTY1, CNTR_TITLE}) => {
+                                                if (CNTR_PARTY1 === BA.BA_ID) {
+                                                    return (
+                                                        <option key={CNTR_NUM}>{CNTR_TITLE}</option>
+                                                    )
                                                 }
-                                            </select>
-                                        </div>
+                                            })
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="row align-items-center pb-2">
+                                <div className="col-5">
+                                    <div className="row justify-content-end">
+                                        <div className="col-auto"><label className="form-label" >Contracts:</label></div>
                                     </div>
-                                    <div className="row m-1">
-                                        <div className="col-auto">
-                                            <label>Show Daily Burn For All Contracts:</label>
-                                        </div>
-                                        <div className="col-auto">
-                                            <input type="checkbox" />
-                                        </div>
+                                </div>
+                                <div className="col-7">
+                                    <input className="form-control form-control-sm" type="month" value={`${new Date().getFullYear()}-${(new Date().getMonth() > 8 ? "" : "0")+ (new Date().getMonth()+1)}`} onChange={() => {}}/>
+                                </div>
+                            </div>
+                            <div className="row align-items-center justify-content-center">
+                                <div className="col-auto">
+                                    <div className="row justify-content-end">
+                                        <div className="col-auto"><label>Show Daily Burn For All Contracts:</label></div>
+                                    </div>
+                                </div>
+                                <div className="col-auto">
+                                    <div className="col-auto">
+                                        <input type="checkbox" />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {/* BUTTONS */}
-                        <div className="col-auto" >
-                            <div className="row h-100 align-items-center justify-content-start">
-                                <div className="col-auto" >
-                                    <div className="row m-1">
-                                        <button type="button"><img src={refreshPng} alt="Refresh" />Refresh</button>
-                                    </div>
-                                    <div className="row m-1">
-                                        <button type="button"><img src={excelGif} alt="Excel" />Excel Report</button>
-                                    </div>
-                                </div>
+                    </div>
+                </div>
+                {/* BUTTONS */}
+                <div className="col-auto">
+                    <div className="row h-100 align-items-center justify-content-start">
+                        <div className="col-auto">
+                            <div className="row m-1">
+                                <button type="button" className="btn btn-primary"><img src={refreshPng} alt="Refresh" />Refresh</button>
+                            </div>
+                            <div className="row m-1">
+                                <button type="button" className="btn btn-primary"><img src={excelGif} alt="Excel" />Excel Report</button>
                             </div>
                         </div>
                     </div>
@@ -96,7 +100,7 @@ const MeterBurnList = ({contract, contracts, setContract, points, BA, cntrPathRa
             </div>
             {/* DATA */}
             <div className="row mt-5 justify-content-center">
-                <div className="col-auto rounded bg-light text-dark bg-opacity-75" style={{border:'white solid 1px'}}>
+                <div className="col-auto" >
                     {/* HEADER */}
                     <div className="row text-center">
                         <h4>Meter Burn List</h4>
@@ -113,7 +117,6 @@ const MeterBurnList = ({contract, contracts, setContract, points, BA, cntrPathRa
                                             <th scope="col">Delivery Point Number</th>
                                             <th scope="col">Effective Date</th>
                                             <th scope="col">User Stamp</th>
-                                            <th scope="col">Site Facility ID</th>
                                         </tr>
                                     </thead>
                                     <tbody className="table-group-divider">
@@ -126,7 +129,6 @@ const MeterBurnList = ({contract, contracts, setContract, points, BA, cntrPathRa
                                                         <td>{DLV_PT_NUM}</td>
                                                         <td>{EFFDATE}</td>
                                                         <td>{USERSTAMP}</td>
-                                                        <td>{SITE_FAC_ID}</td>
                                                     </tr>
                                                 )
                                             }

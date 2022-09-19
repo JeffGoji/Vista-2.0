@@ -202,7 +202,7 @@ const getCntrPathRates = async() => {
 const getPoints = async() => {
     try {
         let sqlconnection = await sql.connect(config)
-        let data = sqlconnection.request().query("SELECT * FROM ENT_POINTS")
+        let data = sqlconnection.request().query("SELECT * FROM ENT_POINTS WHERE STATUS = 'AC'")
         return data
     } catch (err) {
         console.log(err)
