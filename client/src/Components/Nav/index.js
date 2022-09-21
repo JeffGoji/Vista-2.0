@@ -32,7 +32,7 @@ export const Nav = ({ setBU, BUs, BAs, prevBAs, setBA, BU }) => {
     
     return (
         <>
-            <div className="navbar navbar-expand-lg navbar-light bg-light text-dark" style={{borderBottom:'#065599 solid 5px'}}>
+            <div className="navbar navbar-expand-lg navbar-light bg-light text-dark" style={{borderBottom:'#004B8D solid 5px'}}>
                 <div className="container-fluid">
                     <NavLink className="navbar-brand" to="/">
                         <img className='shadow rounded' src={logo1}
@@ -52,6 +52,11 @@ export const Nav = ({ setBU, BUs, BAs, prevBAs, setBA, BU }) => {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNavDropdown">
                         <div className="navbar-nav">
+
+                            <li className="nav-item ms-lg-3">
+                                <NavLink className={"nav-link active"} aria-current="page" to="/network-builder">Network Builder</NavLink>
+                            </li>
+
                             <li className="nav-item ms-lg-3">
                                 <NavLink className={"nav-link active"} aria-current="page" to="/">Dashboard</NavLink>
                             </li>

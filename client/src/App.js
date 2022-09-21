@@ -7,6 +7,7 @@ import Nav from './Components/Nav';
 import Main from './Components/Main';
 import Nominations from './Components/Nominations';
 import MeterBurnList from './Components/MeterBurnList';
+import NetworkGraph from './Components/NetworkGraph';
 
 // custom react Hook for storing previous values
 function usePrevious(value) {
@@ -138,6 +139,10 @@ function App() {
               prevContract={prevContracts}
             />
           }
+        />
+        <Route
+          path='/network-builder'
+          element={<NetworkGraph />}
         />
       </Routes>
     </div>
