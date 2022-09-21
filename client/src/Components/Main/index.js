@@ -18,9 +18,14 @@ import { UserData } from '../Data'
 
 //Get Bar graph with built in API experiment:
 import BarChart2 from '../PieChart2'
-import PieChart3 from '../PieChart3'
+// import PieChart3 from '../PieChart3'
+
+//Recharts chart:
+import { Rechart } from '../Rechart'
+
 
 import NetworkGraph from '../NetworkGraph'
+
 
 
 function Main() {
@@ -52,7 +57,8 @@ function Main() {
                     {/* <Data1 />
                     <br /> */}
                     {/* <PieChart chartData={pieData} /> */}
-                    <PieChart3 />
+                    <Rechart />
+                    {/* <PieChart3 /> */}
                     <br />
                     <ApiData />
                 </div>

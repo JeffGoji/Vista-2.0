@@ -19,12 +19,12 @@ const MeterBurnList = (props) => {
                 'Accept': 'application/json',
             },
         })
-        .then(res => res.json())
-        .then(res => setContracts(res.recordset))
+            .then(res => res.json())
+            .then(res => setContracts(res.recordset))
     }
 
     useEffect(() => {
-        if (renders.current < 1){ // only do these things on first render
+        if (renders.current < 1) { // only do these things on first render
 
             // get data
             getContracts('/contracts').catch(console.error)
@@ -46,7 +46,7 @@ const MeterBurnList = (props) => {
                                 <label>Gas Flow Month:</label>
                             </div>
                             <div className="col">
-                                <input type="text"/>
+                                <input type="text" />
                             </div>
                         </div>
                     </div>
@@ -56,9 +56,9 @@ const MeterBurnList = (props) => {
                                 <label className="form-label">Contracts:</label>
                             </div>
                             <div className="col">
-                                <select className="form-select form-select-sm" style={{width:'auto'}}>
+                                <select className="form-select form-select-sm" style={{ width: 'auto' }}>
                                     {
-                                        contracts.sort((a, b) => (a.CNTR_TITLE > b.CNTR_TITLE) ? 1 : -1).map(({CNTR_NUM, CNTR_PARTY1, CNTR_TITLE}) => {
+                                        contracts.sort((a, b) => (a.CNTR_TITLE > b.CNTR_TITLE) ? 1 : -1).map(({ CNTR_NUM, CNTR_PARTY1, CNTR_TITLE }) => {
                                             if (CNTR_PARTY1 === props.BA.BA_ID) {
                                                 return (
                                                     <option key={CNTR_NUM}>{CNTR_TITLE}</option>
@@ -125,7 +125,7 @@ const MeterBurnList = (props) => {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
+                                    <td><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
                                     <td><button className="btn btn-sm btn-primary">Details</button></td>
                                     <td>NM</td>
                                     <td>TIM</td>
@@ -146,7 +146,7 @@ const MeterBurnList = (props) => {
                                     <td>9/13/2022</td>
                                 </tr>
                                 <tr>
-                                    <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
+                                    <td><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
                                     <td><button className="btn btn-sm btn-primary">Details</button></td>
                                     <td>NM</td>
                                     <td>TIM</td>
@@ -167,7 +167,7 @@ const MeterBurnList = (props) => {
                                     <td>9/13/2022</td>
                                 </tr>
                                 <tr>
-                                    <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
+                                    <td><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
                                     <td><button className="btn btn-sm btn-primary">Details</button></td>
                                     <td>NM</td>
                                     <td>TIM</td>
@@ -188,7 +188,7 @@ const MeterBurnList = (props) => {
                                     <td>9/13/2022</td>
                                 </tr>
                                 <tr>
-                                    <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
+                                    <td><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
                                     <td><button className="btn btn-sm btn-primary">Details</button></td>
                                     <td>NM</td>
                                     <td>TIM</td>
@@ -209,7 +209,7 @@ const MeterBurnList = (props) => {
                                     <td>9/13/2022</td>
                                 </tr>
                                 <tr>
-                                    <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
+                                    <td><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
                                     <td><button className="btn btn-sm btn-primary">Details</button></td>
                                     <td>NM</td>
                                     <td>TIM</td>
@@ -230,7 +230,7 @@ const MeterBurnList = (props) => {
                                     <td>9/13/2022</td>
                                 </tr>
                                 <tr>
-                                    <td scope="row"><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
+                                    <td><button className="btn btn-sm btn-primary">View</button> <button className="btn btn-sm btn-primary">Save</button></td>
                                     <td><button className="btn btn-sm btn-primary">Details</button></td>
                                     <td>NM</td>
                                     <td>TIM</td>
