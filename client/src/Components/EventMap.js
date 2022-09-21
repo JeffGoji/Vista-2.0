@@ -140,7 +140,7 @@ function EventMap() {
   // loads the google maps api
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyBg7_yys3sc_lunTZ_5pPaAl5dAk48PHMY",
+    googleMapsApiKey: "AIzaSyCKeEY422ZuBTe73vpjaSySdoJGJ8OX_5Y",
   })
 
   // this function is called when the map loads
@@ -213,7 +213,7 @@ function EventMap() {
         >
           <div onClick = {() => {setFacKey(facility.FAC_KEY)}}>
             <img src={facilityLogo} alt="Facility" width="50" height="50"/>
-            <p>{facility.FAC_NAME}</p>
+            <p className="text-primary">{facility.FAC_NAME}</p>
           </div>
         </InfoBox>
       ))
@@ -300,37 +300,40 @@ function EventMap() {
   }, [allocNetworkName, facilities, facKey, decisionUnit])
   
   return isLoaded ? (
-    <div>
-      <label style={{padding:'0px 10px'}}>Select an allocation network:</label>
-      <select id="chooseDecisionUnit" onChange={handleSelectChange}>
-        {fillValues()}
-      </select>
-      {/*<label style={{padding:'0px 10px'}}>Select an allocation process:</label>
-      <select>
-        {fillAllocProcessValues()}
-      </select>*/}
-    <GoogleMap
-      mapContainerStyle={{height: "600px", width: "800px"}}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-      onRightClick={handleRightClick}
-      onClick={() => setVisibility(false)}
-      onDrag={() => setVisibility(false)}
-    >
-      <InfoBox
-      onLoad = {infoBoxLoad}
-      options={infoBoxOptions}
-      position={infoBoxPosition}
-      visible={visibility}
-    >
-      <div>
-        <button type="button">Create Node</button>
+    <div className="container-fluid">
+      <div className="row justify-content-center pb-2">
+        <div className="col-auto">
+            <GoogleMap
+            mapContainerStyle={{height:'600px', width:'600px'}}
+            onLoad={onLoad}
+            onUnmount={onUnmount}
+            onRightClick={handleRightClick}
+            onClick={() => setVisibility(false)}
+            onDrag={() => setVisibility(false)}
+          >
+            <InfoBox
+            onLoad = {infoBoxLoad}
+            options={infoBoxOptions}
+            position={infoBoxPosition}
+            visible={visibility}
+            >
+              <div>
+                <button type="button">Create Node</button>
+              </div>
+            </InfoBox>
+            {showFacilities()}
+          </GoogleMap>
+        </div>
       </div>
-    </InfoBox>
-    {showFacilities()}
-    {/*showMeasPts()*/}
-    </GoogleMap></div>
-
+      <div className="row justify-content-center">
+        <div className="col-auto">
+          <label className="pe-2">Select an allocation network:</label>
+          <select id="chooseDecisionUnit" onChange={handleSelectChange}>
+            {fillValues()}
+          </select>
+        </div>
+      </div>
+    </div>
   ) : <></>
 }
 

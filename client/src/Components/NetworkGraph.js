@@ -112,9 +112,12 @@ const NetworkGraph = () => {
 
   const { graph, events } = state;
   return (
-    <div>
-      {/* // <div style={{ border: '1px solid black' }}> */}
-      <Graph key={uuidv4()} graph={graph} options={options} events={events} />
+    <div className="container-fluid">
+      <div className="row justify-content-center align-items-center mt-3">
+        <div className="col-lg-6">
+          <Graph key={uuidv4()} graph={graph} options={options} events={events} />
+        </div>
+      </div>
     </div>
   );
 
