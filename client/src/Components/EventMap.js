@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "@szhsin/react-menu/dist/index.css";
-import { useJsApiLoader, InfoBox, GoogleMap } from "@react-google-maps/api";
+import { useJsApiLoader, InfoBox, GoogleMap, Marker } from "@react-google-maps/api";
 import facilityLogo from "../assets/img/gas-plant-icon.png"
 import meterLogo from "../assets/img/gas-meter.webp"
 
@@ -206,16 +206,17 @@ function EventMap() {
   const showFacilities = () => {
     if (displayFacilities !== []) {
       return displayFacilities.map(facility => (
-        <InfoBox
+        <Marker
           key = {facility.FAC_KEY}
-          options={infoBoxOptions}
           position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}
+          icon={{
+            url:facilityLogo, 
+            scaledSize: new window.google.maps.Size(50,50),
+            labelOrigin: new window.google.maps.Point(25,45)
+          }}
+          label={{color:'blue', text:facility.FAC_NAME}}
         >
-          <div onClick = {() => {setFacKey(facility.FAC_KEY)}}>
-            <img src={facilityLogo} alt="Facility" width="50" height="50"/>
-            <p className="text-primary">{facility.FAC_NAME}</p>
-          </div>
-        </InfoBox>
+        </Marker>
       ))
     }
   }
@@ -311,17 +312,19 @@ function EventMap() {
             onClick={() => setVisibility(false)}
             onDrag={() => setVisibility(false)}
           >
-            <InfoBox
-            onLoad = {infoBoxLoad}
-            options={infoBoxOptions}
-            position={infoBoxPosition}
-            visible={visibility}
-            >
-              <div>
-                <button type="button">Create Node</button>
-              </div>
-            </InfoBox>
-            {showFacilities()}
+            <div>
+              <InfoBox
+              onLoad = {infoBoxLoad}
+              options={infoBoxOptions}
+              position={infoBoxPosition}
+              visible={visibility}
+              >
+                <div>
+                  <button type="button">Create Node</button>
+                </div>
+              </InfoBox>
+              {showFacilities()}
+            </div>
           </GoogleMap>
         </div>
       </div>
