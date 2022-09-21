@@ -20,9 +20,14 @@ import { UserData } from '../Data'
 
 //Get Bar graph with built in API experiment:
 import BarChart2 from '../PieChart2'
-import PieChart3 from '../PieChart3'
+// import PieChart3 from '../PieChart3'
+
+//Recharts chart:
+import { Rechart } from '../Rechart'
+
 
 import NetworkGraph from '../NetworkGraph'
+
 
 
 function Main() {
@@ -54,6 +59,7 @@ function Main() {
                     {/* <Data1 />
                     <br /> */}
                     {/* <PieChart chartData={pieData} /> */}
+
                     <div className='row h-100 justify-content-center align-items-center'>
                         <div className='col-10'>
                         <PieChart3 />
@@ -61,6 +67,7 @@ function Main() {
                         <ApiData />
                         </div>
                     </div>
+
                 </div>
                 <div className="col-lg-6 col-md-6 col-sm-12 text-center rounded p-2 window-border text-white"> 
                     <label className='fs-3'>Facility Map</label>

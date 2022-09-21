@@ -8,10 +8,12 @@ const MeterBurnList = ({contract, contracts, setContract, points, BA, cntrPathRa
 
     // references
     const renders = useRef(0)
+
     const selectContract = useRef()
 
+
     useEffect(() => {
-        if (renders.current < 1){ // only do these things on first render
+        if (renders.current < 1) { // only do these things on first render
 
             // update renders reference
             renders.current = renders.current + 1
@@ -39,6 +41,7 @@ const MeterBurnList = ({contract, contracts, setContract, points, BA, cntrPathRa
                                     <h4>Display Filters:</h4>
                                 </div>
                             </div>
+
                             <div className="row align-items-center pb-2">
                                 <div className="col-5">
                                     <div className="row justify-content-end">
@@ -58,6 +61,7 @@ const MeterBurnList = ({contract, contracts, setContract, points, BA, cntrPathRa
                                         }
                                     </select>
                                 </div>
+
                             </div>
                             <div className="row align-items-center pb-2">
                                 <div className="col-5">
@@ -98,6 +102,7 @@ const MeterBurnList = ({contract, contracts, setContract, points, BA, cntrPathRa
                     </div>
                 </div>
             </div>
+
             {/* DATA */}
             <div className="row mt-5 justify-content-center">
                 <div className="col-auto" >
@@ -137,6 +142,7 @@ const MeterBurnList = ({contract, contracts, setContract, points, BA, cntrPathRa
                                 </table>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
