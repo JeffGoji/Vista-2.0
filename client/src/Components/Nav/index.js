@@ -94,6 +94,7 @@ export const Nav = ({ setBU, BUs, BAs, prevBAs, setBA, BU }) => {
                                     <li><NavLink className="dropdown-item" to="nominations">Nominations</NavLink></li>
 
                                     <li><NavLink className="dropdown-item" to="meter-burn-list">Meter Burn List</NavLink></li>
+                                    <li><NavLink className="dropdown-item" to="target-list">Target List</NavLink></li>
                                     <li>
                                         <NavLink className="dropdown-item" to="gastar-risk">Gastar Risk</NavLink>
                                     </li>

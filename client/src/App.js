@@ -7,6 +7,7 @@ import Nav from './Components/Nav';
 import Main from './Components/Main';
 import Nominations from './Components/Nominations';
 import MeterBurnList from './Components/MeterBurnList';
+import TargetList from './Components/TargetList';
 import NetworkGraph from './Components/NetworkGraph';
 
 // custom react Hook for storing previous values
@@ -137,6 +138,15 @@ function App() {
               BA={BA}
               cntrPathRates={cntrPathRates}
               prevContract={prevContracts}
+            />
+          }
+        />
+        <Route
+          path='/target-list'
+          element={
+            <TargetList
+              contracts={contracts}
+              setContract={setContract}
             />
           }
         />
