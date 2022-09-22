@@ -14,6 +14,7 @@ import { useState } from 'react'
 import ApiData from '../ApiData'
 
 import EventMap from '../EventMap'
+import Map from '../Map'
 
 //GET API experiment:
 import { UserData } from '../Data'

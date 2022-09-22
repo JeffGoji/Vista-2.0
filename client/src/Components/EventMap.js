@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "@szhsin/react-menu/dist/index.css";
-import { useJsApiLoader, InfoBox, GoogleMap, Marker, Polyline } from "@react-google-maps/api";
+import { useJsApiLoader, InfoBox, GoogleMap, Marker, MarkerClusterer, Polyline } from "@react-google-maps/api";
 import facilityLogo from "../assets/img/gas-plant-icon.png"
 import meterLogo from "../assets/img/gas-meter.webp"
 
@@ -335,25 +335,44 @@ function EventMap() {
             onClick={() => setVisibility(false)}
             onDrag={() => setVisibility(false)}
           >
-            {/*<Polyline 
-              options={{
-                strokeColor:'red',
-                strokeOpacity: 0.35,
-                strokeWeight: 1
-              }}
-              path={path} 
-            />*/}
-            <InfoBox
-            onLoad = {infoBoxLoad}
-            options={infoBoxOptions}
-            position={infoBoxPosition}
-            visible={visibility}
-            >
-              <div>
-                <button type="button">Create Node</button>
-              </div>
-            </InfoBox>
-            {showFacilities()}
+            <>
+              <Polyline 
+                options={{
+                  strokeColor:'red',
+                  strokeOpacity: 0.35,
+                  strokeWeight: 1
+                }}
+                path={path} 
+              />
+              <InfoBox
+              onLoad = {infoBoxLoad}
+              options={infoBoxOptions}
+              position={infoBoxPosition}
+              visible={visibility}
+              >
+                <div>
+                  <button type="button">Create Node</button>
+                </div>
+              </InfoBox>
+              <MarkerClusterer>
+                {(clusterer) => 
+                  displayFacilities.map(facility => (
+                    <Marker
+                      clusterer={clusterer}
+                      key = {facility.FAC_KEY}
+                      position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}
+                      icon={{
+                        url:facilityLogo, 
+                        scaledSize: new window.google.maps.Size(50,50),
+                        labelOrigin: new window.google.maps.Point(25,45)
+                      }}
+                      label={{color:'blue', text:facility.FAC_NAME}}
+                    >
+                    </Marker>
+                  ))
+                }
+              </MarkerClusterer>
+            </>
           </GoogleMap>
         </div>
       </div>
