@@ -65,8 +65,6 @@ function PieChart3() {
             });
 
     }, []);
-    console.log(returnedMeter)
-    console.log(returnedFuel);
     if (isLoading) {
         return <p>Loading....</p>
     }
@@ -106,7 +104,6 @@ function PieChart3() {
 
     })
     // console.log(myChart3)
-    console.log(returnedNomData);
     return (
         <div className='mt-2 p-2'>
             <select className='m-3' value={selected} onChange={handleChange}>

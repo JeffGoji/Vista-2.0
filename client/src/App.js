@@ -81,7 +81,7 @@ function App() {
     if (renders.current < 1) { // run this code only if it is the first render
 
       // api calls
-      console.log('getting data...')
+      console.log("getting data...")
       getData('./bas').catch(console.error).then(res => setBAs(res.recordset))
       getData('./contracts').catch(console.error).then(res => setContracts(res.recordset))
       getData('./cntrPathRates').catch(console.error).then(res => setCntrPathRates(res.recordset))
@@ -94,12 +94,8 @@ function App() {
     }
 
     if (BAs !== prevBAs && BAs.length !== 0) {
-      console.log("business associates: ")
-      console.log(BAs)
     }
     if (contracts !== prevContracts && contracts.length !== 0) {
-      console.log("contracts: ")
-      console.log(contracts)
     }
 
   }, [BAs, contracts]);

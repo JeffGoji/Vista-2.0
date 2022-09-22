@@ -14,16 +14,17 @@ import { useState } from 'react'
 import ApiData from '../ApiData'
 
 import EventMap from '../EventMap'
+import Map from '../Map'
 
 //GET API experiment:
 import { UserData } from '../Data'
 
 //Get Bar graph with built in API experiment:
 import BarChart2 from '../PieChart2'
-// import PieChart3 from '../PieChart3'
+import PieChart3 from '../PieChart3'
 
 //Recharts chart:
-import { Rechart } from '../Rechart'
+//import { Rechart } from '../Rechart'
 
 
 import NetworkGraph from '../NetworkGraph'
