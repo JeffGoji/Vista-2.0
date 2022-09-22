@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "@szhsin/react-menu/dist/index.css";
-import { useJsApiLoader, InfoBox, GoogleMap, Marker } from "@react-google-maps/api";
+import { useJsApiLoader, InfoBox, GoogleMap, Marker, Polyline } from "@react-google-maps/api";
 import facilityLogo from "../assets/img/gas-plant-icon.png"
 import meterLogo from "../assets/img/gas-meter.webp"
 
@@ -19,6 +19,7 @@ function usePrevious(value) {
 
 // displays the map
 function EventMap() {
+  
   // declare some constants
   const [facilities, setFacilities] = useState([])
   const [processProcess, setProcessProcess] = useState([])
@@ -31,6 +32,7 @@ function EventMap() {
   const prevFacKey = usePrevious(facKey)
   const [measPts, setMeasPnts] = useState([])
   const [displayFacilities, setDisplayFacilities] = useState([])
+  const prevDisplayFacilities = usePrevious(displayFacilities)
   const [displayMeasPts, setDisplayMeasPts] = useState([])
   const [infoBoxPosition, setInfoBoxPosition] = useState()
   const [visibility, setVisibility] = useState(false)
@@ -44,6 +46,8 @@ function EventMap() {
     enableEventPropagation: true
   };
   const renders = useRef(1) // end of variables
+  const [path, setPath] = useState([])
+  const [polyline, setPolyline] = useState()
 
   // define api calls
   const getData = async (url) => {
@@ -248,6 +252,28 @@ function EventMap() {
     setAllocNetworkName(event.target.value)
   }
 
+  const findPath = () => {
+    console.log("finding path...")
+    let newPath = []
+    displayFacilities.forEach(
+      facility => {
+        newPath.push({ lat:facility.LATITUDE, lng:facility.LONGITUDE })
+      }
+    )
+    return newPath
+  }
+
+  /*const createPolyline = () => {
+    const newPolyline = new window.google.maps.Polyline({
+      path:path,
+      strokeColor:'#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 1
+    })
+    newPolyline.setMap(map)
+    setPolyline(newPolyline)
+  }*/
+
   // this function is used to make the api call and to call certain functions once
   // the variable states have updated
   useEffect(() => {
@@ -291,14 +317,11 @@ function EventMap() {
       setDecisionUnit(chosenAllocNetwork.DEC_UNIT_KEY)
     }
     
-    /*let selectedMeasPts = filterMeasPts(selectedFacilities)
-    if (facKey != ''){
-      let selectedMeasPts = filterMeasPts()
-      setDisplayMeasPts(selectedMeasPts)
+    if (displayFacilities!== prevDisplayFacilities) {
+      setPath(findPath(displayFacilities))
     }
-    setDisplayMeasPts(selectedMeasPts)*/
 
-  }, [allocNetworkName, facilities, facKey, decisionUnit])
+  }, [allocNetworkName, facilities, facKey, decisionUnit, displayFacilities])
   
   return isLoaded ? (
     <div className="container-fluid">
@@ -312,19 +335,25 @@ function EventMap() {
             onClick={() => setVisibility(false)}
             onDrag={() => setVisibility(false)}
           >
-            <div>
-              <InfoBox
-              onLoad = {infoBoxLoad}
-              options={infoBoxOptions}
-              position={infoBoxPosition}
-              visible={visibility}
-              >
-                <div>
-                  <button type="button">Create Node</button>
-                </div>
-              </InfoBox>
-              {showFacilities()}
-            </div>
+            {/*<Polyline 
+              options={{
+                strokeColor:'red',
+                strokeOpacity: 0.35,
+                strokeWeight: 1
+              }}
+              path={path} 
+            />*/}
+            <InfoBox
+            onLoad = {infoBoxLoad}
+            options={infoBoxOptions}
+            position={infoBoxPosition}
+            visible={visibility}
+            >
+              <div>
+                <button type="button">Create Node</button>
+              </div>
+            </InfoBox>
+            {showFacilities()}
           </GoogleMap>
         </div>
       </div>
