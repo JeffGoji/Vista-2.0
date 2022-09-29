@@ -7,7 +7,7 @@ import addView from '../assets/img/activity.gif'
 import viewBtn from '../assets/img/pool-cust-summary.png'
 import ggpBtn from '../assets/img/gpp.gif'
 
-const TargetList = ({contract, contracts, setContract, points, BA, cntrPathRates, prevContracts}) => {
+const TargetList = ({contract, contracts, setContract, point, points, selectPoint, BA, cntrPathRates, prevContracts, prevPoints}) => {
 
     // references
     const renders = useRef(0)
@@ -29,7 +29,14 @@ const TargetList = ({contract, contracts, setContract, points, BA, cntrPathRates
             console.log(contract)
         }
 
-    }, [points, contracts, contract, BA])
+        // set point
+        if (points !== prevPoints && points.length !== 0) {
+            console.log("updating point...")
+            setContract(points.find(point => point.POINT_NAME === selectPoint.current.value))
+            console.log(point)
+        }
+
+    }, [points, point, contracts, contract, BA])
 
     return (
         <div className="container-fluid main-bg" >
@@ -49,16 +56,9 @@ const TargetList = ({contract, contracts, setContract, points, BA, cntrPathRates
                                 <label>
                                     Contract ID:
                                     <br />
-                                    <select ref={selectContract} onChange={(event) => {setContract(contracts.find(contract => contract.CNTR_TITLE === event.target.value))}}>
-                                        {
-                                            contracts.sort((a, b) => (a.CNTR_TITLE > b.CNTR_TITLE) ? 1 : -1).map(({CNTR_NUM, CNTR_PARTY1, CNTR_TITLE}) => {
-                                                if (BA !== undefined && CNTR_PARTY1 === BA.BA_ID) {
-                                                    return (
-                                                        <option key={CNTR_NUM}>{CNTR_TITLE}</option>
-                                                    )
-                                                }
-                                            })
-                                        }
+                                    <select ref={selectContract} onChange={() => {}} >
+                                        <option value={"null"} type="select" className="rounded m-2">Select Contract</option>
+                                        <option value={"Agway"} type="select" className="rounded m-2">Agway-Agway</option>
                                     </select>
                                 </label>
                             </form>
@@ -68,10 +68,9 @@ const TargetList = ({contract, contracts, setContract, points, BA, cntrPathRates
                                 <label>
                                     Point ID:
                                     <br />
-                                    <select onChange={() => {}} value={"value"} >
-                                        <option value={"null"} type="select" className="rounded m-2">Select Pool Pt</option>
-                                        <option value={"123456"} type="select" className="rounded m-2">123456</option>
-
+                                    <select ref={selectPoint} onChange={() => {}} >
+                                        <option value={"null"} type="select" className="rounded m-2">Select Point</option>
+                                        <option value={"647"} type="select" className="rounded m-2">647-P1-POR-Agway</option>
                                     </select>
                                 </label>
                             </form>
@@ -115,7 +114,186 @@ const TargetList = ({contract, contracts, setContract, points, BA, cntrPathRates
                             </tr>
                         </thead>
                         <tbody>
-                            
+                            <tr>
+                                <td>1/1/2022</td>
+                                <td>68</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>68</td>
+                                <td>68</td>
+                                <td>0</td>
+                                <td>68</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>STEP248</td>
+                                <td>2021-12-30 01:26:02</td>
+                            </tr>
+                            <tr>
+                                <td>1/2/2022</td>
+                                <td>124</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>124</td>
+                                <td>124</td>
+                                <td>0</td>
+                                <td>124</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>STEP248</td>
+                                <td>2021-12-30 01:26:27</td>
+                            </tr>
+                            <tr>
+                                <td>1/3/2022</td>
+                                <td>129</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>129</td>
+                                <td>129</td>
+                                <td>0</td>
+                                <td>129</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>STEP248</td>
+                                <td>2021-12-30 01:26:55</td>
+                            </tr>
+                            <tr>
+                                <td>1/4/2022</td>
+                                <td>112</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>112</td>
+                                <td>112</td>
+                                <td>0</td>
+                                <td>112</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>STEP248</td>
+                                <td>2021-12-30 01:27:20</td>
+                            </tr>
+                            <tr>
+                                <td>1/5/2022</td>
+                                <td>112</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>112</td>
+                                <td>112</td>
+                                <td>0</td>
+                                <td>112</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>CUR2313</td>
+                                <td>2022-01-03 09:45:31</td>
+                            </tr>
+                            <tr>
+                                <td>1/6/2022</td>
+                                <td>138</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>138</td>
+                                <td>138</td>
+                                <td>0</td>
+                                <td>138</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>CUR2313</td>
+                                <td>2022-01-04 09:47:31</td>
+                            </tr>
+                            <tr>
+                                <td>1/7/2022</td>
+                                <td>150</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>150</td>
+                                <td>150</td>
+                                <td>0</td>
+                                <td>150</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>CUR2313</td>
+                                <td>2022-01-05 10:28:26</td>
+                            </tr>
+                            <tr>
+                                <td>1/8/2022</td>
+                                <td>122</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>122</td>
+                                <td>122</td>
+                                <td>0</td>
+                                <td>122</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>CUR2313</td>
+                                <td>2022-01-06 10:50:39</td>
+                            </tr>
+                            <tr>
+                                <td>1/9/2022</td>
+                                <td>120</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>120</td>
+                                <td>120</td>
+                                <td>0</td>
+                                <td>120</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>CUR2313</td>
+                                <td>2022-01-06 10:51:04</td>
+                            </tr>
+                            <tr>
+                                <td>1/10/2022</td>
+                                <td>158</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>158</td>
+                                <td>158</td>
+                                <td>0</td>
+                                <td>158</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>CUR2313</td>
+                                <td>2022-01-05 10:51:26</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
