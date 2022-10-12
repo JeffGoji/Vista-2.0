@@ -69,10 +69,19 @@ const getBidPkg = async () => {
 console.log(getBidPkg);
 
 // api call to get measurment point data
-const getMeasPts = async () => {
+const getMeasPts = async (req) => {
     try {
+        console.log("getting measurement points...")
         let sqlconnection = await sql.connect(config)
-        let data = sqlconnection.request().query("SELECT * FROM ENT_MEAS_PT WHERE STATION_FAC_KEY != 0 AND STATION_FAC_KEY IS NOT NULL AND LATITUDE > 0 AND LONGITUDE < 0")
+        let data = ""
+        let queriesExist = Object.keys(req.query).length !== 0 ? true : false
+        if (queriesExist) {
+            let facKey = req.query.facKey
+            console.log(facKey)
+            data = sqlconnection.request().query("SELECT * FROM ENT_MEAS_PT WHERE STATION_FAC_KEY = " + facKey)
+        } else {
+            data = sqlconnection.request().query("SELECT * FROM ENT_MEAS_PT")
+        }
         return data
     } catch (err) {
         console.log(err)

@@ -18,7 +18,7 @@ function usePrevious(value) {
 }
 
 // displays the map
-function EventMap() {
+function EventMap({setSelectedFacility}) {
   
   // declare some constants
   const [facilities, setFacilities] = useState([])
@@ -28,8 +28,6 @@ function EventMap() {
   const prevAllocNetworkName = usePrevious(allocNetworkName)
   const prevFacilities = usePrevious(facilities)
   const [allocProcesses, setAllocProcesses] = useState([])
-  const [facKey, setFacKey] = useState('')
-  const prevFacKey = usePrevious(facKey)
   const [measPts, setMeasPnts] = useState([])
   const [displayFacilities, setDisplayFacilities] = useState([])
   const prevDisplayFacilities = usePrevious(displayFacilities)
@@ -57,9 +55,7 @@ function EventMap() {
             'content-type': 'application/json',
             'Accept': 'application/json',
         },
-    })
-        .then(res => res.json())
-        .then(res => setFacilities(res.recordset))
+    }).then(res => {return res.json()}).then(res => setFacilities(res.recordset))
   }
   const getMeasPts = async (url) => {
     await fetch(url, {
@@ -296,11 +292,6 @@ function EventMap() {
       setDisplayFacilities(selectedFacilities)
     }
 
-    // only run this code if fackey has changed
-    if (facKey !== prevFacKey && facKey !== "") {
-      getAllocProcess('./allocProcesses?facKey='+facKey).catch(console.error)
-    }
-
     // only run this code if decision unit has changed
     if (decisionUnit !== prevDecisionUnit) {
       let selectedFacilities = filterFacilities()
@@ -317,11 +308,12 @@ function EventMap() {
       setDecisionUnit(chosenAllocNetwork.DEC_UNIT_KEY)
     }
     
-    if (displayFacilities!== prevDisplayFacilities) {
+    // this is for finding the new path for the polylines
+    /*if (displayFacilities!== prevDisplayFacilities) {
       setPath(findPath(displayFacilities))
-    }
+    }*/
 
-  }, [allocNetworkName, facilities, facKey, decisionUnit, displayFacilities])
+  }, [allocNetworkName, facilities, decisionUnit, displayFacilities])
   
   return isLoaded ? (
     <div className="container-fluid">
@@ -336,14 +328,14 @@ function EventMap() {
             onDrag={() => setVisibility(false)}
           >
             <>
-              <Polyline 
+              {/*<Polyline 
                 options={{
                   strokeColor:'red',
                   strokeOpacity: 0.35,
                   strokeWeight: 1
                 }}
                 path={path} 
-              />
+              />*/}
               <InfoBox
               onLoad = {infoBoxLoad}
               options={infoBoxOptions}
@@ -358,6 +350,7 @@ function EventMap() {
                 {(clusterer) => 
                   displayFacilities.map(facility => (
                     <Marker
+                      onClick={() => {setSelectedFacility(facility)}}
                       clusterer={clusterer}
                       key = {facility.FAC_KEY}
                       position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}

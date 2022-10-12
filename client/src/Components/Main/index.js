@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 //Original Map idea for the right-click menu:
 // import Map from '../Map'
@@ -29,7 +29,18 @@ import PieChart3 from '../PieChart3'
 
 import NetworkGraph from '../NetworkGraph'
 
-
+// custom react Hook for storing previous values
+function usePrevious(value) {
+    // The ref object is a generic container whose current property is mutable ...
+    // ... and can hold any value, similar to an instance property on a class
+    const ref = useRef();
+    // Store current value in ref
+    useEffect(() => {
+        ref.current = value;
+    }, [value]); // Only re-run if value changes
+    // Return previous value (happens before update in useEffect above)
+    return ref.current;
+}
 
 function Main() {
     // eslint-disable-next-line no-unused-vars
@@ -51,7 +62,23 @@ function Main() {
         }]
     });
 
+    const getData = async(url) => {
+        let data = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'content-type':'application/json',
+                'Accept':'application/json'
+            }
+        }).then(response => {
+            return response.json()
+        }).then(response => {
+            return response.recordset
+        })
+        return data
+    }
 
+    const [selectedFacility, setSelectedFacility] = useState()
+    const prevSelectedFacility = usePrevious(selectedFacility)
 
     return (
         <div className='container-fluid'>
@@ -63,7 +90,7 @@ function Main() {
 
                     <div className='row h-100 justify-content-center align-items-center'>
                         <div className='col-10'>
-                        <PieChart3 />
+                        <PieChart3 selectedFacility={selectedFacility} getData={getData} prevSelectedFacility={prevSelectedFacility} usePrevious={usePrevious} />
                         <br />
                         <ApiData />
                         </div>
@@ -74,7 +101,7 @@ function Main() {
                     <label className='fs-3'>Facility Map</label>
                     <div className='row justify-content-center'>
                         <div className='col-auto'>
-                            <EventMap />
+                            <EventMap setSelectedFacility={setSelectedFacility} />
                         </div>
                     </div>
                 </div>

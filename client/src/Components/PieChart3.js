@@ -1,6 +1,6 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
-import { Pie } from 'react-chartjs-2'
+import { useState, useEffect,useRef } from 'react';
+import { getDatasetAtEvent, Pie } from 'react-chartjs-2'
 // eslint-disable-next-line no-unused-vars
 import { Chart as ChartJS } from 'chart.js/auto'
 import { Chart } from 'chart.js';
@@ -11,10 +11,10 @@ import ChartStreaming from 'chartjs-plugin-streaming';
 Chart.register(ChartStreaming);
 
 
-function PieChart3() {
+function PieChart3({selectedFacility,getData,prevSelectedFacility,usePrevious}) {
 
     //State for handling loading:
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     //State for handling nomData:
     const [returnedNomData, setReturnedNomData] = useState({})
 
@@ -26,45 +26,62 @@ function PieChart3() {
 
     //Customer pulldown menu:
     const [selected, setSelected] = useState("Select Customer");
+    
+    const [measPts, setMeasPts] = useState([])
+    const prevMeasPts = usePrevious(measPts)
+
+    const renders = useRef(0)
 
     //useEffect to restrict code from going into an infinite loop
     useEffect(() => {
-        setIsLoading(true)
-        fetch('./noms')
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                setIsLoading(false)
-                setReturnedNomData(data.recordsets)
-            });
-        fetch('./gas_meters')
-            .then(response => {
-                return response.json();
-            })
-            .then(gasMeters => {
-                setIsLoading(false)
-                // for (let index = 0; index < gasMeters.recordsets.length; index++) {
-                //     const meterNo = gasMeters.recordsets[index][2]['METERNO'];
-                //     setMeterData(meterNo)
-                // };
-                for (const forEachMeter of gasMeters.recordsets[0]) {
-                    // console.log(forEachMeter)
-                    setMeterData(forEachMeter)
-                }
-                for (const forEachFuel of gasMeters.recordsets[0]) {
-                    // console.log(forEachMeter)
-                    setFuelData(forEachFuel)
-                }
-                // setMeterData(gasMeters.recordsets[0])
-                //This version displays one meter number:
-                // for (let index = 0; index < gasMeters.recordsets.length; index++) {
-                //     const meterNo = gasMeters.recordsets[index][2]['METERNO'];
-                //     setMeterData(meterNo)
-                // }
-            });
+        if (renders.current < 0){/*
+            setIsLoading(true)
+            fetch('./noms')
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+                    setIsLoading(false)
+                    setReturnedNomData(data.recordsets)
+                });
+            fetch('./gas_meters')
+                .then(response => {
+                    return response.json();
+                })
+                .then(gasMeters => {
+                    setIsLoading(false)
+                    // for (let index = 0; index < gasMeters.recordsets.length; index++) {
+                    //     const meterNo = gasMeters.recordsets[index][2]['METERNO'];
+                    //     setMeterData(meterNo)
+                    // };
+                    for (const forEachMeter of gasMeters.recordsets[0]) {
+                        // console.log(forEachMeter)
+                        setMeterData(forEachMeter)
+                    }
+                    for (const forEachFuel of gasMeters.recordsets[0]) {
+                        // console.log(forEachMeter)
+                        setFuelData(forEachFuel)
+                    }
+                    // setMeterData(gasMeters.recordsets[0])
+                    //This version displays one meter number:
+                    // for (let index = 0; index < gasMeters.recordsets.length; index++) {
+                    //     const meterNo = gasMeters.recordsets[index][2]['METERNO'];
+                    //     setMeterData(meterNo)
+                    // }
+                });*/
+        }
 
-    }, []);
+        if (selectedFacility !== prevSelectedFacility){
+            console.log("previous facility:")
+            console.log(prevSelectedFacility)
+            console.log("selected facility:")
+            console.log(selectedFacility)
+            getData('/measPts?facKey='+selectedFacility.FAC_KEY).then(data => setMeasPts(data))
+        }
+
+        renders.current++
+    }, [selectedFacility]);
+
     if (isLoading) {
         return <p>Loading....</p>
     }
@@ -84,7 +101,7 @@ function PieChart3() {
 
     //Chart:
     const myChart3 = ({
-        labels: ['Volume In', 'Daily Volume'],
+        labels: measPts.map(measPt => (measPt.METER_NAME)),
         datasets: [{
             label: ['Meter Point Data'],
             data: [returnedMeter.ENERGY, returnedMeter.DAILY_VOL],
@@ -107,9 +124,9 @@ function PieChart3() {
     return (
         <div className='mt-2 p-2'>
             <select className='m-3' value={selected} onChange={handleChange}>
-                {options.map(option => (
-                    <option key={option.text} value={option.value}>
-                        {option.text}
+                {measPts.map(measPt => (
+                    <option key={measPt.METERNO}>
+                        {measPt.METER_NAME}
                     </option>
                 ))}
             </select>
