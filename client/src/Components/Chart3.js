@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { Pie } from 'react-chartjs-2'
+import { Bar } from 'react-chartjs-2'
 // eslint-disable-next-line no-unused-vars
 import { Chart as ChartJS } from 'chart.js/auto'
 import { Chart } from 'chart.js';
@@ -19,10 +19,10 @@ function PieChart3() {
     const [returnedNomData, setReturnedNomData] = useState({})
 
     //State for handling Meter Number data:
-    const [meterData, setMeterData] = useState({})
+    const [returnedMeter, setMeterData] = useState({})
 
     //State for returning DAILY_VOL from the Meter data:
-    // const [returnedFuel, setFuelData] = useState('')
+    const [returnedFuel, setFuelData] = useState('')
 
     //Customer pulldown menu:
     const [selected, setSelected] = useState("Select Customer");
@@ -36,29 +36,26 @@ function PieChart3() {
             })
             .then(data => {
                 setIsLoading(false)
-                setReturnedNomData(data.recordset) //Use recordset for array, recordsets if an object.
-
+                setReturnedNomData(data.recordsets)
             });
-        setIsLoading(true)
         fetch('./gas_meters')
             .then(response => {
                 return response.json();
             })
-            .then(data => {
+            .then(gasMeters => {
                 setIsLoading(false)
-                setMeterData(data.recordsets)
                 // for (let index = 0; index < gasMeters.recordsets.length; index++) {
                 //     const meterNo = gasMeters.recordsets[index][2]['METERNO'];
                 //     setMeterData(meterNo)
                 // };
-                // for (const forEachMeter of gasMeters.recordsets) {
-                //     // console.log(forEachMeter)
-                //     setMeterData(forEachMeter)
-                // }
-                // for (const forEachFuel of gasMeters.recordsets) {
-                //     // console.log(forEachMeter)
-                //     setFuelData(forEachFuel)
-                // }
+                for (const forEachMeter of gasMeters.recordsets[0]) {
+                    // console.log(forEachMeter)
+                    setMeterData(forEachMeter)
+                }
+                for (const forEachFuel of gasMeters.recordsets[0]) {
+                    // console.log(forEachMeter)
+                    setFuelData(forEachFuel)
+                }
                 // setMeterData(gasMeters.recordsets[0])
                 //This version displays one meter number:
                 // for (let index = 0; index < gasMeters.recordsets.length; index++) {
@@ -68,55 +65,35 @@ function PieChart3() {
             });
 
     }, []);
-
-
+    console.log(returnedMeter)
+    console.log(returnedFuel);
     if (isLoading) {
         return <p>Loading....</p>
     }
 
-    // console.log(returnedNomData);
-    // console.log(meterData);
+    //Map const to experiment:
 
-    let volAddUp = Array.from(returnedNomData).map((volumes) =>
-        <option key={volumes.DATESTAMP} className='form-control' value={volumes.VOLUMEIN} >
-            {volumes.DATESTAMP}
-        </option>);
-    // volumes.END_IMBAL
-    // value = { volumes.END_IMBAL }
 
-    let options = Array.from(meterData).map((meters) =>
-
-        <option key={meters.DATESTAMP}>{meters.METERNO}</option>
-    );
-
-    //This works for mapping through array of VOLUMEIN in Noms:
-    // let volAddUp = Array.from(returnedNomData).map((volumes) =>
-    //     <li key={volumes.DATESTAMP}>
-    //         Volume in: {volumes.VOLUMEIN}
-    //     </li>);
-
-    // let options = Array.from(meterData).map((meters) =>
-
-    //     <option key={meters.DATESTAMP}>{meters.METERNO}</option>
-    // );
-
-    // console.log(volAddUp);
-    // console.log(options);
 
     //Pulldown menu with measure point API call:
     const handleChange = event => {
         console.log(event.target.value);
-        setSelected(event.target.value);
+        setSelected(event.target.value)
     }
+    const options = [
+        { value: '', text: 'Select Meter' },
+        {
+            value: [returnedMeter.METERNO], text: [returnedMeter.METERNO]
+            // value: [returnedMeter.METERNO], text: [returnedMeter.METERNO]
+        },
+    ];
 
     //Chart:
     const myChart3 = ({
-        labels: ["Volume In", "End Imbalance"],
+        labels: ['Volume In', 'Daily Volume'],
         datasets: [{
             label: ['Meter Point Data'],
-            data: [selected, selected],
-            //Array.from(returnedNomData).map((data) => data.END_IMBAL),
-            // data: [meterData.ENERGY, meterData.DAILY_VOL],
+            data: [returnedMeter.ENERGY, returnedMeter.DAILY_VOL],
             // data: [returnedNomData[2].VOLUMEIN, returnedNomData[2].VOLUMEOUT, options.text],
             //nomData: [returnedVolData, returnedVolData, returnedVolData],
             backgroundColor: [
@@ -132,29 +109,19 @@ function PieChart3() {
         }]
 
     })
-
-    // console.log(returnedNomData);
-    console.log(myChart3)
+    // console.log(myChart3)
+    console.log(returnedNomData);
     return (
-        <div className='mt-2 p-2' key={options.DATESTAMP}>
-            <p>Select Gasflow Date</p>
-            <select className='m-3' onChange={handleChange}>
-                {volAddUp}
-                {/* {options.METERDATE} */}
-                {/* <option key={options.METERDATE}>
-                    {options.METERNO}
-                </option> */}
-                {/* {Array.from(meterData).map(option => (
-                    <option key={option.METERDATE} value={option.METERDATE}>
-                        {option.METERDATE}
+        <div className='mt-2 p-2'>
+            <select className='m-3' value={selected} onChange={handleChange}>
+                {options.map(option => (
+                    <option key={option.text} value={option.value}>
+                        {option.text}
                     </option>
-                ))} */}
+                ))}
             </select>
 
-            <Pie data={myChart3} />
-            {/* <ul>
-                {volAddUp}
-            </ul> */}
+            <Bar data={myChart3} />
 
             {/* <button className='btn btn-primary mt-2' onClick={() => getNoms('./noms')}>Click me to get Nominations</button> */}
 

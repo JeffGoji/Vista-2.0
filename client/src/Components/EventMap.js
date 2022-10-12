@@ -19,7 +19,9 @@ function usePrevious(value) {
 
 // displays the map
 function EventMap() {
-  
+
+
+
   // declare some constants
   const [facilities, setFacilities] = useState([])
   const [processProcess, setProcessProcess] = useState([])
@@ -41,8 +43,8 @@ function EventMap() {
   const [decisionUnit, setDecisionUnit] = React.useState('1707')
   const prevDecisionUnit = usePrevious(decisionUnit)
   const [toggleMeters, setToggleMeters] = React.useState(false)
-  const infoBoxOptions = { 
-    closeBoxURL: '', 
+  const infoBoxOptions = {
+    closeBoxURL: '',
     enableEventPropagation: true
   };
   const renders = useRef(1) // end of variables
@@ -52,14 +54,14 @@ function EventMap() {
   // define api calls
   const getData = async (url) => {
     await fetch(url, {
-        method: 'GET',
-        headers: {
-            'content-type': 'application/json',
-            'Accept': 'application/json',
-        },
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        'Accept': 'application/json',
+      },
     })
-        .then(res => res.json())
-        .then(res => setFacilities(res.recordset))
+      .then(res => res.json())
+      .then(res => setFacilities(res.recordset))
   }
   const getMeasPts = async (url) => {
     await fetch(url, {
@@ -69,8 +71,8 @@ function EventMap() {
         'Accept': 'application/json'
       }
     })
-    .then(res => res.json())
-    .then(res => setMeasPnts(res.recordset))
+      .then(res => res.json())
+      .then(res => setMeasPnts(res.recordset))
   }
   const getProcessProcess = async (url) => {
     await fetch(url, {
@@ -80,10 +82,10 @@ function EventMap() {
         'Accept': 'application/json'
       }
     })
-    .then(res => res.json())
-    .then(res => setProcessProcess(res.recordset))
+      .then(res => res.json())
+      .then(res => setProcessProcess(res.recordset))
   }
-  const getAllocNetwork = async(url) => {
+  const getAllocNetwork = async (url) => {
     await fetch(url, {
       method: 'GET',
       headers: {
@@ -91,8 +93,8 @@ function EventMap() {
         'Accept': 'application/json'
       }
     })
-    .then(res => res.json())
-    .then(res => setAllocNetwork(res.recordset))
+      .then(res => res.json())
+      .then(res => setAllocNetwork(res.recordset))
   }
   const getAllocProcess = async (url) => {
     await fetch(url, {
@@ -102,8 +104,8 @@ function EventMap() {
         'Accept': 'application/json'
       }
     })
-    .then(res => res.json())
-    .then(res => setAllocProcesses(res.recordset))
+      .then(res => res.json())
+      .then(res => setAllocProcesses(res.recordset))
   } // end of api calls
 
   // finds the bounds of the selected facilities so that when the user selects a new decision unit key
@@ -186,7 +188,7 @@ function EventMap() {
   }
 
   // this function filters the facilities based on the decision unit provided
-  const filterFacilities = () =>{
+  const filterFacilities = () => {
     const filteredFacilities = facilities.filter(facility => (facility.DEC_UNIT_KEY === parseInt(decisionUnit)))
     return filteredFacilities
   }
@@ -211,14 +213,14 @@ function EventMap() {
     if (displayFacilities !== []) {
       return displayFacilities.map(facility => (
         <Marker
-          key = {facility.FAC_KEY}
+          key={facility.FAC_KEY}
           position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}
           icon={{
-            url:facilityLogo, 
-            scaledSize: new window.google.maps.Size(50,50),
-            labelOrigin: new window.google.maps.Point(25,45)
+            url: facilityLogo,
+            scaledSize: new window.google.maps.Size(50, 50),
+            labelOrigin: new window.google.maps.Point(25, 45)
           }}
-          label={{color:'blue', text:facility.FAC_NAME}}
+          label={{ color: 'blue', text: facility.FAC_NAME }}
         >
         </Marker>
       ))
@@ -230,15 +232,15 @@ function EventMap() {
       console.log(displayMeasPts)
       return displayMeasPts.map(measPt => (
         <InfoBox
-          key = {measPt.METERNO}
-          options = {infoBoxOptions}
-          position = {{lat: measPt.LATITUDE, lng: measPt.LONGITUDE}}
+          key={measPt.METERNO}
+          options={infoBoxOptions}
+          position={{ lat: measPt.LATITUDE, lng: measPt.LONGITUDE }}
         >
           <div>
-            <img src={meterLogo} alt="Meter" width="10" height="10"/>
+            <img src={meterLogo} alt="Meter" width="10" height="10" />
             {() => {
               if (map.getZoom() < 10)
-                return <p style={{fontSize:"8px"}}>{measPt.METER_NAME}</p>
+                return <p style={{ fontSize: "8px" }}>{measPt.METER_NAME}</p>
             }}
           </div>
         </InfoBox>
@@ -257,7 +259,7 @@ function EventMap() {
     let newPath = []
     displayFacilities.forEach(
       facility => {
-        newPath.push({ lat:facility.LATITUDE, lng:facility.LONGITUDE })
+        newPath.push({ lat: facility.LATITUDE, lng: facility.LONGITUDE })
       }
     )
     return newPath
@@ -298,7 +300,7 @@ function EventMap() {
 
     // only run this code if fackey has changed
     if (facKey !== prevFacKey && facKey !== "") {
-      getAllocProcess('./allocProcesses?facKey='+facKey).catch(console.error)
+      getAllocProcess('./allocProcesses?facKey=' + facKey).catch(console.error)
     }
 
     // only run this code if decision unit has changed
@@ -316,63 +318,68 @@ function EventMap() {
       let chosenAllocNetwork = chosenAllocNetworkArray[0]
       setDecisionUnit(chosenAllocNetwork.DEC_UNIT_KEY)
     }
-    
-    if (displayFacilities!== prevDisplayFacilities) {
+
+    if (displayFacilities !== prevDisplayFacilities) {
       setPath(findPath(displayFacilities))
     }
 
   }, [allocNetworkName, facilities, facKey, decisionUnit, displayFacilities])
-  
+
   return isLoaded ? (
     <div className="container-fluid">
       <div className="row justify-content-center pb-2">
         <div className="col-auto">
-            <GoogleMap
-            mapContainerStyle={{height:'600px', width:'600px'}}
+          <GoogleMap
+            mapContainerStyle={{ height: '600px', width: '600px' }}
             onLoad={onLoad}
             onUnmount={onUnmount}
             onRightClick={handleRightClick}
             onClick={() => setVisibility(false)}
             onDrag={() => setVisibility(false)}
           >
-            <>
-              <Polyline 
-                options={{
-                  strokeColor:'red',
-                  strokeOpacity: 0.35,
-                  strokeWeight: 1
-                }}
-                path={path} 
-              />
-              <InfoBox
-              onLoad = {infoBoxLoad}
+
+            {/* <Polyline
+              options={{
+                strokeColor: 'red',
+                strokeOpacity: 0.35,
+                strokeWeight: 1,
+                draggable: true,
+                clickable: true,
+                editable: true,
+                visible: true,
+
+              }}
+              path={path}
+            /> */}
+            <InfoBox
+              onLoad={infoBoxLoad}
               options={infoBoxOptions}
               position={infoBoxPosition}
               visible={visibility}
-              >
-                <div>
-                  <button type="button">Create Node</button>
-                </div>
-              </InfoBox>
-              <MarkerClusterer>
-                {(clusterer) => 
-                  displayFacilities.map(facility => (
-                    <Marker
-                      clusterer={clusterer}
-                      key = {facility.FAC_KEY}
-                      position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}
-                      icon={{
-                        url:facilityLogo, 
-                        scaledSize: new window.google.maps.Size(50,50),
-                        labelOrigin: new window.google.maps.Point(25,45)
-                      }}
-                      label={{color:'blue', text:facility.FAC_NAME}}
-                    >
-                    </Marker>
-                  ))
-                }
-              </MarkerClusterer>
-            </>
+            >
+              <div>
+                <button type="button">Create Node</button>
+              </div>
+            </InfoBox>
+            <MarkerClusterer>
+              {(clusterer) =>
+                displayFacilities.map(facility => (
+                  <Marker
+                    clusterer={clusterer}
+                    key={facility.FAC_KEY}
+                    position={{ lat: facility.LATITUDE, lng: facility.LONGITUDE }}
+                    icon={{
+                      url: facilityLogo,
+                      scaledSize: new window.google.maps.Size(50, 50),
+                      labelOrigin: new window.google.maps.Point(25, 45)
+                    }}
+                    label={{ color: 'blue', text: facility.FAC_NAME }}
+                  >
+                  </Marker>
+                ))
+              }
+            </MarkerClusterer>
+
           </GoogleMap>
         </div>
       </div>

@@ -8,7 +8,7 @@ function PieChart() {
     //State for handling loading:
     const [isLoading, setIsLoading] = useState(true)
     //State for handling data:
-    const [nomData, setNomData] = useState([])
+    const [nomData, setNomData] = useState({})
     //City State useState:
     const [returnedCityData, setReturnedCityData] = useState([])
     //useEffect to restrict code from going into an infinite loop
@@ -16,7 +16,6 @@ function PieChart() {
         fetch('./cityApi')
             .then(response => {
                 return response.json();
-
             })
             .then(citydata => {
                 setReturnedCityData(citydata.recordsets[0])
@@ -34,10 +33,11 @@ function PieChart() {
             })
             .then(data => {
                 setIsLoading(false)
-                setNomData(data.recordsets[0])
+                setNomData(data.recordset)
             });
     }, []);
 
+    // console.log(nomData)
     if (isLoading) {
         return <p>Loading....</p>
     };
@@ -49,12 +49,32 @@ function PieChart() {
 
 
 
+    //Original:
+    // const pieChart1 = ({
+    //     labels: ['Volume In', 'End Imbalance', 'Net End Imbalance'],
+    //     datasets: [{
+    //         label: ['Nominations'],
+    //         data: [nomData[2].VOLUMEIN, nomData[2].VOLUMEOUT, nomData[2].END_IMBAL],
+    //         //data: [returnedNomData, returnedNomData, returnedNomData],
+    //         backgroundColor: [
+    //             "rgba(75,192,192,1)",
+    //             "#ecf0f1",
+    //             "#50AF95",
+    //             "#f3ba2f",
+    //             "#2a71d0",
+    //         ],
+    //         borderColor: "blue",
+    //         borderWidth: 2,
 
+    //     }]
+    // });
+
+    //New:
     const pieChart1 = ({
-        labels: ['Volume In', 'End Imbalance', 'Net End Imbalance'],
+        labels: nomData.map((data) => data.USERSTAMP),
         datasets: [{
-            label: ['Nominations'],
-            data: [nomData[2].VOLUMEIN, nomData[2].VOLUMEOUT, nomData[2].END_IMBAL],
+            label: 'VOLUME IN',
+            data: nomData.map((data) => data.VOLUMEIN),
             //data: [returnedNomData, returnedNomData, returnedNomData],
             backgroundColor: [
                 "rgba(75,192,192,1)",
@@ -70,21 +90,23 @@ function PieChart() {
     });
 
 
-
     return (
         <div>
             <h4>Volumes Chart</h4>
             <p>Facility Name:
                 <br />
-                {returnedCityData[2].FAC_NAME}</p>
+                {returnedCityData[2].FAC_NAME}
+            </p>
             <p>State ID:
                 <br />
-                {returnedCityData[2].FAC_ID} </p>
+                {returnedCityData[2].FAC_ID}
+            </p>
+
             <Pie data={pieChart1} />
 
             <p>Longitude:
                 <br />
-                {returnedCityData[2].LONGITUDE}</p>
+                {/* {returnedCityData[2].LONGITUDE}</p> */}</p>
 
         </div>
     )

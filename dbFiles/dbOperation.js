@@ -35,6 +35,7 @@ const getNoms = async () => {
     try {
         let getNoms = await sql.connect(config);
         let noms = await getNoms.request().query("SELECT * from ENT_PT_BALANCE")
+        //.query("SELECT * from ENT_PT_BALANCE")
         return noms;
     }
     catch (error) {
@@ -166,7 +167,7 @@ const getMeasurePoints = async () => {
 // "SELECT * from ENT_MEAS_PT WHERE METERNO = " + meter_key + ""
 
 // get contract data
-const getContracts = async() => {
+const getContracts = async () => {
     try {
         let sqlconnection = await sql.connect(config)
         let data = sqlconnection.request().query("SELECT * FROM ENT_CONTRACTS")
@@ -177,7 +178,7 @@ const getContracts = async() => {
 }
 
 // get business associates
-const getBAs = async() => {
+const getBAs = async () => {
     try {
         let sqlconnection = await sql.connect(config)
         let data = sqlconnection.request().query("SELECT * FROM ENT_BUSINESS_ASSOC")
@@ -188,7 +189,7 @@ const getBAs = async() => {
 }
 
 // get contract path rates
-const getCntrPathRates = async() => {
+const getCntrPathRates = async () => {
     try {
         let sqlconnection = await sql.connect(config)
         let data = sqlconnection.request().query("SELECT * FROM ENT_CNTR_PATH_RATE")
@@ -199,7 +200,7 @@ const getCntrPathRates = async() => {
 }
 
 // get points
-const getPoints = async() => {
+const getPoints = async () => {
     try {
         let sqlconnection = await sql.connect(config)
         let data = sqlconnection.request().query("SELECT * FROM ENT_POINTS WHERE STATUS = 'AC'")

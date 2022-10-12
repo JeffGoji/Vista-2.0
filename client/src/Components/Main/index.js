@@ -10,26 +10,24 @@ import { useState } from 'react'
 //Chart Imports:
 // import BarChart from '../BarChart'
 // import LineChart from '../LineChart'
-// import PieChart from '../PieChart'
+import PieChart from '../PieChart'
 import ApiData from '../ApiData'
 
 import EventMap from '../EventMap'
-import Map from '../Map'
+// import Map from '../Map'
 
 //GET API experiment:
 import { UserData } from '../Data'
 
 //Get Bar graph with built in API experiment:
-import BarChart2 from '../PieChart2'
+// import BarChart2 from '../PieChart2'
 import PieChart3 from '../PieChart3'
 
 //Recharts chart:
 //import { Rechart } from '../Rechart'
 
 
-import NetworkGraph from '../NetworkGraph'
-
-
+// import NetworkGraph from '../NetworkGraph'
 
 function Main() {
     // eslint-disable-next-line no-unused-vars
@@ -51,8 +49,6 @@ function Main() {
         }]
     });
 
-
-
     return (
         <div className='container-fluid'>
             <div className="row justify-content-center">
@@ -63,14 +59,14 @@ function Main() {
 
                     <div className='row h-100 justify-content-center align-items-center'>
                         <div className='col-10'>
-                        <PieChart3 />
-                        <br />
-                        <ApiData />
+                            <PieChart3 />
+                            <br />
+                            <ApiData />
                         </div>
                     </div>
 
                 </div>
-                <div className="col-lg-6 col-md-6 col-sm-12 text-center rounded p-2 window-border text-white"> 
+                <div className="col-lg-6 col-md-6 col-sm-12 text-center rounded p-2 window-border text-white">
                     <label className='fs-3'>Facility Map</label>
                     <div className='row justify-content-center'>
                         <div className='col-auto'>
@@ -83,7 +79,8 @@ function Main() {
                     <LineChart chartData={oilData} /> */}
                     <div className='row h-100 justify-content-center align-items-center'>
                         <div className='col-10'>
-                            <BarChart2/>
+                            {/* <BarChart2 /> */}
+                            <PieChart />
                         </div>
                     </div>
                     {/* <PieChart3 /> */}

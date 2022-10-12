@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from "react"
+import React, { useRef, useState, useEffect } from "react"
 
 import refresh from '../assets/img/refresh.png'
 import add from '../assets/img/add.gif'
@@ -9,10 +9,11 @@ import ggpBtn from '../assets/img/gpp.gif'
 
 // import data from '../mock-noms.json'
 
-const Nominations = ({setContract, contracts, BA}) => {
+const Nominations = ({ setContract, contracts, BA }) => {
 
     // references
     const selectContract = useRef()
+
 
     return (
         <div className="container-fluid main-bg" >
@@ -20,7 +21,7 @@ const Nominations = ({setContract, contracts, BA}) => {
             <div className="row">
                 <div className="col-sm-12 col-md-12 col-lg-12 p-2">
                     <button className="m-2 btn btn-primary"><img src={refresh} alt="Refresh" className="p-1" />Refresh</button>
-                    <button onClick={() => {}} className="m-2 btn btn-primary"><img src={add} alt="Add" className="p-1" />New</button>
+                    <button onClick={() => { }} className="m-2 btn btn-primary"><img src={add} alt="Add" className="p-1" />New</button>
                     <button className="m-2 btn btn-primary"><img src={excelBtn} alt="Export to Excel" className="p-1" />Export to Excel</button>
                     <button className="m-2 btn btn-primary"><img src={addView} alt="Add/View Activity" className="p-1" />Add/View Activity</button>
                     <button className="m-2 btn btn-primary"><img src={viewBtn} alt="View Marketer Pool" className="p-1" />View Marketer Pool balances</button>
@@ -35,7 +36,7 @@ const Nominations = ({setContract, contracts, BA}) => {
                             <label>
                                 From Date:
                                 <br />
-                                <select onChange={() => {}} value={"value"} >
+                                <select onChange={() => { }} value={"value"} >
                                     <option vlaue={"null"} type="select" className="rounded m-2">Pick a Date</option>
                                     <option vlaue={"09/12/2022"} type="select" className="rounded m-2">09/12/2022</option>
                                     <option vlaue={"09/13/2022"} type="select" className="rounded m-2">09/13/2022</option>
@@ -48,7 +49,7 @@ const Nominations = ({setContract, contracts, BA}) => {
                             <label>
                                 To Date:
                                 <br />
-                                <select onChange={() => {}} value={"value"} >
+                                <select onChange={() => { }} value={"value"} >
                                     <option vlaue={"null"} type="select" className="rounded m-2">Pick a Date</option>
                                     <option vlaue={"09/12/2022"} type="select" className="rounded m-2">09/12/2022</option>
                                     <option vlaue={"09/13/2022"} type="select" className="rounded m-2">09/13/2022</option>
@@ -66,9 +67,9 @@ const Nominations = ({setContract, contracts, BA}) => {
                                 <label>
                                     Contract:
                                     <br />
-                                    <select ref={selectContract} onChange={(event) => {setContract(contracts.find(contract => contract.CNTR_TITLE === event.target.value))}}>
+                                    <select ref={selectContract} onChange={(event) => { setContract(contracts.find(contract => contract.CNTR_TITLE === event.target.value)) }}>
                                         {
-                                            contracts.sort((a, b) => (a.CNTR_TITLE > b.CNTR_TITLE) ? 1 : -1).map(({CNTR_NUM, CNTR_PARTY1, CNTR_TITLE}) => {
+                                            contracts.sort((a, b) => (a.CNTR_TITLE > b.CNTR_TITLE) ? 1 : -1).map(({ CNTR_NUM, CNTR_PARTY1, CNTR_TITLE }) => {
                                                 if (BA !== undefined && CNTR_PARTY1 === BA.BA_ID) {
                                                     return (
                                                         <option key={CNTR_NUM}>{CNTR_TITLE}</option>
@@ -95,7 +96,7 @@ const Nominations = ({setContract, contracts, BA}) => {
                                 <label>
                                     Trans-Type:
                                     <br />
-                                    <select onChange={() => {}} value={"value"} >
+                                    <select onChange={() => { }} value={"value"} >
                                         <option value={"null"} type="select" className="rounded m-2">Select Trans-type</option>
                                         <option value={"123456"} type="select" className="rounded m-2">123456</option>
 
@@ -106,7 +107,7 @@ const Nominations = ({setContract, contracts, BA}) => {
                                 <label>
                                     Pool Pt:
                                     <br />
-                                    <select onChange={() => {}} value={"value"} >
+                                    <select onChange={() => { }} value={"value"} >
                                         <option value={"null"} type="select" className="rounded m-2">Select Pool Pt</option>
                                         <option value={"123456"} type="select" className="rounded m-2">123456</option>
 
@@ -118,7 +119,7 @@ const Nominations = ({setContract, contracts, BA}) => {
                 </div>
             </div>
             {/* Table below: */}
-            
+
             <div className="row text-center mt-3 p-2" >
                 <h4 className="text-start text-white">Nominations:</h4>
                 <div className="col-sm-12 col-md-12 col-lg-12">
@@ -278,9 +279,9 @@ const Nominations = ({setContract, contracts, BA}) => {
                     </table>
                 </div>
             </div >
-            </div>
+        </div>
 
-        
+
 
     )
 }
