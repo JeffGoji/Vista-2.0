@@ -218,6 +218,27 @@ const getPoints = async() => {
     }
 }
 
+// get points
+const getMeasPtVols = async(req) => {
+    try {
+        let sqlconnection = await sql.connect(config)
+        let data = ""
+        let queriesExist = Object.keys(req.query).length !== 0 ? true : false
+        if (queriesExist) {
+            let meterNo = req.query.meterNo
+            let date = req.query.date
+            console.log("meterNo: " + meterNo)
+            console.log("date: " + date)
+            data = sqlconnection.request().query("SELECT * FROM ENT_MEAS_PT_VOL WHERE METERNO = " + meterNo + "AND PRODDATE = '" + date + "'")
+        } else {
+            data = sqlconnection.request().query("SELECT * FROM ENT_MEAS_PT_VOL")
+        }
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 
 //Built in React Fetch system using the SAME nom call above but simplified:
 // const getNoms = () => {
@@ -260,4 +281,5 @@ module.exports = {
     getBAs,
     getCntrPathRates,
     getPoints,
+    getMeasPtVols
 }

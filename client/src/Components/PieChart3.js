@@ -32,6 +32,18 @@ function PieChart3({selectedFacility,getData,prevSelectedFacility,usePrevious}) 
 
     const renders = useRef(0)
 
+    // meter volumes for pie chart
+    const [meterVols, setMeterVols] = useState([])
+
+    // total volume for selected meters
+    const [totalVolume, setTotalVolume] = useState(0)
+
+    // selected facility name
+    const [facilityName, setFactilityName] = useState("")
+
+    // date for volume query
+    const [date, setDate] = useState((new Date().getFullYear()).toString() + "-" + (new Date().getMonth() + 1))
+
     //useEffect to restrict code from going into an infinite loop
     useEffect(() => {
         if (renders.current < 0){/*
@@ -70,6 +82,8 @@ function PieChart3({selectedFacility,getData,prevSelectedFacility,usePrevious}) 
                     // }
                 });*/
         }
+        if (selectedFacility)
+            setFactilityName(selectedFacility.FAC_NAME)
 
         if (selectedFacility !== prevSelectedFacility){
             console.log("previous facility:")
@@ -81,6 +95,53 @@ function PieChart3({selectedFacility,getData,prevSelectedFacility,usePrevious}) 
 
         renders.current++
     }, [selectedFacility]);
+
+    // any time measPts changes get new volumes for selected day
+    useEffect(() => {
+        if (measPts.length > 0)
+            getMeterVols()
+        setMeterVols([])
+    },[measPts, date])
+
+    const getMeterVols = async() => {
+        let newMeterVols = []
+        let timezoneOffset = new Date().toString().slice(new Date().toString().indexOf("GMT") + 3, new Date().toString().indexOf("GMT") + 8)
+        console.log(timezoneOffset)
+        let localeDate = new Date(date + "-01T00:00:00" + timezoneOffset).toLocaleDateString()
+        let responses = []
+        measPts.map((measPt) => 
+            responses.push(getData('/measPtVols?meterNo='+measPt.METERNO+'&date='+ localeDate).then(
+                res => {
+                    if (res.length > 0) {
+                        newMeterVols.push({meterNo: measPt.METERNO, volume: res[0].ALLOC_VOLUME})
+                        console.log(newMeterVols)
+                    }
+                }
+            ))
+        )
+        await Promise.all(responses)
+        setMeterVols(newMeterVols)
+    }
+
+    // useEffect for meterVols
+    useEffect(() => {
+        let sum = 0
+        meterVols.map(meterVol => (
+            sum += meterVol.volume
+        ))
+        setTotalVolume(sum)
+    },[meterVols])
+
+    // generate random colors
+    const genHexCode = () => {
+        let hexString = "0123456789abcdef"
+        let hexCode = "#"
+        for (let i = 0; i < 6; i++){
+            hexCode += hexString[Math.floor(Math.random() * hexString.length)]
+        }
+        console.log(hexCode)
+        return hexCode
+    }
 
     if (isLoading) {
         return <p>Loading....</p>
@@ -104,34 +165,42 @@ function PieChart3({selectedFacility,getData,prevSelectedFacility,usePrevious}) 
         labels: measPts.map(measPt => (measPt.METER_NAME)),
         datasets: [{
             label: ['Meter Point Data'],
-            data: [returnedMeter.ENERGY, returnedMeter.DAILY_VOL],
+            data: meterVols.map(meterVol => meterVol.volume)
+            /*[returnedMeter.ENERGY, returnedMeter.DAILY_VOL]*/,
             // data: [returnedNomData[2].VOLUMEIN, returnedNomData[2].VOLUMEOUT, options.text],
             //nomData: [returnedVolData, returnedVolData, returnedVolData],
-            backgroundColor: [
-                "rgba(75,192,192,1)",
-                "#ecf0f1",
-                "#50AF95",
-                "#f3ba2f",
-                "#2a71d0",
-            ],
+            backgroundColor: meterVols.map(meterVol => {
+                console.log(meterVol)
+                return genHexCode()
+            }),
             borderColor: "blue",
             borderWidth: 2,
-
         }]
 
     })
     // console.log(myChart3)
     return (
         <div className='mt-2 p-2'>
-            <select className='m-3' value={selected} onChange={handleChange}>
+            <h4 className='text-white mb-5'>Meter Allocated Volumes</h4>
+            <p className="mb-2">Prod Date:</p>
+            <input 
+                onChange={(event) => {setDate(event.target.value)}} 
+                className="form-control form-control-sm mb-3" 
+                type="month" 
+                defaultValue={date} 
+            />
+            {/*<select className='m-3' value={selected} onChange={handleChange}>
                 {measPts.map(measPt => (
                     <option key={measPt.METERNO}>
                         {measPt.METER_NAME}
                     </option>
                 ))}
-            </select>
+                </select>*/}
+            <h5>{facilityName}</h5>
 
             <Pie data={myChart3} />
+
+            <p>Total Volume: {totalVolume}</p>
 
             {/* <button className='btn btn-primary mt-2' onClick={() => getNoms('./noms')}>Click me to get Nominations</button> */}
 

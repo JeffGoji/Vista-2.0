@@ -124,6 +124,11 @@ app.get('/bas', async (req, res) => {
     res.send(result)
 })
 
+app.get('/measPtVols', async(req, res) => {
+    const result = await dbOperation.getMeasPtVols(req)
+    res.send(result)
+})
+
 //Kept for reference's sake:
 // app.get('/quit', function (req, res) {
 //     console.log('called it quits');

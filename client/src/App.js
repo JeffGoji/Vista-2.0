@@ -24,15 +24,13 @@ function usePrevious(value) {
 
 // api call functions
 const getData = async (url) => {
-  const data = await fetch(url, {
+  return fetch(url, {
       method: 'GET',
       headers: {
           'content-type': 'application/json',
           'Accept': 'application/json',
       },
   })
-  .then(res => res.json())
-  return data
 }
 
 function App() {
@@ -82,10 +80,10 @@ function App() {
 
       // api calls
       console.log("getting data...")
-      getData('./bas').catch(console.error).then(res => setBAs(res.recordset))
-      getData('./contracts').catch(console.error).then(res => setContracts(res.recordset))
-      getData('./cntrPathRates').catch(console.error).then(res => setCntrPathRates(res.recordset))
-      getData('./points').catch(console.error).then(res => setPoints(res.recordset))
+      getData('./bas').catch(console.error).then(res => res.json()).then(res => setBAs(res.recordset))
+      getData('./contracts').catch(console.error).then(res => res.json()).then(res => setContracts(res.recordset))
+      getData('./cntrPathRates').catch(console.error).then(res => res.json()).then(res => setCntrPathRates(res.recordset))
+      getData('./points').catch(console.error).then(res => res.json()).then(res => setPoints(res.recordset))
       // end of api calls
       
       window.scrollTo(0, 0);
